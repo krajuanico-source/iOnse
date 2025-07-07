@@ -35,38 +35,44 @@ class UserController extends Controller
     return response()->json($query->get());
   }
 
-  public function store(Request $request)
-  {
+    public function store(Request $request)
+{
     $request->validate([
-      'employee_id' => 'required|unique:users,employee_id',
-      'first_name' => 'required',
-      'last_name' => 'required',
-      'employment_status' => 'required|exists:employment_statuses,id',
-      'division' => 'required|exists:divisions,id',
-      'section' => 'required|exists:sections,id',
-      'password' => 'required|confirmed|min:6',
+        'first_name' => 'required',
+        'last_name' => 'required',
+        'employment_status' => 'required|exists:employment_statuses,id',
+        'division' => 'required|exists:divisions,id',
+        'section' => 'required|exists:sections,id',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|confirmed|min:6',
     ]);
 
+    // Auto-generate employee ID again in store (to avoid tampering)
+    $latestUser = User::latest('id')->first();
+    $latestId = $latestUser ? $latestUser->id + 1 : 1;
+    $employeeId = '11-' . str_pad($latestId, 4, '0', STR_PAD_LEFT);
+
     $middleInitial = substr($request->middle_name, 0, 1);
-    $empIdLast4 = substr($request->employee_id, -4);
+    $empIdLast4 = substr($employeeId, -4);
     $username = strtolower(substr($request->first_name, 0, 1) . $middleInitial . $request->last_name . $empIdLast4);
 
     User::create([
-      'employee_id' => $request->employee_id,
-      'first_name' => $request->first_name,
-      'middle_name' => $request->middle_name,
-      'last_name' => $request->last_name,
-      'extension_name' => $request->extension_name,
-      'employment_status_id' => $request->employment_status,
-      'division_id' => $request->division,
-      'section_id' => $request->section,
-      'username' => $username,
-      'email' => $request->email,
-      'password' => Hash::make($request->password),
+        'employee_id' => $employeeId,
+        'first_name' => $request->first_name,
+        'middle_name' => $request->middle_name,
+        'last_name' => $request->last_name,
+        'extension_name' => $request->extension_name,
+        'employment_status_id' => $request->employment_status,
+        'division_id' => $request->division,
+        'section_id' => $request->section,
+        'username' => $username,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
     ]);
 
     return redirect()->route('employee.registration-form')->with('success', 'Employee registered successfully!');
-  }
+}
+
 
   public function show($id)
   {
@@ -143,41 +149,35 @@ class UserController extends Controller
   }
 
   public function create()
-  {
+{
     $employmentStatuses = EmploymentStatus::all();
     $divisions = Division::all();
 
-    return view('content.planning.registration-form', compact('employmentStatuses', 'divisions'));
-  }
-  public function getSections(Request $request)
-  {
-    $divisionId = $request->division_id;
-    $sections = Section::where('division_id', $divisionId)->get();
+    do {
+    $latestUser = User::latest('id')->first();
+    $latestId = $latestUser ? $latestUser->id + 1 : 1;
+    $generatedEmployeeId = '11-' . str_pad($latestId, 4, '0', STR_PAD_LEFT);
+    } while (User::where('employee_id', $generatedEmployeeId)->exists());
 
-    return response()->json($sections);
-  }
+    return view('content.planning.registration-form', compact(
+        'employmentStatuses',
+        'divisions',
+        'generatedEmployeeId'
+    ));
+}
     public function showImportForm()
     {
-        $employmentStatuses = EmploymentStatus::all();
-        $divisions = Division::all();
-        $sections = Section::all();
-
-        return view('content.planning.import-form', compact('employmentStatuses', 'divisions', 'sections'));
+        return view('content.planning.import-form');
     }
     public function importEmployees(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:csv,txt'
+            'file' => 'required|mimes:xlsx,xls,csv',
         ]);
-
-        if (!$request->hasFile('file')) {
-            return back()->with('error', 'No file was uploaded.');
-        }
 
         Excel::import(new EmployeesImport, $request->file('file'));
 
-        return back()->with('success', 'Employees imported successfully!');
+        return redirect()->back()->with('success', 'Employees imported successfully!');
     }
-
 
 }
