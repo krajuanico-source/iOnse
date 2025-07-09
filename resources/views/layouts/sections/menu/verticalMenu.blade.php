@@ -1,8 +1,13 @@
+<!-- image-background -->
 <aside id="layout-menu" class="layout-menu menu-vertical menu" 
   style="background-image: url('{{ asset('assets/img/dswd-bg.png') }}'); 
          background-size: cover; 
          background-repeat: no-repeat; 
          color: #fff;">
+
+<!-- colored-background -->
+<!-- <aside id="layout-menu" class="layout-menu menu-vertical menu" style="background: linear-gradient(180deg,rgb(26, 26, 152),rgb(130, 41, 5)); color: #fff;"> -->
+
 
 
   <!-- ! Hide app brand if navbar-full -->
@@ -91,4 +96,30 @@
     background-color: rgba(255, 255, 255, 0.1);
     color: #ffffff !important;
   }
+    /* Change color of bullet (menu indicator or dot if any) */
+    .layout-menu .menu-item::before {
+      color: #ffffff !important;
+    }
+
+    /* Change color of the dropdown toggle arrow */
+    .layout-menu .menu-toggle::after {
+      color: #ffffff !important;
+    }
+    .layout-menu .menu-item::before {
+      color: #ffffff !important; /* Already present in your code, good */
+      background-color: #ffffff !important; /* Add this if it's a dot or square */
+    }
+
+    /* Example 2: For vertical line indicators on the left of active/open menu */
+    .layout-menu .menu-item.active::before,
+    .layout-menu .menu-item.open::before {
+      background-color: #ffffff !important;
+    }
+
+    .layout-menu .menu-item .menu-link::before {
+      background-color: #ffffff !important;
+    }
+    .layout-menu .menu-item.active {
+      border-left: 3px solid #ffffff !important;
+    }
 </style>

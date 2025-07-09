@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container py-4">
-  <h4 class="mb-4">Report Generation</h4>
+  <h4 style="color: #1d4bb2;" class="mb-4">Report Generation</h4>
 
   <form method="GET" action="{{ route('planning.reports') }}" class="row g-3 mb-4">
     <div class="col-md-6">

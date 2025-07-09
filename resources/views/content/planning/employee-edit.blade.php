@@ -6,7 +6,7 @@
 <div class="container mb-4">
   <div class="card">
     <div class="card-header bg-white">
-      <h5 class="mb-0">Edit Employee</h5>
+      <h5 style="color: #1d4bb2;" class="mb-0">Edit Employee</h5>
     </div>
     <div class="card-body">
 

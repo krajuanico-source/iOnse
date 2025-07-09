@@ -36,9 +36,10 @@
       <table id="empTable" class="table">
       <thead class="table-light">
         <tr>
+          <!-- <th>Photo</th> -->
           <th style="width: 0;">ID No.</th>
           <th>Employee Name</th>
-          <th>Email</th>
+          <!-- <th>Email</th> NEW -->
           <th>Employment Status</th>
           <th>Section</th>
           <th>Division</th>
@@ -50,6 +51,13 @@
       <tbody>
         @foreach($employees as $employee)
         <tr>
+          <!-- <td>
+            @if ($employee->profile_image)
+              <img src="{{ asset($employee->profile_image) }}" alt="Profile" width="50" height="50" class="rounded-circle">
+            @else
+              <img src="{{ asset('default-user.png') }}" alt="No Photo" width="50" height="50" class="rounded-circle">
+            @endif
+          </td> -->
           <td>{{ $employee->employee_id }}</td>
           <td>
             {{ Str::upper($employee->first_name) }}
@@ -57,7 +65,7 @@
             {{ Str::upper($employee->last_name) }}
             {{ Str::upper($employee->extension_name) }}
           </td>
-          <td>{{ $employee->email }}</td> <!-- NEW -->
+          <!-- <td>{{ $employee->email }}</td> NEW -->
           <td>{{ Str::upper($employee->employmentStatus->abbreviation ?? '') }}</td>
           <td>{{ Str::upper($employee->section->abbreviation ?? '') }}</td>
           <td>{{ Str::upper($employee->division->abbreviation ?? '') }}</td>

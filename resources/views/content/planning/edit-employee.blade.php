@@ -13,6 +13,21 @@
       @method('PUT')
 
       <div class="row">
+                <div class="d-flex justify-content-center mb-4">
+          @if($employee->profile_image)
+            <div style="width: 200px; height: 200px; border: 2px solid #1d4bb2; border-radius: 50%; overflow: hidden;">
+              <img src="{{ asset($employee->profile_image) }}"
+                  alt="Profile Image"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          @else
+            <div style="width: 200px; height: 200px; border: 4px solid #6c757d; border-radius: 50%; overflow: hidden;">
+              <img src="{{ asset('default-user.png') }}"
+                  alt="No Photo"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          @endif
+        </div>
         <div class="col-md-6 mb-3">
           <label for="employee_id" class="form-label">ID No</label>
           <input type="text" name="employee_id" id="employee_id" class="form-control" value="{{ $employee->employee_id }}" readonly>
@@ -93,9 +108,9 @@
         </div>
       </div>
 
-      <div class="mt-3">
+      <div class="d-flex justify-content-end">
+        <a href="{{ route('employee.view-blade') }}" class="btn btn-secondary me-3">Cancel</a>
         <button type="submit" class="btn btn-success">Save Changes</button>
-        <a href="{{ route('employee.view-blade') }}" class="btn btn-secondary">Cancel</a>
       </div>
     </form>
   </div>

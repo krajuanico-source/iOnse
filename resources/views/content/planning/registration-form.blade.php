@@ -24,15 +24,17 @@
         </div>
       @endif
 
-      <form action="{{ route('employee.store') }}" method="POST" autocomplete="off">
+      <form action="{{ route('employee.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+
         @csrf
 
-        <div class="row mb-3">
+        <div class="row mb-4">
           <div class="col-md-4">
             <label>Employee ID</label>
             <input type="text" class="form-control" name="employee_id"
                    value="{{ old('employee_id', $generatedEmployeeId ?? '') }}"
-                   readonly required style="text-transform: uppercase;">
+                   readonly required
+                   style="text-transform: uppercase; background-color: #e9ecef; cursor: not-allowed;">
           </div>
 
           <div class="col-md-4">
@@ -66,6 +68,17 @@
           </div>
 
           <div class="col-md-4">
+            <label>Gender</label>
+            <select class="form-select" name="gender" required>
+              <option value="" disabled selected>Choose...</option>
+              <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
+              <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-4">
             <label>Employment Status</label>
             <select class="form-select" name="employment_status" required>
               <option value="" disabled selected>Choose...</option>
@@ -76,9 +89,7 @@
               @endforeach
             </select>
           </div>
-        </div>
 
-        <div class="row mb-3">
           <div class="col-md-4">
             <label>Division</label>
             <select class="form-select" name="division" id="divisionSelect" required>
@@ -93,19 +104,19 @@
 
           <div class="col-md-4">
             <label>Section</label>
-           <select class="form-select" name="section" id="sectionSelect" required>
-              <option value="" disabled selected>Choose...</option>
+            <select class="form-select" name="section" id="sectionSelect" required>
+              <option value="">Choose division first...</option>
             </select>
           </div>
+        </div>
 
+        <div class="row mb-3">
           <div class="col-md-4">
             <label>Email Address</label>
             <input type="email" class="form-control" name="email"
                    value="{{ old('email') }}" required autocomplete="off">
           </div>
-        </div>
 
-        <div class="row mb-3">
           <div class="col-md-4">
             <label>Password</label>
             <input type="password" class="form-control" name="password" required autocomplete="new-password">
@@ -117,7 +128,13 @@
             <input type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
           </div>
         </div>
-
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <label for="profile_image">Profile Image</label>
+            <input type="file" name="profile_image" class="form-control" accept="image/*">
+            <small class="text-muted">Allowed: jpeg, png, jpg. Max: 2MB</small>
+          </div>
+        </div>
         <div class="d-flex justify-content-end">
           <button type="submit" class="btn btn-success">Register Employee</button>
         </div>

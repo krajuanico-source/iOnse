@@ -45,6 +45,11 @@
           "url": "planning/resigned-employees",
           "name": "Resigned Employees",
           "slug": "resigned-employees"
+        },
+        {
+         "url": "planning/import-form",
+          "name": "Import Employees",
+          "slug": "import-form"
         }
       ]
     },
@@ -70,7 +75,7 @@
     },
     {
       "url": "planning/qualification",
-      "name": "Qualification",
+      "name": "Qualifications",
       "slug": "qualification"
     },
     {
@@ -118,7 +123,18 @@
       "url": "planning/report",
       "name": "Reports",
       "slug": "report"
-    }
+    },
+    {
+      "name": "Settings",
+      "slug": "settings",
+      "submenu": [
+        {
+          "url": "planning/SG Management",
+          "name": "SG-Management",
+          "slug": "sg-management"
+        }
+      ]}
+    
   ]
 },
     {

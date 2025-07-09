@@ -19,7 +19,7 @@
         <div class="app-brand justify-content-center mt-5">
           <a href="{{url('/')}}" class="app-brand-link gap-3">
             <span class="app-brand-logo demo">
-              <img src="{{ asset('assets/img/logo-dswd.png') }}" alt="DSWD Logo" height="100" style="background: #fff;">
+              <img src="{{ asset('assets/img/logo-dswd1.png') }}" alt="DSWD Logo" height="100" style="background: #fff;">
             </span>
           </a>
         </div>

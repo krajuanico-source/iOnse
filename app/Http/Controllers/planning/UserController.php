@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Planning;
 
+use App\Http\Controllers\Planning\UserController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -106,6 +107,7 @@ public function create()
     'middle_name' => $middleName,
     'last_name' => $lastName,
     'extension_name' => $extensionName,
+    'gender' => $request->gender, 
     'employment_status_id' => $request->employment_status,
     'division_id' => $request->division,
     'section_id' => $request->section,
@@ -167,6 +169,7 @@ public function create()
     'middle_name' => $middleName,
     'last_name' => $lastName,
     'extension_name' => $extensionName,
+    'gender' => $request->gender, 
     'employment_status_id' => $request->employment_status,
     'division_id' => $request->division,
     'section_id' => $request->section,
