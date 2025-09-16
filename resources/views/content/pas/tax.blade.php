@@ -66,11 +66,11 @@ $containerNav = 'container-fluid';
         <div class="modal-body">
           <div class="mb-3">
             <label>Salary Grade</label>
-            <input type="number" name="salary_grade" class="form-control" required>
+            <input type="number" name="salary_grade" value="{{ old('salary_grade') }}" class="form-control" required>
           </div>
           <div class="mb-3">
             <label>Tax</label>
-            <input type="number" name="tax" class="form-control" required>
+            <input type="number" name="tax" value="{{ old('tax') }}" class="form-control" required>
           </div>
         </div>
         <div class="modal-footer">
@@ -95,11 +95,11 @@ $containerNav = 'container-fluid';
           <input type="hidden" name="id" id="edittaxId">
           <div class="mb-3">
             <label>Salary Grade</label>
-            <input type="number" name="salary_grade" id="edittaxName" class="form-control" required>
+            <input type="number" name="salary_grade" value="{{ old('salary_grade') }}" id="edittaxName" class="form-control" required>
           </div>
           <div class="mb-3">
             <label>Tax</label>
-            <input type="number" name="tax" id="edittax" class="form-control" required>
+            <input type="number" name="tax" value="{{ old('tax') }}" id="edittax" class="form-control" required>
           </div>
         </div>
         <div class="modal-footer">

@@ -6,7 +6,7 @@ $containerNav = 'container-fluid';
 
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Monthly Leave Credits Summary')
+@section('title', 'List of Employee')
 
 @section('content')
 
@@ -17,36 +17,37 @@ $containerNav = 'container-fluid';
 <div class="card">
   <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h4>Leave Credits Summary</h4>
-      @if(session('message'))
-        <div class="alert alert-info">{{ session('message') }}</div>
-      @endif
-      <!-- @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-      @endif
-      @if(session('error'))
-          <div class="alert alert-warning">{{ session('error') }}</div>
-      @endif -->
-
+      <h4>List of Employees</h4>
     </div>
 
     <div class="table-responsive">
-      <table id="leavecreditsTable" class="table">
+      <table id="employeesTable" class="table">
       <thead class="table-light">
         <tr>
           <th style="width: 0;">ID No.</th>
           <th>Employee Name</th>
-
+          <th>Email</th>
+          <th>Employment Status</th>
+          <th>Section</th>
+          <th>Division</th>
+          <th>Username</th>
         </tr>
       </thead>
       <tbody>
-        @foreach($users as $credit)
+        @foreach($employees as $employee)
         <tr>
-          <td>{{ $credit->employee_id }}</td>
-          <td>{{ Str::upper($credit->first_name) }}
-            {{ Str::upper($credit->middle_name) }}
-            {{ Str::upper($credit->last_name) }}
-            {{ Str::upper($credit->extension_name) }}</td>
+             <td>{{ $employee->employee_id }}</td>
+          <td>
+            {{ Str::upper($employee->first_name) }}
+            {{ Str::upper($employee->middle_name) }}
+            {{ Str::upper($employee->last_name) }}
+            {{ Str::upper($employee->extension_name) }}
+          </td>
+          <td>{{ $employee->email }}</td>
+          <td>{{ Str::upper($employee->employmentStatus->abbreviation ?? '') }}</td>
+          <td>{{ Str::upper($employee->section->abbreviation ?? '') }}</td>
+          <td>{{ Str::upper($employee->division->abbreviation ?? '') }}</td>
+          <td>{{ Str::lower($employee->username) }}</td>
         </tr>
         @endforeach
       </tbody>
@@ -66,7 +67,7 @@ $containerNav = 'container-fluid';
 
 
 <script>
- $('#leavecreditsTable').DataTable({
+ $('#employeesTable').DataTable({
   columnDefs: [
     { targets: 0, width: "50px", visible: true, searchable: false }
   ]

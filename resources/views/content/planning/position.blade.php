@@ -54,17 +54,6 @@
                   Edit
                 </button>
 
-                <button class="btn btn-sm btn-info req-btn"
-                  data-id="{{ $position->id }}"
-                  data-position-name="{{ $position->position_name }}">
-                  Requirements
-                </button>
-
-                <button class="btn btn-sm btn-warning qual-btn"
-                  data-id="{{ $position->id }}"
-                  data-position-name="{{ $position->position_name }}">
-                  Qualifications
-                </button>
 
                 {{-- Add Requirements button --}}
                 <button class="btn btn-sm btn-warning requirements-btn"

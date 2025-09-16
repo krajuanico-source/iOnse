@@ -1,13 +1,7 @@
 <?php
 
-//New Routes
-// use App\Http\Controllers\planning\Division;
-// use App\Http\Controllers\layouts\SummaryofLates;
-// use App\Http\Controllers\layouts\Payroll;
-// use App\Http\Controllers\layouts\Tax;
-// use App\Http\Controllers\layouts\Deductions;
-// use App\Http\Controllers\layouts\LeaveCredits;
-use App\Http\Controllers\layouts\Reports;
+
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\dashboard\Analytics;
 use App\Http\Controllers\pages\AccountSettingsAccount;
@@ -19,25 +13,6 @@ use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\authentications\ForgotPasswordBasic;
 use App\Http\Controllers\cards\CardBasic;
-use App\Http\Controllers\user_interface\Accordion;
-use App\Http\Controllers\user_interface\Alerts;
-use App\Http\Controllers\user_interface\Badges;
-use App\Http\Controllers\user_interface\Buttons;
-use App\Http\Controllers\user_interface\Carousel;
-use App\Http\Controllers\user_interface\Collapse;
-use App\Http\Controllers\user_interface\Dropdowns;
-use App\Http\Controllers\user_interface\Footer;
-use App\Http\Controllers\user_interface\ListGroups;
-use App\Http\Controllers\user_interface\Modals;
-use App\Http\Controllers\user_interface\Navbar;
-use App\Http\Controllers\user_interface\Offcanvas;
-use App\Http\Controllers\user_interface\PaginationBreadcrumbs;
-use App\Http\Controllers\user_interface\Progress;
-use App\Http\Controllers\user_interface\Spinners;
-use App\Http\Controllers\user_interface\TabsPills;
-use App\Http\Controllers\user_interface\Toasts;
-use App\Http\Controllers\user_interface\TooltipsPopovers;
-use App\Http\Controllers\user_interface\Typography;
 use App\Http\Controllers\extended_ui\PerfectScrollbar;
 use App\Http\Controllers\extended_ui\TextDivider;
 use App\Http\Controllers\icons\RiIcons;
@@ -76,9 +51,12 @@ use App\Http\Controllers\Planning\JoRequestController;
 use App\Http\Controllers\pas\FundSourceController;
 use App\Http\Controllers\pas\PayrollController;
 use App\Http\Controllers\pas\TaxController;
+use App\Http\Controllers\pas\EmployeesListController;
+
+use App\Http\Controllers\pas\ImportPayrollController;
+use App\Http\Controllers\pas\LeaveCreditsController;
 
 use App\Http\Controllers\Api\UserController;
-use App\Models\Section;
 // Login Page
 // Redirect root URL to login page
 Route::get('/', function () {
@@ -170,6 +148,7 @@ Route::prefix('/planning/office-location')->group(function () {
   Route::post('/{id}/delete', [OfficeLocationController::class, 'destroy'])->name('office-location.delete');
 });
 
+//Qualification
 Route::prefix('planning/qualification')->name('qualifications.')->group(function () {
   Route::get('/', [QualificationController::class, 'index'])->name('index');
   Route::post('/', [QualificationController::class, 'store'])->name('store');
@@ -259,6 +238,29 @@ Route::prefix('/pas/tax')->group(function () {
 });
 
 Route::resource('/pas/payroll', PayrollController::class);
+Route::resource('/pas/employeeslist', EmployeesListController::class);
+// Route::resource('/pas/leavecredits', LeaveCreditsController::class);
+
+// Route::get('pas/leavecredits', [LeaveCreditsController::class, 'index'])->name('leavecredits.index');
+// Route::get('pas/leavecredits/auto-generate', [LeaveCreditsController::class, 'autoGenerate'])->name('leavecredits.auto-generate');
+Route::prefix('/pas/leavecredits')->group(function () {
+  Route::get('/', [LeaveCreditsController::class, 'index'])->name('leavecredits.index');
+  Route::get('/leavecredits/auto-generate', [LeaveCreditsController::class, 'autoGenerate'])->name('leavecredits.auto-generate');
+});
+
+
+
+// Route::get('pas/importpayroll', [ImportPayroll::class, 'importpayroll'])->name('importpayroll');
+
+
+Route::resource('/pas/importpayroll', ImportPayrollController::class);
+
+
+
+
+
+
+
 
 // pages
 Route::get('/pages/account-settings-account', [AccountSettingsAccount::class, 'index'])->name('pages-account-settings-account');

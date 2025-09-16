@@ -64,11 +64,11 @@ $containerNav = 'container-fluid';
         <div class="modal-body">
           <div class="mb-3">
             <label>Fund Source Name</label>
-            <input type="text" name="fund_source" class="form-control" required>
+            <input type="text" name="fund_source" class="form-control" value="{{ old('fund_source') }}" required>
           </div>
           <div class="mb-3">
             <label>Description</label>
-            <input type="text" name="description" class="form-control" required>
+            <input type="text" name="description" class="form-control" value="{{ old('description') }}" required>
           </div>
         </div>
         <div class="modal-footer">
@@ -134,7 +134,7 @@ $containerNav = 'container-fluid';
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <script>
   $('#openModalBtn').click(function() {

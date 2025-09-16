@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Position;
 use App\Models\Requirement;
 use App\Models\Qualification;
+use App\Models\SalaryGrade;
+use App\Models\EmploymentStatus;
 
 class PositionController extends Controller
 {

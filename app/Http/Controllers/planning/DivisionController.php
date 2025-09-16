@@ -15,6 +15,9 @@ class DivisionController extends Controller
     return view('content.planning.division', compact('divisions'));
   }
 
+
+
+  
  public function store(Request $request)
 {
     $validated = $request->validate([
