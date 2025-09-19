@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model
 {
-    use HasFactory;
-    
-    public function profile()
-{
+  use HasFactory;
+
+  public function profile()
+  {
     return $this->hasOne(Profile::class);
-}
+  }
 }

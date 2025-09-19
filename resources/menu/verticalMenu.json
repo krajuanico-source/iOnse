@@ -250,34 +250,34 @@
       "slug": "ui",
       "submenu": [
         {
-          "url": "ui/carousel",
+          "url": "welfare/dashboardwelfare",
           "name": "Dashboard",
-          "slug": "ui-carousel"
+          "slug": "dashboardwelfare"
         },
         {
-          "url": "layouts/without-navbar",
+          "url": "welfare/memorandum",
           "name": "Archive of Memorandum",
-          "slug": "without-navbar"
+          "slug": "memorandum"
         },
         {
-          "url": "layouts/container",
+          "url": "welfare/awardees",
           "name": "Hall of Awardees",
-          "slug": "container"
+          "slug": "awardees"
         },
         {
-          "url": "layouts/fluid",
-          "name": "Rewards Program Overview and Committee",
-          "slug": "fluid"
+          "url": "welfare/overview",
+          "name": "DSWD Rewards Program Overview and Committee",
+          "slug": "welfare/overview"
         },
         {
-          "url": "layouts/blank",
+          "url": "welfare/character",
           "name": "Character Building Program",
-          "slug": "blank"
+          "slug": "character"
         },
         {
-          "url": "layouts/fluid",
-          "name": "Monitoring and evaluation of the awardee",
-          "slug": "fluid"
+          "url": "welfare/monitoring",
+          "name": "Monitoring and Evaluation of the Awardee",
+          "slug": "monitoring"
         }
       ]
     },

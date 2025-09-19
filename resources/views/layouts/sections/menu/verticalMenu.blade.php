@@ -1,4 +1,7 @@
 <!-- image-background -->
+@php
+use Illuminate\Support\Facades\Route;
+@endphp
 <aside id="layout-menu" class="layout-menu menu-vertical menu"
   style="background-image: url('{{ asset('assets/img/dswd-bg.png') }}');
          background-size: cover;

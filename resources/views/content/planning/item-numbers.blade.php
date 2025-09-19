@@ -22,6 +22,7 @@
             <th>No.</th>
             <th>Item Number</th>
             <th>Position</th>
+            <th>Fund Source</th>
             <th>Stature</th>
             <th>Status</th>
             <th>Action</th>
@@ -33,6 +34,10 @@
             <td>{{ $index + 1 }}</td>
             <td>{{ $item->item_number }}</td>
             <td>{{ $item->position->position_name ?? '-' }}</td>
+            <td>
+              {{ $item->fundSource ? ucfirst($item->fundSource->fund_source) : 'N/A' }}
+            </td>
+
             <td>{{ ucfirst($item->stature) }}</td>
             <td>{{ ucfirst($item->status) }}</td>
             <td class="text-nowrap">
@@ -99,6 +104,31 @@
               <option value="{{ $grade->id }}">{{ $grade->sg_num }}</option>
               @endforeach
             </select>
+          </div>
+
+
+          <!-- Fund Source -->
+          <div class="mb-3">
+            <label>Fund Source</label>
+            <select name="fund_source_id" class="form-control" required>
+              <option value="">-- Select Fund Source --</option>
+              @foreach($fundSources as $source)
+              <option value="{{ $source->id }}">{{ $source->fund_source }}</option>
+              @endforeach
+            </select>
+          </div>
+
+
+          <!-- Date of Posting -->
+          <div class="mb-3">
+            <label>Date of Posting</label>
+            <input type="date" name="date_posting" class="form-control" value="{{ old('date_posting') ?? $item->date_posting ?? '' }}" required>
+          </div>
+
+          <!-- Date End of Submission -->
+          <div class="mb-3">
+            <label>Date End of Submission</label>
+            <input type="date" name="date_end_submission" class="form-control" value="{{ old('date_end_submission') ?? $item->date_end_submission ?? '' }}" required>
           </div>
 
 

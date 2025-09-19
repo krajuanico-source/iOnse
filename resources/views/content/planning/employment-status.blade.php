@@ -1,5 +1,7 @@
 @extends('layouts/contentNavbarLayout')
-
+@php
+use Illuminate\Support\Str;
+@endphp
 @section('title', 'Employment Status')
 
 @section('content')

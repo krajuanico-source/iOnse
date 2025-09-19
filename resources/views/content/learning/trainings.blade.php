@@ -184,11 +184,8 @@
   <div class="container py-4">
     <div class="header">
       <h2>Courses</h2>
-      <<<<<<< HEAD
-        <button id="openModalBtn" style="padding:10px 20px;background-color:#2e7d32;color:white;border:none;border-radius:5px;cursor:pointer;">Add Course</button>
-        =======
-        <button id="openModalBtn" style="padding: 10px 20px; background-color: #2e7d32; color: white; border: none; border-radius: 5px; cursor: pointer;">Add Course</button>
-        >>>>>>> 0e57ff6763065cde4a2848afa77bb55a8d7144da
+      <button id="openModalBtn" style="padding:10px 20px;background-color:#2e7d32;color:white;border:none;border-radius:5px;cursor:pointer;">Add Course</button>
+
     </div>
 
     <div class="header">

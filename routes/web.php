@@ -63,6 +63,13 @@ use App\Http\Controllers\ItemNumberController;
 use App\Http\Controllers\UnfilledPositionsController;
 
 // Login Page
+
+//Welfare
+use App\Http\Controllers\Welfare\MemorandumController;
+
+
+
+
 // Redirect root URL to login page
 Route::get('/', function () {
   return redirect()->route('auth-login-basic');
@@ -262,6 +269,7 @@ Route::prefix('planning/unfilled-positions')->group(function () {
   Route::post('/{id}/applicants', [UnfilledPositionsController::class, 'storeApplicant'])
     ->name('unfilled_positions.applicants.store');
 });
+Route::get('/item-numbers/{id}/print', [ItemNumberController::class, 'print'])->name('itemNumbers.print');
 
 
 //PAS
@@ -389,5 +397,22 @@ Route::prefix('pas')->group(function () {
 });
 
 
-// HR WELFAREEEE - FRANS
-Route::get('/welfare', [Analytics::class, 'index'])->name('listofnomination');
+
+
+//HR FRANS WELFARE
+Route::prefix('welfare')->group(function () {
+  Route::view('/dashboardwelfare', 'content.welfare.dashboardwelfare')->name('welfare.dashboard');
+
+  // Memorandum routes
+  Route::get('/memorandum', [MemorandumController::class, 'index'])->name('welfare.memorandum');
+  Route::get('/memorandum/{id}', [MemorandumController::class, 'show'])->name('memorandums.show');
+  Route::put('/memorandum/{id}', [MemorandumController::class, 'update'])->name('memorandum.update');
+  Route::post('/memorandum', [MemorandumController::class, 'store'])->name('memorandums.store');
+  Route::delete('/memorandum/{id}', [MemorandumController::class, 'destroy'])->name('memorandums.destroy');
+
+  // Other pages
+  Route::view('/awardees', 'content.welfare.awardees')->name('welfare.awardees');
+  Route::view('/overview', 'content.welfare.overview')->name('welfare.overview');
+  Route::view('/character', 'content.welfare.character')->name('welfare.character');
+  Route::view('/monitoring', 'content.welfare.monitoring')->name('welfare.monitoring');
+});

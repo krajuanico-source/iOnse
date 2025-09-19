@@ -5,19 +5,28 @@ namespace App\Http\Controllers;
 use App\Models\ItemNumber;
 use App\Models\Position;
 use App\Models\EmploymentStatus;
+use App\Models\FundSOurce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ItemNumberController extends Controller
 {
   public function index()
   {
-    $itemNumbers = ItemNumber::with(['position', 'salaryGrade', 'employmentStatus'])->get();
+    $itemNumbers = ItemNumber::with(['position', 'salaryGrade', 'employmentStatus', 'fundSource'])->get();
     $positions = Position::with(['salaryGrade', 'employmentStatus'])->get();
     $employmentStatuses = EmploymentStatus::all();
-    $salaryGrades = \App\Models\SalaryGrade::all(); // ✅ fetch salary grades
+    $salaryGrades = \App\Models\SalaryGrade::all();
+    $fundSources  = \App\Models\FundSource::all(); // ✅ fetch fund sources
 
-    return view('content.planning.item-numbers', compact('itemNumbers', 'positions', 'employmentStatuses', 'salaryGrades'));
+    return view('content.planning.item-numbers', compact(
+      'itemNumbers',
+      'positions',
+      'employmentStatuses',
+      'salaryGrades',
+      'fundSources'
+    ));
   }
 
   /**
@@ -58,10 +67,13 @@ class ItemNumberController extends Controller
   public function store(Request $request)
   {
     $validator = Validator::make($request->all(), [
-      'item_number' => 'required|unique:item_numbers,item_number',
-      'position_id' => 'required|exists:positions,id',
+      'item_number'          => 'required|unique:item_numbers,item_number',
+      'position_id'          => 'required|exists:positions,id',
       'employment_status_id' => 'required|exists:employment_statuses,id',
-      'salary_grade_id' => 'required|exists:salary_grades,id',
+      'salary_grade_id'      => 'required|exists:salary_grades,id',
+      'fund_source_id'       => 'required|exists:fund_sources,id',
+      'date_posting'         => 'nullable|date',
+      'date_end_submission'  => 'nullable|date|after_or_equal:date_posting',
     ]);
 
     if ($validator->fails()) {
@@ -69,16 +81,20 @@ class ItemNumberController extends Controller
     }
 
     ItemNumber::create([
-      'item_number' => $request->item_number,
-      'position_id' => $request->position_id,
-      'salary_grade_id' => $request->salary_grade_id,
+      'item_number'          => $request->item_number,
+      'position_id'          => $request->position_id,
+      'salary_grade_id'      => $request->salary_grade_id,
       'employment_status_id' => $request->employment_status_id,
-      'status' => 'active',
-      'stature' => $request->stature ?? 'unfilled', // default to unfilled
+      'fund_source_id'       => $request->fund_source_id,
+      'date_posting'         => $request->date_posting,
+      'date_end_submission'  => $request->date_end_submission,
+      'status'               => 'active',
+      'stature'              => $request->stature ?? 'unfilled',
     ]);
 
     return response()->json(['success' => true, 'message' => 'Item Number added successfully.']);
   }
+
   public function edit($id)
   {
     $itemNumber = ItemNumber::findOrFail($id);
@@ -109,5 +125,13 @@ class ItemNumberController extends Controller
     ]);
 
     return response()->json(['success' => true, 'message' => 'Item Number updated successfully.']);
+  }
+  public function print($id)
+  {
+    $item = ItemNumber::with(['position', 'salaryGrade', 'employmentStatus', 'fundSource'])->findOrFail($id);
+
+    return Pdf::loadView('content.planning.item-numbers.print', compact('item'))
+      ->setPaper('a4', 'portrait')
+      ->stream("Notice_of_Vacancy_{$item->item_number}.pdf");
   }
 }

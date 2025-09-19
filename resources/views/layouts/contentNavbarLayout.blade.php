@@ -36,6 +36,7 @@ $container = ($container ?? 'container-xxl');
       <!-- END: Navbar-->
 
 
+
       <!-- Content wrapper -->
       <div class="content-wrapper">
 
@@ -51,11 +52,9 @@ $container = ($container ?? 'container-xxl');
           </div>
 
 
-
           @if ($isFooter)
           @include('layouts/sections/footer/footer')
           @endif
-
 
 
           <div class="content-backdrop fade"></div>

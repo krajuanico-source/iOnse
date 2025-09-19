@@ -8,22 +8,32 @@
     <p><strong>Position:</strong> {{ $item->position->position_name }}</p>
     <p><strong>Salary Grade:</strong> {{ $item->salaryGrade->id }}</p>
     <p><strong>Employment Status:</strong> {{ $item->employmentStatus->name }}</p>
+    <p><strong>Fund Source:</strong> {{ $item->fundSource->fund_source ?? '-' }}</p>
     <p><strong>Stature:</strong> {{ ucfirst($item->stature) }}</p>
+    <p><strong>Date of Posting:</strong> {{ $item->date_posting ? \Carbon\Carbon::parse($item->date_posting)->format('M d, Y') : '-' }}</p>
+    <p><strong>Date End of Submission:</strong> {{ $item->date_end_submission ? \Carbon\Carbon::parse($item->date_end_submission)->format('M d, Y') : '-' }}</p>
+  </div>
+  <div class="mt-3">
+    <a href="{{ route('itemNumbers.print', $item->id) }}" target="_blank" class="btn btn-primary">
+      <i class="bi bi-printer me-1"></i> Print Notice of Vacancy
+    </a>
   </div>
 </div>
+
 
 <hr>
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" id="applicantTabs" role="tablist">
+
   <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="add-tab" data-bs-toggle="tab" data-bs-target="#add-applicant" type="button" role="tab">
-      Add Applicant
+    <button class="nav-link active" id="list-tab" data-bs-toggle="tab" data-bs-target="#list-applicants" type="button" role="tab">
+      List of Applicants
     </button>
   </li>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="list-tab" data-bs-toggle="tab" data-bs-target="#list-applicants" type="button" role="tab">
-      List of Applicants
+    <button class="nav-link " id="add-tab" data-bs-toggle="tab" data-bs-target="#add-applicant" type="button" role="tab">
+      Add Applicant
     </button>
   </li>
 </ul>
@@ -32,7 +42,7 @@
 <div class="tab-content mt-3" id="applicantTabsContent">
 
   <!-- Add Applicant Form -->
-  <div class="tab-pane fade show active" id="add-applicant" role="tabpanel">
+  <div class="tab-pane fade" id="add-applicant" role="tabpanel">
     <form action="{{ route('unfilled_positions.applicants.store', $item->id) }}" method="POST">
       @csrf
       <div class="row g-3">
@@ -84,7 +94,7 @@
   </div>
 
   <!-- List Applicants -->
-  <div class="tab-pane fade" id="list-applicants" role="tabpanel">
+  <div class="tab-pane fade  show active" id="list-applicants" role="tabpanel">
     <h6 class="mb-3">Applicants for <strong>{{ $item->item_number }}</strong></h6>
 
     <div class="table-responsive">

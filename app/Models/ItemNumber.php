@@ -15,6 +15,9 @@ class ItemNumber extends Model
     'salary_grade_id',
     'employment_status_id',
     'stature',
+    'fund_source_id',
+    'date_posting',          // ✅ added
+    'date_end_submission',   // ✅ added
   ];
 
   public function position()
@@ -35,5 +38,9 @@ class ItemNumber extends Model
   public function applicants()
   {
     return $this->hasMany(Applicant::class, 'item_number_id');
+  }
+  public function fundSource()
+  {
+    return $this->belongsTo(\App\Models\FundSource::class, 'fund_source_id');
   }
 }
