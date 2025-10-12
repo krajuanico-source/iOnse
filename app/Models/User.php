@@ -25,6 +25,7 @@ class User extends Authenticatable
     'email',
     'password',
     'gender',
+    'role', // ✅ add this line
   ];
 
   protected $hidden = [
@@ -57,10 +58,10 @@ class User extends Authenticatable
     return $this->belongsTo(EmploymentStatus::class, 'employment_status_id');
   }
 
-  public function qualification()
-  {
-    return $this->belongsTo(Qualification::class);
-  }
+  // public function qualification()
+  // {
+  //   return $this->belongsTo(Qualification::class);
+  // }
   public function model(array $row)
   {
     // Dump the row to test if import reads it
@@ -70,4 +71,5 @@ class User extends Authenticatable
 
     // ... rest of logic
   }
+  
 }

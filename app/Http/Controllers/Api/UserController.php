@@ -2,530 +2,212 @@
 
 namespace App\Http\Controllers\Api;
 
-<<<<<<< HEAD
-=======
-use App\Models\ImportLog;
->>>>>>> 0e57ff6763065cde4a2848afa77bb55a8d7144da
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request; // ✅ Required import
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\EmploymentStatus;
 use App\Models\Division;
 use App\Models\Section;
-use App\Models\ImportLog;
-use App\Models\Course; // ✅ Import Course model
-use Illuminate\Support\Facades\Hash;
-use App\Imports\EmployeesImport;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\DB; // <-- Add this
+use App\Models\SalaryGrade;
+use App\Models\Position;
 
-  class UserController extends Controller
+class UserController extends Controller
 {
-  
-  public function index(Request $request)
-  {
-    $query = User::with([
-      'division:id,abbreviation',
-      'section:id,abbreviation',
-      'employmentStatus:id,abbreviation'
-    ]);
-
-    if ($request->has('search')) {
-      $query->where(function ($q) use ($request) {
-        $q->where('first_name', 'like', "%{$request->search}%")
-          ->orWhere('last_name', 'like', "%{$request->search}%")
-          ->orWhere('employee_id', 'like', "%{$request->search}%");
-      });
-    }
-
-    return response()->json($query->get());
-  }
-
-    public function store(Request $request)
-{
-    $request->validate([
-<<<<<<< HEAD
-      'first_name'         => 'required',
-      'last_name'          => 'required',
-      'employment_status'  => 'required|exists:employment_statuses,id',
-      'division'           => 'required|exists:divisions,id',
-      'section'            => 'required|exists:sections,id',
-      'email'              => 'required|email|unique:users,email',
-      'password'           => 'required|confirmed|min:6',
-      'profile_image'      => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-=======
-        'first_name' => 'required',
-        'last_name' => 'required',
-        'employment_status' => 'required|exists:employment_statuses,id',
-        'division' => 'required|exists:divisions,id',
-        'section' => 'required|exists:sections,id',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|confirmed|min:6',
-        'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
->>>>>>> 0e57ff6763065cde4a2848afa77bb55a8d7144da
-    ]);
-
-    // Auto-generate employee ID
-    $latestUser = User::latest('id')->first();
-    $latestId = $latestUser ? $latestUser->id + 1 : 1;
-    $employeeId = '11-' . str_pad($latestId, 4, '0', STR_PAD_LEFT);
-
-    $middleInitial = substr($request->middle_name, 0, 1);
-    $empIdLast4 = substr($employeeId, -4);
-    $username = strtolower(substr($request->first_name, 0, 1) . $middleInitial . $request->last_name . $empIdLast4);
-
-    // Save profile image if present
-    $imagePath = null;
-    if ($request->hasFile('profile_image')) {
-<<<<<<< HEAD
-      $file = $request->file('profile_image');
-      $filename = time() . '_' . $file->getClientOriginalName();
-      $file->move(public_path('uploads/profile_images'), $filename);
-      $imagePath = 'uploads/profile_images/' . $filename;
-    }
-
-    User::create([
-      'employee_id'          => $employeeId,
-      'first_name'           => $request->first_name,
-      'middle_name'          => $request->middle_name,
-      'last_name'            => $request->last_name,
-      'extension_name'       => $request->extension_name,
-      'employment_status_id' => $request->employment_status,
-      'division_id'          => $request->division,
-      'section_id'           => $request->section,
-      'username'             => $username,
-      'email'                => $request->email,
-      'password'             => Hash::make($request->password),
-      'profile_image'        => $imagePath,
-=======
-        $file = $request->file('profile_image');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('uploads/profile_images'), $filename);
-        $imagePath = 'uploads/profile_images/' . $filename;
-    }
-
-    User::create([
-        'employee_id' => $employeeId,
-        'first_name' => $request->first_name,
-        'middle_name' => $request->middle_name,
-        'last_name' => $request->last_name,
-        'extension_name' => $request->extension_name,
-        'employment_status_id' => $request->employment_status,
-        'division_id' => $request->division,
-        'section_id' => $request->section,
-        'username' => $username,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'profile_image' => $imagePath, // save path to DB
->>>>>>> 0e57ff6763065cde4a2848afa77bb55a8d7144da
-    ]);
-
-    return redirect()->route('employee.registration-form')->with('success', 'Employee registered successfully!');
-}
-
-
-  public function show($id)
-  {
-    $user = User::with(['division', 'section', 'employmentStatus'])->findOrFail($id);
-    return response()->json($user);
-  }
-
-  public function showEmployeeView($id)
-  {
-<<<<<<< HEAD
-    $employee = User::with(['division', 'section', 'employmentStatus'])->findOrFail($id);
-=======
-
-    $employee = User::with (['division', 'section', 'employmentStatus']) ->findOrfail($id);
->>>>>>> 0e57ff6763065cde4a2848afa77bb55a8d7144da
-    return view('content.planning.view-employee', compact('employee'));
-  }
-
-  public function update(Request $request, $id)
-  {
-    $user = User::findOrFail($id);
-
-    $data = $request->validate([
-      'employee_id'           => 'required|unique:users,employee_id,' . $id,
-      'first_name'            => 'required',
-      'middle_name'           => 'nullable',
-      'last_name'             => 'required',
-      'extension_name'        => 'nullable',
-      'username'              => 'required|unique:users,username,' . $id,
-      'password'              => 'nullable|min:6',
-      'employment_status_id'  => 'nullable|exists:employment_statuses,id',
-      'division_id'           => 'nullable|exists:divisions,id',
-      'section_id'            => 'nullable|exists:sections,id',
-    ]);
-
-    if (!empty($data['password'])) {
-      $data['password'] = Hash::make($data['password']);
-    } else {
-      unset($data['password']);
-    }
-
-    $user->update($data);
-
-    return redirect()->route('employee.view', $id)->with('success', 'Employee updated successfully.');
-  }
-
-  public function destroy($id)
-  {
-    $user = User::findOrFail($id);
-    $user->delete();
-
-    return response()->json(['message' => 'User deleted successfully.']);
-  }
-
-  public function bladeIndex()
+  public function index()
   {
     $employees = User::with(['division', 'section', 'employmentStatus'])->get();
     return view('content.planning.list-of-employee', compact('employees'));
   }
-
-  public function apiIndex()
+  public function bladeIndex()
   {
-    $employees = User::with([
-      'division:id,abbreviation',
-      'section:id,abbreviation',
-      'employmentStatus:id,abbreviation'
-    ])->get();
+    // Example: fetch employees and return the Blade view
+    $employees = \App\Models\User::with(['division', 'section', 'employmentStatus'])->get();
 
-    return response()->json($employees);
+    return view('content.planning.list-of-employee', compact('employees'));
   }
-<<<<<<< HEAD
-
-  public function showEmpProfile()
+  public function create()
   {
-    $user = auth()->user();
-    if (!$user) {
-      return redirect()->route('login')->with('error', 'Please login first.');
-=======
-public function showEmpProfile()
-{
-    $user = auth()->user();
-    if (!$user) {
-        return redirect()->route('login')->with('error', 'Please login first.');
->>>>>>> 0e57ff6763065cde4a2848afa77bb55a8d7144da
+    // ✅ Generate the next employee ID
+    $latestUser = User::where('employee_id', 'like', '11-%')
+      ->orderByDesc('id')
+      ->first();
+
+    if ($latestUser && preg_match('/11-(\d+)/', $latestUser->employee_id, $matches)) {
+      $number = intval($matches[1]) + 1;
+    } else {
+      $number = 1;
     }
 
-    $employee = $user->load(['division', 'section', 'employmentStatus']);
-    return view('content.planning.profile.basic-information', compact('employee'));
-<<<<<<< HEAD
-  }
-=======
-}
->>>>>>> 0e57ff6763065cde4a2848afa77bb55a8d7144da
+    $generatedEmployeeId = '11-' . str_pad($number, 4, '0', STR_PAD_LEFT);
 
-  public function editEmployeeView($id)
+    // ✅ Load data for dropdowns
+    $employmentStatuses = EmploymentStatus::all();
+    $divisions = Division::all();
+    $salaryGrades = SalaryGrade::all();
+    $positions = Position::all();
+
+    return view('content.planning.registration-form', compact(
+      'generatedEmployeeId',
+      'employmentStatuses',
+      'divisions',
+      'salaryGrades',
+      'positions'
+    ));
+  }
+
+  public function active()
+  {
+    $employees = User::where('status', 'Active')
+      ->with(['division', 'section', 'employmentStatus'])
+      ->get();
+
+    return view('content.planning.list-of-employee', compact('employees'));
+  }
+
+  public function retired()
+  {
+    $employees = User::where('status', 'Retired')
+      ->with(['division', 'section', 'employmentStatus'])
+      ->get();
+
+    return view('content.planning.list-of-employee', compact('employees'));
+  }
+
+  public function resigned()
+  {
+    $employees = User::where('status', 'Resigned')
+      ->with(['division', 'section', 'employmentStatus'])
+      ->get();
+
+    return view('content.planning.list-of-employee', compact('employees'));
+  }
+
+  public function store(Request $request)
+  {
+    $request->validate([
+      'employee_id' => 'required|unique:users,employee_id',
+      'first_name' => 'required',
+      'last_name' => 'required',
+      'employment_status' => 'required|exists:employment_statuses,id',
+      'division' => 'required|exists:divisions,id',
+      'section' => 'required|exists:sections,id',
+      'password' => 'required|confirmed|min:6',
+    ]);
+
+    // ✅ Capitalize inputs
+    $firstName = ucwords(strtolower(trim($request->first_name)));
+    $middleName = ucwords(strtolower(trim($request->middle_name)));
+    $lastName = ucwords(strtolower(trim($request->last_name)));
+    $extensionName = ucwords(strtolower(trim($request->extension_name)));
+
+    // ✅ Username generation
+    $middleInitial = substr($middleName, 0, 1);
+    $empIdLast4 = substr($request->employee_id, -4);
+    $username = strtolower(substr($firstName, 0, 1) . $middleInitial . $lastName . $empIdLast4);
+
+    // ✅ Create user
+    User::create([
+      'employee_id' => $request->employee_id,
+      'first_name' => $firstName,
+      'middle_name' => $middleName,
+      'last_name' => $lastName,
+      'extension_name' => $extensionName,
+      'gender' => $request->gender,
+      'employment_status_id' => $request->employment_status,
+      'division_id' => $request->division,
+      'section_id' => $request->section,
+      'username' => $username,
+      'email' => strtolower($request->email),
+      'password' => Hash::make($request->password),
+    ]);
+
+    return redirect()->route('employee.registration-form')->with('success', 'Employee registered successfully!');
+  }
+
+  public function show($id)
   {
     $employee = User::with(['division', 'section', 'employmentStatus'])->findOrFail($id);
-    return view('content.planning.edit-employee', compact('employee'));
+    return view('content.planning.employee-view', compact('employee'));
   }
 
   public function edit($id)
   {
-    $employee = User::with(['division', 'section', 'employmentStatus'])->findOrFail($id);
-    return view('content.planning.edit-employee', compact('employee'));
+    $employee = User::findOrFail($id);
+    $divisions = Division::all();
+    $sections = Section::where('division_id', $employee->division_id)->get();
+    $employmentStatuses = EmploymentStatus::all();
+
+    return view('content.planning.employee-edit', compact('employee', 'divisions', 'sections', 'employmentStatuses'));
+  }
+
+  public function update(Request $request, $id)
+  {
+    $employee = User::findOrFail($id);
+
+    $request->validate([
+      'employee_id' => 'required|unique:users,employee_id,' . $employee->id,
+      'first_name' => 'required',
+      'last_name' => 'required',
+      'employment_status' => 'required',
+      'division' => 'required',
+      'section' => 'required',
+      'password' => 'nullable|min:6',
+    ]);
+
+    // ✅ Capitalize inputs
+    $firstName = ucwords(strtolower(trim($request->first_name)));
+    $middleName = ucwords(strtolower(trim($request->middle_name)));
+    $lastName = ucwords(strtolower(trim($request->last_name)));
+    $extensionName = ucwords(strtolower(trim($request->extension_name)));
+
+    // ✅ Regenerate username if employee_id changed
+    if ($employee->employee_id != $request->employee_id) {
+      $middleInitial = substr($middleName, 0, 1);
+      $empIdLast4 = substr($request->employee_id, -4);
+      $username = strtolower(substr($firstName, 0, 1) . $middleInitial . $lastName . $empIdLast4);
+    } else {
+      $username = $employee->username;
+    }
+
+    // ✅ Update employee
+    $employee->update([
+      'employee_id' => $request->employee_id,
+      'first_name' => $firstName,
+      'middle_name' => $middleName,
+      'last_name' => $lastName,
+      'extension_name' => $extensionName,
+      'gender' => $request->gender,
+      'employment_status_id' => $request->employment_status,
+      'division_id' => $request->division,
+      'section_id' => $request->section,
+      'username' => $username,
+      'email' => strtolower($request->email),
+    ]);
+
+    if (!empty($request->password)) {
+      $employee->update(['password' => Hash::make($request->password)]);
+    }
+
+    return redirect()->route('employee.list-of-employee')->with('success', 'Employee updated successfully!');
   }
 
   public function getSections(Request $request)
-<<<<<<< HEAD
   {
     $divisionId = $request->division_id;
-
-    if (!$divisionId) {
-      return response()->json([]);
-    }
-
-    $sections = Section::where('division_id', $divisionId)->get(['id', 'name']);
+    $sections = Section::where('division_id', $divisionId)->get();
     return response()->json($sections);
   }
-
-  public function create()
-=======
->>>>>>> 0e57ff6763065cde4a2848afa77bb55a8d7144da
-  {
-      $divisionId = $request->division_id;
-
-      if (!$divisionId) {
-          return response()->json([]);
-      }
-
-      $sections = Section::where('division_id', $divisionId)->get(['id', 'name']);
-      return response()->json($sections);
-  }
-    public function create()
-{
-    $employmentStatuses = EmploymentStatus::all();
-    $divisions = Division::all();
-
-    do {
-<<<<<<< HEAD
-      $latestUser = User::latest('id')->first();
-      $latestId = $latestUser ? $latestUser->id + 1 : 1;
-      $generatedEmployeeId = '11-' . str_pad($latestId, 4, '0', STR_PAD_LEFT);
-    } while (User::where('employee_id', $generatedEmployeeId)->exists());
-
-    return view('content.planning.registration-form', compact(
-      'employmentStatuses',
-      'divisions',
-      'generatedEmployeeId'
-    ));
-  }
-
-  public function showImportForm()
-  {
-    return view('content.planning.import-form');
-  }
-
-  public function importEmployees(Request $request)
+  public function assignRole(Request $request, $id)
   {
     $request->validate([
-      'file' => 'required|mimes:xlsx,xls,csv',
-=======
-    $latestUser = User::latest('id')->first();
-    $latestId = $latestUser ? $latestUser->id + 1 : 1;
-    $generatedEmployeeId = '11-' . str_pad($latestId, 4, '0', STR_PAD_LEFT);
-    } while (User::where('employee_id', $generatedEmployeeId)->exists());
-
-    return view('content.planning.registration-form', compact(
-        'employmentStatuses',
-        'divisions',
-        'generatedEmployeeId'
-    ));
-}
-    public function showImportForm()
-    {
-        return view('content.planning.import-form');
-    }
-    public function importEmployees(Request $request)
-{
-    $request->validate([
-        'file' => 'required|mimes:xlsx,xls,csv',
->>>>>>> 0e57ff6763065cde4a2848afa77bb55a8d7144da
+      'role' => 'required|string|max:50',
     ]);
 
-    $file = $request->file('file');
-    $filename = $file->getClientOriginalName();
+    $employee = \App\Models\User::findOrFail($id);
+    $employee->role = $request->role;
+    $employee->save();
 
-    // Check if file already imported
-    if (ImportLog::where('filename', $filename)->exists()) {
-<<<<<<< HEAD
-      return redirect()->back()->with('error', 'This file has already been imported.');
-    }
-
-    try {
-      Excel::import(new EmployeesImport(), $file);
-=======
-        return redirect()->back()->with('error', 'This file has already been imported.');
-    }
-
-    try {
-        Excel::import(new EmployeesImport(), $file);
-
-        // Log success
-        ImportLog::create([
-            'filename'    => $filename,
-            'status'      => 'Imported',
-            'imported_at' => now(),
-        ]);
-
-        return redirect()->back()->with('success', 'Employees imported successfully!');
-    } catch (\Exception $e) {
-        // Log failure
-        ImportLog::create([
-            'filename'    => $filename,
-            'status'      => 'Failed: ' . $e->getMessage(),
-            'imported_at' => now(),
-        ]);
-
-        return redirect()->back()->with('error', 'Import failed: ' . $e->getMessage());
-    }
-    
-}
->>>>>>> 0e57ff6763065cde4a2848afa77bb55a8d7144da
-
-      ImportLog::create([
-        'filename'    => $filename,
-        'status'      => 'Imported',
-        'imported_at' => now(),
-      ]);
-
-      return redirect()->back()->with('success', 'Employees imported successfully!');
-    } catch (\Exception $e) {
-      ImportLog::create([
-        'filename'    => $filename,
-        'status'      => 'Failed: ' . $e->getMessage(),
-        'imported_at' => now(),
-      ]);
-
-      return redirect()->back()->with('error', 'Import failed: ' . $e->getMessage());
-    }
-  }
-
-  // ======================
-  // Courses Section
-  // ======================
-
-  public function showCoursesEnrolled()
-  {
-    $user = auth()->user();
-    if (!$user) {
-      return redirect()->route('login')->with('error', 'Please login first.');
-    }
-
-    $courses = $user->courses; // relationship in User model
-
-    return view('content.planning.profile.courses_enrolled', compact('courses', 'user'));
-  }
-
-
-  public function showCourses()
-  {
-    $user = auth()->user();
-    if (!$user) {
-      return redirect()->route('login')->with('error', 'Please login first.');
-    }
-
-    // Get all available courses
-    $courses = Course::all();
-
-    // IDs of courses the user is already enrolled in
-    $enrolledIds = $user->courses->pluck('id')->toArray();
-
-    return view('content.planning.profile.courses_list', compact('courses', 'user', 'enrolledIds'));
-  }
-
-  public function enrollCourse($id)
-  {
-    $user = auth()->user();
-    if (!$user) {
-      return redirect()->route('login')->with('error', 'Please login first.');
-    }
-
-    $course = Course::findOrFail($id);
-
-    // Check if already enrolled
-    $exists = $user->courses()->where('course_id', $id)->exists();
-    if (!$exists) {
-      // Attach with initial status
-      $user->courses()->attach($course->id, [
-        'status' => 'in_progress', // better than 'Ongoing'
-        'score' => null,
-        'time_spent' => null,
-        'completed_at' => null
-      ]);
-    }
-
-    return redirect()->route('employee.courses')
-      ->with('success', 'You have enrolled in ' . $course->title);
-  }
-
-  public function takeCourse($id)
-  {
-    $user = auth()->user();
-    $course = Course::findOrFail($id);
-
-    // Record start time if not yet started
-    $enrollment = CourseEnrollment::firstOrCreate(
-      ['user_id' => $user->id, 'course_id' => $course->id],
-      ['started_at' => now()]
-    );
-
-    $questions = $course->questions()->inRandomOrder()->get(); // optional for quiz later
-
-    return view('content.planning.course.take_course', compact('course', 'user', 'enrollment', 'questions'));
-  }
-
-  public function submitAssessment(Request $request, $id)
-  {
-    $user = auth()->user();
-    $course = Course::findOrFail($id);
-
-    $enrollment = CourseEnrollment::where('user_id', $user->id)
-      ->where('course_id', $course->id)
-      ->firstOrFail();
-
-    $answers = $request->input('answers', []);
-    $questions = $course->questions;
-
-    $score = 0;
-    foreach ($questions as $q) {
-      if (isset($answers[$q->id]) && $answers[$q->id] == $q->correct_answer) {
-        $score++;
-      }
-    }
-
-    $enrollment->update([
-      'completed_at' => now(),
-      'score' => $score,
-      'time_spent' => now()->diffInSeconds($enrollment->started_at)
-    ]);
-
-    return redirect()->route('employee.courses_enrolled')->with('success', "Course completed! Score: $score / " . $questions->count());
-  }
-
-  // View the course
-  public function viewCourse($id)
-  {
-    $user = auth()->user();
-    if (!$user) {
-      return redirect()->route('login')->with('error', 'Please login first.');
-    }
-
-    $course = Course::findOrFail($id);
-
-    // Example questions (replace with DB table if needed)
-    $questions = collect([
-      (object)[
-        'id' => 1,
-        'question' => 'What is Laravel?',
-        'options' => ['Framework', 'CMS', 'Library', 'Plugin'],
-        'answer' => 'Framework'
-      ],
-      (object)[
-        'id' => 2,
-        'question' => 'Blade is a ____ in Laravel.',
-        'options' => ['Template engine', 'Database', 'Cache', 'Middleware'],
-        'answer' => 'Template engine'
-      ],
-      (object)[
-        'id' => 3,
-        'question' => 'Eloquent is used for ____ in Laravel.',
-        'options' => ['Routing', 'ORM', 'Caching', 'Validation'],
-        'answer' => 'ORM'
-      ],
-      // Add more questions up to 10
-    ]);
-
-    return view('content.planning.profile.course_viewer', compact('course', 'questions'));
-  }
-
-  // Complete course and update enrollment
-  public function completeCourse(Request $request, $courseId)
-  {
-    $request->validate([
-      'time_spent' => 'required|integer',
-      'score' => 'required|integer',
-    ]);
-
-    $userId = auth()->id();
-
-    // Update enrollment in course_enrollments
-    DB::table('course_enrollments')
-      ->where('user_id', $userId)
-      ->where('course_id', $courseId)
-      ->update([
-        'status' => 'done',
-        'score' => $request->score,
-        'time_spent' => $request->time_spent,
-        'completed_at' => now(),
-      ]);
-
-    return response()->json([
-      'success' => true,
-      'score' => $request->score,
-    ]);
+    return redirect()->back()->with('success', 'Role assigned successfully!');
   }
 }

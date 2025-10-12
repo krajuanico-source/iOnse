@@ -22,7 +22,9 @@ class Applicant extends Model
     'remarks',
     'date_hired',
     'examination_date',
-    'date_interviewed'
+    'date_interviewed',
+    'mobile_no', // added
+    'email',     // added
   ];
 
 

@@ -30,8 +30,8 @@
           @foreach($divisions as $index => $division)
           <tr data-id="{{ $division->id }}">
             <td>{{ str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}</td>
-            <td>{{ Str::upper($division->name) }}</td>
-            <td>{{ Str::upper($division->abbreviation) }}</td>
+            <td>{{ \Illuminate\Support\Str::upper($division->name) }}</td>
+            <td>{{ \Illuminate\Support\Str::upper($division->abbreviation) }}</td>
             <td>
               <button
                 class="btn btn-sm btn-primary edit-btn"

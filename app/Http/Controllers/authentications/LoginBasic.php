@@ -25,7 +25,7 @@ class LoginBasic extends Controller
       'password' => 'required|string',
     ]);
 
-    $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+    $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
     $credentials = [
       $loginType => $request->login,

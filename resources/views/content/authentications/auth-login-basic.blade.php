@@ -17,17 +17,18 @@
       <div class="card p-7">
         <!-- Logo -->
         <div class="app-brand justify-content-center mt-5">
-          <a href="{{url('/')}}" class="app-brand-link gap-3">
-            <span class="app-brand-logo demo">
-              <img src="{{ asset('assets/img/logo-dswd1.png') }}" alt="DSWD Logo" height="100" style="background: #fff;">
-            </span>
-          </a>
+        <a href="{{ url('/') }}" class="app-brand-link d-flex align-items-center gap-3">
+          <span class="app-brand-logo d-flex align-items-center gap-2 bg-white p-2 rounded">
+            <img src="{{ asset('assets/img/logo-dswd1.png') }}" alt="DSWD Logo" height="80">
+            <img src="{{ asset('assets/img/hrprime-logo.png') }}" alt="HR Prime Logo" height="90">
+          </span>
+        </a>  
         </div>
         <!-- /Logo -->
 
         <div class="card-body mt-1">
-          <h4 class="mb-1">Welcome to HR PRIME</h4>
-          <p class="mb-5">Please sign-in to your account and start the adventure</p>
+          <h4 class="mb-4 text-center text-2xl font-semibold">Welcome to HR PRIME</h4>
+          <p class="mb-5">Please sign-in to your account</p>
           <form id="formAuthentication" class="mb-5" action="{{ route('login.store') }}" method="POST">
             @csrf
 
@@ -85,12 +86,11 @@
             </a>
           </p>
         </div>
-      </div>
-      <!-- /Login -->
+      <!-- </div>
       <img src="{{asset('assets/img/illustrations/tree-3.png')}}" alt="auth-tree" class="authentication-image-object-left d-none d-lg-block">
       <img src="{{asset('assets/img/illustrations/auth-basic-mask-light.png')}}" class="authentication-image d-none d-lg-block" height="172" alt="triangle-bg">
       <img src="{{asset('assets/img/illustrations/tree.png')}}" alt="auth-tree" class="authentication-image-object-right d-none d-lg-block">
-    </div>
+    </div> -->
   </div>
 </div>
 @endsection

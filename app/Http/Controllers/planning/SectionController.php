@@ -58,4 +58,18 @@ class SectionController extends Controller
 
     return response()->json(['success' => true]);
   }
+  public function getByDivision(Request $request)
+  {
+    $divisionId = $request->division_id;
+
+    if (!$divisionId) {
+      return response()->json([]);
+    }
+
+    $sections = Section::where('division_id', $divisionId)
+      ->orderBy('name')
+      ->get(['id', 'name']);
+
+    return response()->json($sections);
+  }
 }

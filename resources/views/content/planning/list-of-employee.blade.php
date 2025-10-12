@@ -3,11 +3,13 @@
 @section('title', 'Employee List')
 
 @section('content')
-
+@php
+use Illuminate\Support\Str;
+@endphp
 @if(session('success'))
-  <div class="alert alert-success">
-    {{ session('success') }}
-  </div>
+<div class="alert alert-success">
+  {{ session('success') }}
+</div>
 @endif
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -15,79 +17,90 @@
 
 <div class="card">
   <div class="container py-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h4 style="color: #1d4bb2;">
-            @if (Request::is('planning/retired-employees'))
-              Retired Employees
-            @elseif (Request::is('planning/resigned-employees'))
-              Resigned Employees
-            @elseif (Request::is('planning/active-employees'))
-              Active Employees
-            @else
-              List of Employees
-            @endif
-          </h4>
+    <div class="d-flex justify-content-between align-items-center mb-3">
 
-            @unless (Request::is('planning/retired-employees') || Request::is('planning/resigned-employees'))
-              <div class="d-flex gap-2">
-                <a href="{{ url('planning/registration-form') }}" class="btn btn-success">Add New Employee</a>
-                <a href="{{ url('planning/import-form') }}" class="btn btn-primary">Import Employees</a>
-              </div>
-            @endunless
-        </div>
+
+    </div>
     <div class="table-responsive">
       <table id="empTable" class="table">
-      <thead class="table-light">
-        <tr>
-          <!-- <th>Photo</th> -->
-          <th style="width: 0;">ID No.</th>
-          <th>Employee Name</th>
-          <!-- <th>Email</th> NEW -->
-          <th>Employment Status</th>
-          <th>Section</th>
-          <th>Division</th>
-          <th>Username</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($employees as $employee)
-        <tr>
-          <!-- <td>
-            @if ($employee->profile_image)
-              <img src="{{ asset($employee->profile_image) }}" alt="Profile" width="50" height="50" class="rounded-circle">
-            @else
-              <img src="{{ asset('default-user.png') }}" alt="No Photo" width="50" height="50" class="rounded-circle">
-            @endif
-          </td> -->
-          <td>{{ $employee->employee_id }}</td>
-          <td>
-            {{ Str::upper($employee->first_name) }}
-            {{ Str::upper($employee->middle_name) }}
-            {{ Str::upper($employee->last_name) }}
-            {{ Str::upper($employee->extension_name) }}
-          </td>
-          <!-- <td>{{ $employee->email }}</td> NEW -->
-          <td>{{ Str::upper($employee->employmentStatus->abbreviation ?? '') }}</td>
-          <td>{{ Str::upper($employee->section->abbreviation ?? '') }}</td>
-          <td>{{ Str::upper($employee->division->abbreviation ?? '') }}</td>
-          <td>{{ Str::lower($employee->username) }}</td>
-          <td class="text-capitalize">{{ $employee->status }}</td>
-          <td>
-            <div class="d-flex gap-1">
-              <a href="{{ route('employee.show-view', $employee->id) }}" class="btn btn-sm btn-primary">View</a>
-              <form action="{{ route('employee.delete', $employee->id) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-              </form>
+        <thead class="table-light">
+          <tr>
+            <th style="width: 0;">ID No.</th>
+            <th>Employee Name</th>
+            <th>Employment Status</th>
+            <th>Section</th>
+            <th>Division</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Actions</th> <!-- Added -->
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($employees as $employee)
+          <tr>
+            <td>{{ $employee->employee_id }}</td>
+            <td>
+              {{ \Illuminate\Support\Str::upper($employee->first_name) }}
+              {{ \Illuminate\Support\Str::upper($employee->middle_name) }}
+              {{ \Illuminate\Support\Str::upper($employee->last_name) }}
+              {{ \Illuminate\Support\Str::upper($employee->extension_name) }}
+            </td>
+            <td>{{ \Illuminate\Support\Str::upper($employee->employmentStatus->abbreviation ?? '') }}</td>
+            <td>{{ \Illuminate\Support\Str::upper($employee->section->abbreviation ?? '') }}</td>
+            <td>{{ \Illuminate\Support\Str::upper($employee->division->abbreviation ?? '') }}</td>
+            <td>{{ \Illuminate\Support\Str::lower($employee->username) }}</td>
+            <td>{{ \Illuminate\Support\Str::lower($employee->role) }}</td>
+            <td class="text-capitalize">{{ $employee->status }}</td>
+
+            <td>
+              <!-- Assign Role Button -->
+              <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                data-bs-target="#assignRoleModal{{ $employee->id }}">
+                <i class="bi bi-person-gear me-1"></i> Assign Role
+              </button>
+            </td>
+          </tr>
+
+          <!-- Assign Role Modal -->
+          <div class="modal fade" id="assignRoleModal{{ $employee->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <form action="{{ route('employee.assignRole', $employee->id) }}" method="POST">
+                  @csrf
+                  @method('PUT')
+                  <div class="modal-header">
+                    <h5 class="modal-title">Assign Role for {{ $employee->first_name }} {{ $employee->last_name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="mb-3">
+                      <label for="role" class="form-label">Select Role</label>
+                      <select name="role" id="role" class="form-select" required>
+                        <option value="">-- Choose Role --</option>
+                        @foreach(['Employee', 'HR-Planning', 'HR-PAS', 'HR-L&D', 'HR-Welfare'] as $role)
+                        <option value="{{ $role }}" {{ $employee->role === $role ? 'selected' : '' }}>
+                          {{ $role }}
+                        </option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                      <i class="bi bi-save me-1"></i> Save Role
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-          </td>
-        </tr>
-        @endforeach
-      </tbody>
-    </table>
+          </div>
+
+          @endforeach
+        </tbody>
+      </table>
+
     </div>
   </div>
 </div>
@@ -102,9 +115,12 @@
 
 <script>
   $('#empTable').DataTable({
-  columnDefs: [
-    { targets: 0, width: "50px", visible: true, searchable: false }
-  ]
-});
+    columnDefs: [{
+      targets: 0,
+      width: "50px",
+      visible: true,
+      searchable: false
+    }]
+  });
 </script>
 @endpush

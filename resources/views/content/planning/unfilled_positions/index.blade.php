@@ -44,9 +44,8 @@
       </table>
 
     </div>
-    <!-- Modal -->
     <div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-dialog modal-xl modal-dialog-centered"> <!-- changed from modal-lg to modal-xl -->
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Position Details</h5>
@@ -58,6 +57,7 @@
         </div>
       </div>
     </div>
+
 
   </div>
 </div>
@@ -76,30 +76,15 @@
     document.querySelectorAll('.view-details').forEach(button => {
       button.addEventListener('click', function() {
         let id = this.dataset.id;
-        let url = `/planning/unfilled-positions/${id}`;
-
-        // Load the modal content
-        fetch(url)
-          .then(response => {
-            if (!response.ok) throw new Error("Network response was not ok");
-            return response.text();
-          })
-          .then(html => {
-            document.getElementById('detailsContent').innerHTML = html;
-            new bootstrap.Modal(document.getElementById('detailsModal')).show();
-          })
-          .catch(error => {
-            document.getElementById('detailsContent').innerHTML =
-              "<div class='alert alert-danger'>Failed to load details.</div>";
-            console.error(error);
-          });
+        // ✅ Redirect to applicants page instead of fetching modal
+        window.location.href = `/planning/unfilled-positions/${id}/applicants`;
       });
     });
+
+    // Initialize DataTables
+    $('#unfilledpos').DataTable();
+    $('#applicantsTable').DataTable();
   });
-
-  $('#unfilledpos').DataTable();
-
-  $('#applicantsTable').DataTable();
 </script>
 
 

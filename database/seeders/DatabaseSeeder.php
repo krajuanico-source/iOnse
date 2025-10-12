@@ -21,7 +21,27 @@ class DatabaseSeeder extends Seeder
     // Call individual seeders
     $this->call([
       RegionSeeder::class,
-      // Add other seeders here, e.g. ProvinceSeeder::class, etc.
+    ]);
+    $this->call([
+      ProvinceSeeder::class,
+    ]);
+    $this->call([
+      Barangayb2Seeder::class,
+    ]);
+        $this->call([
+      Barangayb3Seeder::class,
+    ]);
+        $this->call([
+      Barangayb4Seeder::class,
+    ]);
+        $this->call([
+      Barangayb5Seeder::class,
+    ]);
+        $this->call([
+      ProvinceSeeder::class,
+    ]);
+        $this->call([
+      CitiesSeeder::class,
     ]);
   }
 }

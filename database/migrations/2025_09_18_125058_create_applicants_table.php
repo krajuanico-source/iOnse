@@ -27,7 +27,7 @@ return new class extends Migration
         'Examination',
         'Deliberation',
         'Hired',
-        'Not Hired',
+        'Rejected',
         'Submission of Requirements',
         'On-Boarding'
       ])->default('Pending');

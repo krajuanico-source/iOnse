@@ -14,33 +14,34 @@ class ItemNumber extends Model
     'position_id',
     'salary_grade_id',
     'employment_status_id',
-    'stature',
     'fund_source_id',
-    'date_posting',          // ✅ added
-    'date_end_submission',   // ✅ added
+    'stature',
+    'date_posting',
+    'date_end_submission'
   ];
 
   public function position()
   {
-    return $this->belongsTo(Position::class);
+    return $this->belongsTo(Position::class, 'position_id');
   }
 
   public function salaryGrade()
   {
-    return $this->belongsTo(SalaryGrade::class);
+    return $this->belongsTo(SalaryGrade::class, 'salary_grade_id');
   }
 
   public function employmentStatus()
   {
-    return $this->belongsTo(EmploymentStatus::class);
+    return $this->belongsTo(EmploymentStatus::class, 'employment_status_id');
+  }
+
+  public function fundSource()
+  {
+    return $this->belongsTo(FundSource::class, 'fund_source_id');
   }
 
   public function applicants()
   {
     return $this->hasMany(Applicant::class, 'item_number_id');
-  }
-  public function fundSource()
-  {
-    return $this->belongsTo(\App\Models\FundSource::class, 'fund_source_id');
   }
 }

@@ -6,12 +6,13 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
 
 <div class="card shadow-sm">
     <div class="card-body">
-        <form id="employeeForm" method="POST" action="{{ route('employee.update', $employee->id) }}">
+        <form id="employeeForm" method="POST" action="{{ route('profile.basic-info.update') }}" enctype="multipart/form-data">
             @csrf
-            @method('PUT')
 
             <div class="row">
                 {{-- Left Column --}}
@@ -33,9 +34,12 @@
                         <div class="col-md-4">
                         <label>Extension Name</label>
                         <select class="form-select" name="extension_name">
-                            <option value="">--Extension name --</option>
+                            <option value="">-- Extension name --</option>
                             @foreach(['JR','SR','II','III','IV'] as $ext)
-                            <option value="{{ $ext }}" {{ old('extension_name') == $ext ? 'selected' : '' }}>{{ $ext }}</option>
+                                <option value="{{ $ext }}" 
+                                    {{ old('extension_name', $employee->extension_name) == $ext ? 'selected' : '' }}>
+                                    {{ $ext }}
+                                </option>
                             @endforeach
                         </select>
                         </div>
@@ -47,7 +51,10 @@
                             <label class="form-label fw-bold">Username</label>
                             <input type="text" name="username" class="form-control" value="{{ $employee->username }}">
                         </div>
-
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Password</label>
+                            <input type="password" name="password" class="form-control" placeholder="Leave blank if you don't want to change your password" >
+                        </div>
                         <div class="col-md-4">
                             <label class="form-label fw-bold">Birthday</label>
                             <input type="date" name="birthday" class="form-control" value="{{ $employee->birthday }}">
@@ -57,10 +64,10 @@
                             <input type="text" name="place_of_birth" class="form-control" value="{{ $employee->place_of_birth }}">
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label fw-bold">Sex</label>
-                            <select name="sex" class="form-select">
-                                <option value="Male" {{ $employee->sex == 'Male' ? 'selected' : '' }}>Male</option>
-                                <option value="Female" {{ $employee->sex == 'Female' ? 'selected' : '' }}>Female</option>
+                            <label class="form-label fw-bold">Gender</label>
+                            <select name="gender" class="form-select">
+                                <option value="Male" {{ $employee->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                                <option value="Female" {{ $employee->gender == 'Female' ? 'selected' : '' }}>Female</option>
                             </select>
                         </div>
 
@@ -111,15 +118,24 @@
 
                     <div class="row">
                         <div class="col-md-6">
+                            
                             <h6 class="form-label fw-bold fs-6">Permanent Address</h6>
                             <label class="form-label fw-bold">Region</label>
-                            <input type="text" name="perm_region" class="form-control mb-4"  value="{{ $employee->perm_region }}">
+                            <select name="perm_region" id="perm_region" class="form-select mb-3">
+                                <option value="">-- Select Region --</option>
+                            </select>
                             <label class="form-label fw-bold">Province</label>
-                            <input type="text" name="perm_province" class="form-control mb-4" value="{{ $employee->perm_province }}">
+                            <select name="perm_province" id="perm_province" class="form-select mb-3">
+                                <option value="">-- Select Province --</option>
+                            </select>
                             <label class="form-label fw-bold">City</label>
-                            <input type="text" name="perm_city" class="form-control mb-4"  value="{{ $employee->perm_city }}">
+                            <select name="perm_city" id="perm_city" class="form-select mb-3">
+                                <option value="">-- Select City --</option>
+                            </select>
                             <label class="form-label fw-bold">Barangay</label>
-                            <input type="text" name="perm_barangay" class="form-control mb-4" value="{{ $employee->perm_barangay }}">
+                            <select name="perm_barangay" id="perm_barangay" class="form-select">
+                                <option value="">-- Select Barangay --</option>
+                            </select>
                             <label class="form-label fw-bold">Street</label>
                             <input type="text" name="perm_street" class="form-control mb-4"  value="{{ $employee->perm_street }}">
                             <label class="form-label fw-bold">House No.</label>
@@ -128,16 +144,24 @@
                             <input type="text" name="perm_zip" class="form-control"  value="{{ $employee->perm_zip }}">
                         </div>
 
-                        <div class="col-md-6">
-                            <h6 class="form-label fw-bold fs-6">Residence Address</h6>
+                       <div class="col-md-6">
+                        <h6 class="form-label fw-bold fs-6">Residence Address</h6>
                             <label class="form-label fw-bold">Region</label>
-                            <input type="text" name="res_region" class="form-control mb-4"  value="{{ $employee->res_region }}">
+                            <select name="res_region" id="res_region" class="form-select mb-3">
+                                <option value="">-- Select Region --</option>
+                            </select>
                             <label class="form-label fw-bold">Province</label>
-                            <input type="text" name="res_province" class="form-control mb-4"  value="{{ $employee->res_province }}">
+                            <select name="res_province" id="res_province" class="form-select mb-3">
+                                <option value="">-- Select Province --</option>
+                            </select>
                             <label class="form-label fw-bold">City</label>
-                            <input type="text" name="res_city" class="form-control mb-4"  value="{{ $employee->res_city }}">
+                            <select name="res_city" id="res_city" class="form-select mb-3">
+                                <option value="">-- Select City --</option>
+                            </select>
                             <label class="form-label fw-bold">Barangay</label>
-                            <input type="text" name="res_barangay" class="form-control mb-4" value="{{ $employee->res_barangay }}">
+                            <select name="res_barangay" id="res_barangay" class="form-select">
+                                <option value="">-- Select Barangay --</option>
+                            </select>
                             <label class="form-label fw-bold">Street</label>
                             <input type="text" name="res_street" class="form-control mb-4"  value="{{ $employee->res_street }}">
                             <label class="form-label fw-bold">House No.</label>
@@ -150,30 +174,38 @@
 
 
                 {{-- Right Column: Profile Picture --}}
-                <div class="col-md-3 text-center">
-                    @if($employee->profile_image)
-                        <div style="width: 200px; height: 200px; border: 2px solid #000000ff; border-radius: 50%; overflow: hidden;  margin: 20% auto 0 auto;">
-                            <img src="{{ asset($employee->profile_image) }}"
-                                alt="Profile Image"
-                                style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                    @else
-                        <div style="width: 200px; height: 200px; border: 4px solid #6c757d; border-radius: 50%; overflow: hidden; margin: 0 auto;">
-                            <img src="{{ asset('default-user.png') }}"
-                                alt="No Photo"
-                                style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                    @endif
+                <div class="col-md-3 text-center d-flex flex-column align-items-center justify-content-start mt-4">
+                    <div class="position-relative mb-3" style="width: 180px; height: 180px;">
+                        <img id="preview-image"
+                            src="{{ $employee->profile_image ? asset('storage/' . $employee->profile_image) : asset('default-user.png') }}"
+                            class="rounded-circle border border-3 border-secondary shadow-sm"
+                            style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
 
                     {{-- Upload Button --}}
-                    <div class="mt-3">
-                        <label for="profile_image" class="btn btn-outline-primary btn-sm">Change Photo</label>
-                        <input type="file" name="profile_image" id="profile_image" class="d-none" accept="image/*">
-                    </div>
+                    <label for="profile_image" class="btn btn-outline-primary btn-sm">Change Photo</label>
+                    <input type="file" name="profile_image" id="profile_image" class="d-none" accept="image/*">
 
                     <div class="fw-bold mt-2">{{ $employee->first_name }} {{ $employee->last_name }}</div>
                     <small class="text-muted">Employee</small>
                 </div>
+
+                {{-- Add this JS script below your form --}}
+                @push('scripts')
+                <script>
+                document.getElementById('profile_image').addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            document.getElementById('preview-image').src = event.target.result;
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                });
+                </script>
+                @endpush
+
 
                 
             </div>
@@ -187,3 +219,84 @@
     </div>
 </div>
 @endsection
+@push('scripts')
+<script>
+$(document).ready(function () {
+    // Load all Regions
+    $.get('/get-regions', function (regions) {
+        regions.forEach(region => {
+            $('#perm_region').append(`<option value="${region.psgc}">${region.name}</option>`);
+            $('#res_region').append(`<option value="${region.psgc}">${region.name}</option>`);
+        });
+
+        // Preselect saved values (if any)
+        if($('#perm_region_psgc').val()) {
+            $('#perm_region').val($('#perm_region_psgc').val()).trigger('change');
+        }
+        if($('#res_region_psgc').val()) {
+            $('#res_region').val($('#res_region_psgc').val()).trigger('change');
+        }
+    });
+
+
+function loadDropdowns(regionSelect, provinceSelect, citySelect, barangaySelect, regionCode, provinceCode, cityCode, barangayCode) {
+    // When Region changes
+    regionSelect.on('change', function(){
+        const code = $(this).val();
+        provinceSelect.html('<option value="">-- Select Province --</option>');
+        citySelect.html('<option value="">-- Select City --</option>');
+        barangaySelect.html('<option value="">-- Select Barangay --</option>');
+        if(code){
+            $.get(`/get-provinces/${code}`, function(provinces){
+                provinces.forEach(p => provinceSelect.append(`<option value="${p.psgc}">${p.name}</option>`));
+                if(provinceCode) provinceSelect.val(provinceCode).trigger('change');
+            });
+        }
+    });
+
+    // Province to City
+    provinceSelect.on('change', function(){
+        const code = $(this).val();
+        citySelect.html('<option value="">-- Select City --</option>');
+        barangaySelect.html('<option value="">-- Select Barangay --</option>');
+        if(code){
+            $.get(`/get-municipalities/${code}`, function(cities){
+                cities.forEach(c => citySelect.append(`<option value="${c.psgc}">${c.name}</option>`));
+                if(cityCode) citySelect.val(cityCode).trigger('change');
+            });
+        }
+    });
+
+    // City to Barangay
+    citySelect.on('change', function(){
+        const code = $(this).val();
+        barangaySelect.html('<option value="">-- Select Barangay --</option>');
+        if(code){
+            $.get(`/get-barangays/${code}`, function(barangays){
+                barangays.forEach(b => barangaySelect.append(`<option value="${b.psgc}">${b.name}</option>`));
+                if(barangayCode) barangaySelect.val(barangayCode);
+            });
+        }
+    });
+}
+
+
+    let permRegionCode = $('#perm_region_psgc').val();
+    let permProvinceCode = $('#perm_province_psgc').val();
+    let permCityCode = $('#perm_city_psgc').val();
+    let permBarangayCode = $('#perm_barangay_psgc').val();
+
+    loadDropdowns($('#perm_region'), $('#perm_province'), $('#perm_city'), $('#perm_barangay'),
+        permRegionCode, permProvinceCode, permCityCode, permBarangayCode);
+
+    let resRegionCode = $('#res_region_psgc').val();
+    let resProvinceCode = $('#res_province_psgc').val();
+    let resCityCode = $('#res_city_psgc').val();
+    let resBarangayCode = $('#res_barangay_psgc').val();
+
+    loadDropdowns($('#res_region'), $('#res_province'), $('#res_city'), $('#res_barangay'),
+        resRegionCode, resProvinceCode, resCityCode, resBarangayCode);
+});
+
+</script>
+@endpush
