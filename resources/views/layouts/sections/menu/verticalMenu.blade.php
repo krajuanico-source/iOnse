@@ -1,28 +1,19 @@
-<!-- image-background -->
 @php
 use Illuminate\Support\Facades\Route;
 @endphp
+
 <aside id="layout-menu" class="layout-menu menu-vertical menu"
   style="background-image: url('{{ asset('assets/img/dswd-bg.png') }}');
          background-size: cover;
          background-repeat: no-repeat;
          color: #fff;">
 
-  <!-- colored-background -->
-  <!-- <aside id="layout-menu" class="layout-menu menu-vertical menu" style="background: linear-gradient(180deg,rgb(26, 26, 152),rgb(130, 41, 5)); color: #fff;"> -->
-
-
-
-  <!-- ! Hide app brand if navbar-full -->
   <div class="app-brand demo mt-4">
-    <a href="{{url('dashboard')}}" class="app-brand-link">
+    <a href="{{ url('dashboard') }}" class="app-brand-link">
       <span class="app-brand-logo demo me-1">
-
-        <img src="{{ asset('assets/img/logo-dswd.png') }}" alt="DSWD Logo" height="68" style="margin: 30px 0 30px 0;" />
-
+        <img src="{{ asset('assets/img/logo-dswd.png') }}" alt="DSWD Logo" height="68" style="margin: 30px 0;" />
       </span>
     </a>
-
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
       <i class="menu-toggle-icon d-xl-block align-middle"></i>
     </a>
@@ -33,61 +24,56 @@ use Illuminate\Support\Facades\Route;
   <ul class="menu-inner py-1">
     @foreach ($menuData[0]->menu as $menu)
 
-    {{-- adding active and open class if child is active --}}
+    {{-- Skip menu if user cannot view --}}
+    @if (!userCanView($menu))
+    @continue
+    @endif
 
-    {{-- menu headers --}}
+    {{-- Menu header --}}
     @if (isset($menu->menuHeader))
     <li class="menu-header mt-7">
       <span class="menu-header-text">{{ __($menu->menuHeader) }}</span>
     </li>
     @else
-
-    {{-- active menu method --}}
     @php
-    $activeClass = null;
+    $activeClass = '';
     $currentRouteName = Route::currentRouteName();
 
     if ($currentRouteName === $menu->slug) {
     $activeClass = 'active';
-    }
-    elseif (isset($menu->submenu)) {
-    if (gettype($menu->slug) === 'array') {
-    foreach($menu->slug as $slug){
-    if (str_contains($currentRouteName,$slug) and strpos($currentRouteName,$slug) === 0) {
+    } elseif (isset($menu->submenu)) {
+    foreach ($menu->submenu as $sub) {
+    if (isset($sub->slug) && str_contains($currentRouteName, $sub->slug)) {
     $activeClass = 'active open';
-    }
-    }
-    }
-    else{
-    if (str_contains($currentRouteName,$menu->slug) and strpos($currentRouteName,$menu->slug) === 0) {
-    $activeClass = 'active open';
+    break;
     }
     }
     }
     @endphp
 
-    {{-- main menu --}}
-    <li class="menu-item {{$activeClass}}">
-      <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}" class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif>
+    <li class="menu-item {{ $activeClass }}">
+      <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}"
+        class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}"
+        @if(isset($menu->target)) target="{{ $menu->target }}" @endif>
         @isset($menu->icon)
         <i class="{{ $menu->icon }}"></i>
         @endisset
-        <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
+        <div>{{ $menu->name }}</div>
         @isset($menu->badge)
         <div class="badge bg-{{ $menu->badge[0] }} rounded-pill ms-auto">{{ $menu->badge[1] }}</div>
         @endisset
       </a>
 
-      {{-- submenu --}}
+      {{-- Submenu --}}
       @isset($menu->submenu)
-      @include('layouts.sections.menu.submenu',['menu' => $menu->submenu])
+      @include('layouts.sections.menu.submenu', ['menu' => $menu->submenu])
       @endisset
     </li>
     @endif
     @endforeach
   </ul>
-
 </aside>
+
 <style>
   .layout-menu .menu-inner .menu-item a,
   .layout-menu .menu-inner .menu-header-text,
@@ -100,30 +86,15 @@ use Illuminate\Support\Facades\Route;
     color: #ffffff !important;
   }
 
-  /* Change color of bullet (menu indicator or dot if any) */
-  .layout-menu .menu-item::before {
-    color: #ffffff !important;
-  }
-
-  /* Change color of the dropdown toggle arrow */
+  .layout-menu .menu-item::before,
+  .layout-menu .menu-item .menu-link::before,
   .layout-menu .menu-toggle::after {
     color: #ffffff !important;
-  }
-
-  .layout-menu .menu-item::before {
-    color: #ffffff !important;
-    /* Already present in your code, good */
     background-color: #ffffff !important;
-    /* Add this if it's a dot or square */
   }
 
-  /* Example 2: For vertical line indicators on the left of active/open menu */
   .layout-menu .menu-item.active::before,
   .layout-menu .menu-item.open::before {
-    background-color: #ffffff !important;
-  }
-
-  .layout-menu .menu-item .menu-link::before {
     background-color: #ffffff !important;
   }
 

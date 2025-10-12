@@ -210,4 +210,33 @@ class UserController extends Controller
 
     return redirect()->back()->with('success', 'Role assigned successfully!');
   }
+
+  public function updateEmployment(Request $request, $id)
+  {
+    $user = User::findOrFail($id);
+
+    $request->validate([
+      'first_name' => 'required|string|max:255',
+      'last_name' => 'required|string|max:255',
+      'username' => 'required|string|max:255',
+      'status' => 'required|in:active,inactive',
+      'role' => 'required|string',
+      'employment_status_id' => 'nullable|exists:employment_statuses,id',
+      'section_id' => 'nullable|exists:sections,id',
+      'division_id' => 'nullable|exists:divisions,id',
+    ]);
+
+    $user->update([
+      'first_name' => $request->first_name,
+      'last_name' => $request->last_name,
+      'username' => $request->username,
+      'status' => $request->status,
+      'role' => $request->role,
+      'employment_status_id' => $request->employment_status_id,
+      'section_id' => $request->section_id,
+      'division_id' => $request->division_id,
+    ]);
+
+    return redirect()->back()->with('success', 'User details updated successfully!');
+  }
 }

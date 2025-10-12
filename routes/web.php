@@ -73,6 +73,9 @@ use App\Http\Controllers\UnfilledPositionsController;
 use App\Http\Controllers\ApplicantController;
 
 
+use App\Http\Controllers\AddressController;
+
+
 // Login Page
 
 //Welfare
@@ -96,26 +99,22 @@ Route::get('/dashboard/dashboards-analytics', [Analytics::class, 'index'])->name
 
 //-------------------------------------------------------START OF PROFILE-----------------------------------------------------------
 
+Route::get('/regions', [AddressController::class, 'getRegions']);
+Route::get('/provinces/{region_psgc}', [AddressController::class, 'getProvinces']);
+Route::get('/cities/{province_psgc}', [AddressController::class, 'getCities']);
+Route::get('/barangays/{city_psgc}', [AddressController::class, 'getBarangays']);
+
 
 Route::prefix('profile')->group(function () {
-    Route::get('basic-information', [BasicInformationController::class, 'index'])
-        ->name('profile.basic-info.index');
+  Route::get('basic-information', [BasicInformationController::class, 'index'])
+    ->name('profile.basic-info.index');
 
-    Route::post('basic-information/update', [BasicInformationController::class, 'update'])
-        ->name('profile.basic-info.update');
+  Route::post('basic-information/update', [BasicInformationController::class, 'update'])
+    ->name('profile.basic-info.update');
 });
 
 
 //Address
-
-Route::get('/locations', [LocationController::class, 'index'])->name('locations.index');
-Route::get('/get-regions', [LocationController::class, 'getRegions']);
-  Route::get('/get-provinces/{region_code}', [LocationController::class, 'getProvinces']);
-  Route::get('/get-municipalities/{province_code}', [LocationController::class, 'getMunicipalities']);
-  Route::get('/get-barangays/{municipality_code}', [LocationController::class, 'getBarangays']);
-
-  Route::get('/get-address/{psgc}', [LocationController::class, 'getAddressByPSGC']);
-
 //-------------------------------------------------------START OF PLANNING-----------------------------------------------------------
 
 Route::prefix('planning')->group(function () {

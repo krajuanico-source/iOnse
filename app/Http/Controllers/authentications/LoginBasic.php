@@ -69,11 +69,36 @@ class LoginBasic extends Controller
     ]);
 
     if ($request->otp == Session::get('otp')) {
-      Auth::attempt(Session::get('pending_login')); // login user
-      Session::forget(['otp', 'pending_login']);     // clear OTP data
+      // Login the user
+      Auth::attempt(Session::get('pending_login'));
+      $user = Auth::user(); // Get logged-in user
+      Session::forget(['otp', 'pending_login']); // clear OTP data
       $request->session()->regenerate();
 
-      return redirect()->route('dashboard-analytics');
+      // Check the user's role
+      $role = $user->role; // assuming 'role' column exists in users table
+
+      // Redirect based on role
+      switch ($role) {
+
+        case 'HR-Planning':
+          return redirect()->route('dashboard-analytics'); // ✅ correct
+
+        case 'HR-Welfare':
+          return redirect()->route('dashboard-analytics'); // update to your real route name
+
+        case 'HR-PAS':
+          return redirect()->route('dashboard-analytics'); // update to your real route name
+
+        case 'HR-L&D':
+          return redirect()->route('dashboard-analytics'); // update to your real route name
+
+        default:
+          Auth::logout();
+          return redirect()->route('auth-login-basic')->withErrors([
+            'login' => 'Unauthorized role.',
+          ]);
+      }
     }
 
     return back()->withErrors([

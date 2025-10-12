@@ -96,6 +96,77 @@
       ]
     },
     {
+      "name": "User Profile",
+      "slug": "profile",
+      "submenu": [
+        {
+          "url": "profile/basic-information",
+          "name": "Basic Information",
+          "slug": "basic"
+        },
+        {
+          "url": "profile/family-background",
+          "name": "Family Background",
+          "slug": "background"
+        },
+        {
+          "url": "planning/profile/education",
+          "name": "Educational",
+          "slug": "education"
+        },
+        {
+          "url": "planning/profile/cs-eligibilty",
+          "name": "CS Eligibility",
+          "slug": "eligibility"
+        },
+        {
+          "url": "planning/profile/experience",
+          "name": "Work Experience",
+          "slug": "experience"
+        },
+        {
+          "url": "planning/profile/voluntary-work",
+          "name": "Voluntary Work",
+          "slug": "voluntary"
+        },
+        {
+          "url": "planning/profile/learning-developmwnt",
+          "name": "Learning and Development",
+          "slug": "landd"
+        },
+        {
+          "url": "planning/profile/reference",
+          "name": "References",
+          "slug": "references"
+        },
+        {
+          "url": "planning/profile/government-id",
+          "name": "Government ID",
+          "slug": "id"
+        },
+        {
+          "url": "planning/profile/non-academic",
+          "name": "Non-academic",
+          "slug": "non-academic"
+        },
+        {
+          "url": "planning/profile/organization",
+          "name": "Organization",
+          "slug": "organization"
+        },
+        {
+          "url": "planning/profile/skills",
+          "name": "Skills",
+          "slug": "skills"
+        },
+        {
+          "url": "planning/profile/other-information",
+          "name": "Other Information",
+          "slug": "other-information"
+        }
+      ]
+    },
+    {
       "name": "Planning",
       "icon": "menu-icon tf-icons ri-layout-2-line",
       "slug": "planning",
