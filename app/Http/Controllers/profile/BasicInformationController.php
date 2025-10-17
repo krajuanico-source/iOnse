@@ -49,6 +49,8 @@ public function update(Request $request)
     $employee->blood_type = $request->blood_type;
     $employee->tel_no = $request->tel_no;
     $employee->mobile_no = $request->mobile_no;
+    $employee->citizenship = $request->citizenship;
+    $employee->perm_country = $request->perm_country;
 
     // ✅ Permanent Address
     $employee->perm_region = $request->perm_region;

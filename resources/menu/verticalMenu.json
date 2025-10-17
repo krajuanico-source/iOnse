@@ -36,22 +36,22 @@
         {
           "url": "profile/family-background",
           "name": "Family Background",
-          "slug": "background"
+          "slug": "family-background"
         },
         {
-          "url": "planning/profile/education",
-          "name": "Educational",
+          "url": "profile/education",
+          "name": "Educational Background",
           "slug": "education"
         },
         {
-          "url": "planning/profile/cs-eligibilty",
+          "url": "profile/cs-eligibility",
           "name": "CS Eligibility",
-          "slug": "eligibility"
+          "slug": "cs-eligibility"
         },
         {
-          "url": "planning/profile/experience",
+          "url": "profile/work-experience",
           "name": "Work Experience",
-          "slug": "experience"
+          "slug": "work-experience"
         },
         {
           "url": "planning/profile/voluntary-work",

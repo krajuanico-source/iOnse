@@ -32,8 +32,10 @@ use App\Http\Controllers\learning\ScholarshipController;
 
 //Profile
 use App\Http\Controllers\Profile\BasicInformationController;
-use App\Http\Controllers\Profile\LocationController;
-
+use App\Http\Controllers\Profile\FamilyBackgroundController;
+use App\Http\Controllers\Profile\EducationController;
+use App\Http\Controllers\Profile\CsEligibilityController;
+use App\Http\Controllers\Profile\WorkExperienceController;
 
 //Planning
 use App\Http\Controllers\planning\DashboardController;
@@ -73,7 +75,7 @@ use App\Http\Controllers\UnfilledPositionsController;
 use App\Http\Controllers\ApplicantController;
 
 
-use App\Http\Controllers\Profile\AddressController;
+use App\Http\Controllers\AddressController;
 
 
 // Login Page
@@ -112,6 +114,34 @@ Route::prefix('profile')->group(function () {
   Route::post('basic-information/update', [BasicInformationController::class, 'update'])
     ->name('profile.basic-info.update');
 });
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/profile/family-background', [FamilyBackgroundController::class, 'edit'])->name('profile.family-background.edit');
+    Route::post('/profile/family-background', [FamilyBackgroundController::class, 'update'])->name('profile.family-background.update');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/education', [EducationController::class, 'index'])->name('profile.education.index');
+    Route::post('profile/education/save', [EducationController::class, 'save'])->name('profile.education.save');
+    Route::get('profile/education/{id}', [EducationController::class, 'show']);
+    Route::put('profile/education/{id}/update', [EducationController::class, 'update'])->name('profile.education.update');
+    Route::delete('profile/education/delete/{id}', [EducationController::class, 'delete']);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/cs-eligibility', [CsEligibilityController::class, 'index'])->name('profile.cs-eligibility.index');
+    Route::post('profile/cs-eligibility/store', [CsEligibilityController::class, 'store'])->name('profile.cs-eligibility.store');
+    Route::put('profile/cs-eligibility/{id}', [CsEligibilityController::class, 'update'])->name('profile.cs-eligibility.update');
+    Route::delete('profile/cs-eligibility/{id}', [CsEligibilityController::class, 'destroy'])->name('profile.cs-eligibility.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/work-experience', [WorkExperienceController::class, 'index'])->name('profile.work-experience.index');
+    Route::post('profile/work-experience/store', [WorkExperienceController::class, 'store'])->name('profile.work-experience.store');
+    Route::put('profile/work-experience/{id}', [WorkExperienceController::class, 'update'])->name('profile.work-experience.update');
+    Route::delete('profile/work-experience/{id}', [WorkExperienceController::class, 'destroy'])->name('profile.work-experience.destroy');
+});
+
 
 
 //Address

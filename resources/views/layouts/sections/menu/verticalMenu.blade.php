@@ -82,17 +82,23 @@ use Illuminate\Support\Facades\Route;
   }
 
   .layout-menu .menu-inner .menu-item a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: #ffff;
     color: #ffffff !important;
   }
 
   .layout-menu .menu-item::before,
   .layout-menu .menu-item .menu-link::before,
-  .layout-menu .menu-toggle::after {
+    .layout-menu .menu-toggle::after {
     color: #ffffff !important;
-    background-color: #ffffff !important;
   }
 
+  .layout-menu .menu-toggle::after {
+    content: "▶";   /* right-pointing arrow */
+    font-size: 12px;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+    color: #ffffff !important;
+}
   .layout-menu .menu-item.active::before,
   .layout-menu .menu-item.open::before {
     background-color: #ffffff !important;

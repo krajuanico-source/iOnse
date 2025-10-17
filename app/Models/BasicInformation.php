@@ -13,7 +13,7 @@ class BasicInformation extends Model
     'tel_no', 'mobile_no', 'email', 'citizenship',
     'perm_country', 'perm_region', 'perm_province', 'perm_city', 'perm_barangay',
     'perm_street', 'perm_house_no', 'perm_village', 'perm_zipcode',
-    'res_country', 'res_region', 'res_province', 'res_city', 'res_barangay',
+     'res_region', 'res_province', 'res_city', 'res_barangay',
     'res_street', 'res_house_no', 'res_village', 'res_zipcode',
     'password', 'profile_image',
 ];
