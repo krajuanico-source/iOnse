@@ -16,14 +16,14 @@
 
 @section('content')
 @php
-  use Illuminate\Support\Facades\Auth;
-  $user = Auth::user();
+use Illuminate\Support\Facades\Auth;
+$user = Auth::user();
 @endphp
 
 <div class="row gy-4">
   <div class="col-md-6 col-lg-4">
-    <div class="card border-0 shadow-sm text-center p-4 rounded-3 text-white" 
-         style="min-height: 110px; background:rgb(255, 255, 255);">
+    <div class="card border-0 shadow-sm text-center p-4 rounded-3 text-white"
+      style="min-height: 110px; background:rgb(255, 255, 255);">
       <div>
         <h1 class="mb-2">👋</h1>
         <h4 class="mb-1 fw-semibold">
@@ -39,88 +39,88 @@
 
   <!--/ Welcome card -->
 
- <div class="col-lg-8">
-  <div class="card h-100">
-    <div class="card-header">
-      <div class="d-flex align-items-center justify-content-between">
-        <h5 class="card-title m-0 me-2">DSWD Field Office XI Employees</h5>
-        <div class="dropdown">
-          <button class="btn text-muted p-0" type="button" id="transactionID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="ri-more-2-line ri-24px"></i>
-          </button>
-          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
-            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-            <a class="dropdown-item" href="javascript:void(0);">Share</a>
-            <a class="dropdown-item" href="javascript:void(0);">Update</a>
+  <div class="col-lg-8">
+    <div class="card h-100">
+      <div class="card-header">
+        <div class="d-flex align-items-center justify-content-between">
+          <h5 class="card-title m-0 me-2">DSWD Field Office XI Employees</h5>
+          <div class="dropdown">
+            <button class="btn text-muted p-0" type="button" id="transactionID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="ri-more-2-line ri-24px"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
+              <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+              <a class="dropdown-item" href="javascript:void(0);">Share</a>
+              <a class="dropdown-item" href="javascript:void(0);">Update</a>
+            </div>
           </div>
         </div>
+        <p class="small mb-0">
+          <span class="h6 mb-0">Employee Metrics Updated</span> 🧑‍💼
+        </p>
       </div>
-      <p class="small mb-0">
-        <span class="h6 mb-0">Employee Metrics Updated</span> 🧑‍💼
-      </p>
-    </div>
 
-    <div class="card-body pt-lg-10">
-      <div class="row g-6">
-        <div class="col-md-3 col-6">
-          <div class="d-flex align-items-center">
-            <div class="avatar">
-              <div class="avatar-initial bg-primary rounded shadow-xs">
-                <i class="ri-user-line ri-24px"></i>
+      <div class="card-body pt-lg-10">
+        <div class="row g-6">
+          <div class="col-md-3 col-6">
+            <div class="d-flex align-items-center">
+              <div class="avatar">
+                <div class="avatar-initial bg-primary rounded shadow-xs">
+                  <i class="ri-user-line ri-24px"></i>
+                </div>
               </div>
-            </div>
-            <div class="ms-3">
-              <p class="mb-0">Total</p>
-              <h5 class="mb-0">{{ $totalEmployees }}</h5>
+              <div class="ms-3">
+                <p class="mb-0">Total</p>
+                <h5 class="mb-0">{{ $totalEmployees }}</h5>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="col-md-3 col-6">
-          <div class="d-flex align-items-center">
-            <div class="avatar">
-              <div class="avatar-initial bg-success rounded shadow-xs">
-                <i class="ri-women-line ri-24px"></i>
+          <div class="col-md-3 col-6">
+            <div class="d-flex align-items-center">
+              <div class="avatar">
+                <div class="avatar-initial bg-success rounded shadow-xs">
+                  <i class="ri-women-line ri-24px"></i>
+                </div>
               </div>
-            </div>
-            <div class="ms-3">
-              <p class="mb-0">Female</p>
-              <h5 class="mb-0">{{ $femaleEmployees }}</h5>
+              <div class="ms-3">
+                <p class="mb-0">Female</p>
+                <h5 class="mb-0">{{ $femaleEmployees }}</h5>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="col-md-3 col-6">
-          <div class="d-flex align-items-center">
-            <div class="avatar">
-              <div class="avatar-initial bg-info rounded shadow-xs">
-                <i class="ri-men-line ri-24px"></i>
+          <div class="col-md-3 col-6">
+            <div class="d-flex align-items-center">
+              <div class="avatar">
+                <div class="avatar-initial bg-info rounded shadow-xs">
+                  <i class="ri-men-line ri-24px"></i>
+                </div>
               </div>
-            </div>
-            <div class="ms-3">
-              <p class="mb-0">Male</p>
-              <h5 class="mb-0">{{ $maleEmployees }}</h5>
+              <div class="ms-3">
+                <p class="mb-0">Male</p>
+                <h5 class="mb-0">{{ $maleEmployees }}</h5>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="col-md-3 col-6">
-          <div class="d-flex align-items-center">
-            <div class="avatar">
-              <div class="avatar-initial bg-warning rounded shadow-xs">
-                <i class="ri-briefcase-line ri-24px"></i>
+          <div class="col-md-3 col-6">
+            <div class="d-flex align-items-center">
+              <div class="avatar">
+                <div class="avatar-initial bg-warning rounded shadow-xs">
+                  <i class="ri-briefcase-line ri-24px"></i>
+                </div>
               </div>
-            </div>
-            <div class="ms-3">
-              <p class="mb-0">Vacant</p>
-              <h5 class="mb-0">--</h5> <!-- Optional: Replace with real count if available -->
+              <div class="ms-3">
+                <p class="mb-0">Vacant</p>
+                <h5 class="mb-0">--</h5> <!-- Optional: Replace with real count if available -->
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
   <!-- Weekly Overview Chart -->
   <div class="col-xl-4 col-md-6">
@@ -335,4 +335,4 @@
     </div>
   </div>
   <!--/ four cards -->
-@endsection
+  @endsection

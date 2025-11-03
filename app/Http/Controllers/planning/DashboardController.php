@@ -10,8 +10,8 @@ use App\Models\Dashboard;
 
 class DashboardController extends Controller
 {
-    public function index()
-{
+  public function index()
+  {
     $user = Auth::user();
 
     $totalEmployees = User::count();
@@ -19,11 +19,10 @@ class DashboardController extends Controller
     $maleEmployees = User::where('gender', 'Male')->count();
 
     return view('content.planning.dashboard', [
-        'user' => $user,
-        'totalEmployees' => $totalEmployees,
-        'femaleEmployees' => $femaleEmployees,
-        'maleEmployees' => $maleEmployees,
+      'user' => $user,
+      'totalEmployees' => $totalEmployees,
+      'femaleEmployees' => $femaleEmployees,
+      'maleEmployees' => $maleEmployees,
     ]);
-}
-
+  }
 }

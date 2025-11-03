@@ -151,7 +151,7 @@
               <input type="text" name="perm_house_no" id="perm_house_no" class="form-control mb-3" value="{{ $employee->perm_house_no ?? '' }}">
 
               <label class="form-label fw-bold">ZIP</label>
-              <input type="text" name="perm_zip" id="perm_zip" class="form-control" value="{{ $employee->perm_zip ?? '' }}">
+              <input type="text" name="perm_zipcode" id="perm_zipcode" class="form-control" value="{{ $employee->perm_zipcode ?? '' }}">
             </div>
 
             {{-- Residence Address --}}
@@ -193,7 +193,7 @@
               <input type="text" name="res_house_no" id="res_house_no" class="form-control mb-3" value="{{ $employee->res_house_no ?? '' }}">
 
               <label class="form-label fw-bold">ZIP</label>
-              <input type="text" name="res_zip" id="res_zip" class="form-control" value="{{ $employee->res_zip ?? '' }}">
+              <input type="text" name="res_zipcode" id="res_zipcode" class="form-control" value="{{ $employee->res_zipcode ?? '' }}">
             </div>
           </div>
 
@@ -201,14 +201,32 @@
           <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
           <script>
             $(document).ready(function() {
+              // ======== GET DATABASE VALUES =========
+              let permRegion = "{{ $employee->perm_region ?? '' }}";
+              let permProvince = "{{ $employee->perm_province ?? '' }}";
+              let permCity = "{{ $employee->perm_city ?? '' }}";
+              let permBarangay = "{{ $employee->perm_barangay ?? '' }}";
 
-              // Load all regions on page load
+              let resRegion = "{{ $employee->res_region ?? '' }}";
+              let resProvince = "{{ $employee->res_province ?? '' }}";
+              let resCity = "{{ $employee->res_city ?? '' }}";
+              let resBarangay = "{{ $employee->res_barangay ?? '' }}";
+
+              // ======== LOAD ALL REGIONS =========
               $.get('/regions', function(data) {
                 data.forEach(function(region) {
-                  $('#perm_region, #res_region').append(
-                    '<option value="' + region.psgc + '">' + region.name + '</option>'
-                  );
+                  // Permanent
+                  let permSelected = (region.psgc === permRegion) ? 'selected' : '';
+                  $('#perm_region').append('<option value="' + region.psgc + '" ' + permSelected + '>' + region.name + '</option>');
+
+                  // Residence
+                  let resSelected = (region.psgc === resRegion) ? 'selected' : '';
+                  $('#res_region').append('<option value="' + region.psgc + '" ' + resSelected + '>' + region.name + '</option>');
                 });
+
+                // Trigger province load for pre-filled data
+                if (permRegion) $('#perm_region').trigger('change');
+                if (resRegion) $('#res_region').trigger('change');
               });
 
               // ======== PERMANENT ADDRESS =========
@@ -222,8 +240,10 @@
                 if (region_psgc) {
                   $.get('/provinces/' + region_psgc, function(data) {
                     data.forEach(function(province) {
-                      $('#perm_province').append('<option value="' + province.psgc + '">' + province.name + '</option>');
+                      let selected = (province.psgc === permProvince) ? 'selected' : '';
+                      $('#perm_province').append('<option value="' + province.psgc + '" ' + selected + '>' + province.name + '</option>');
                     });
+                    if (permProvince) $('#perm_province').trigger('change');
                   });
                 }
               });
@@ -236,8 +256,10 @@
                 if (province_psgc) {
                   $.get('/cities/' + province_psgc, function(data) {
                     data.forEach(function(city) {
-                      $('#perm_city').append('<option value="' + city.psgc + '">' + city.name + '</option>');
+                      let selected = (city.psgc === permCity) ? 'selected' : '';
+                      $('#perm_city').append('<option value="' + city.psgc + '" ' + selected + '>' + city.name + '</option>');
                     });
+                    if (permCity) $('#perm_city').trigger('change');
                   });
                 }
               });
@@ -249,7 +271,8 @@
                 if (city_psgc) {
                   $.get('/barangays/' + city_psgc, function(data) {
                     data.forEach(function(barangay) {
-                      $('#perm_barangay').append('<option value="' + barangay.psgc + '">' + barangay.name + '</option>');
+                      let selected = (barangay.psgc === permBarangay) ? 'selected' : '';
+                      $('#perm_barangay').append('<option value="' + barangay.psgc + '" ' + selected + '>' + barangay.name + '</option>');
                     });
                   });
                 }
@@ -266,8 +289,10 @@
                 if (region_psgc) {
                   $.get('/provinces/' + region_psgc, function(data) {
                     data.forEach(function(province) {
-                      $('#res_province').append('<option value="' + province.psgc + '">' + province.name + '</option>');
+                      let selected = (province.psgc === resProvince) ? 'selected' : '';
+                      $('#res_province').append('<option value="' + province.psgc + '" ' + selected + '>' + province.name + '</option>');
                     });
+                    if (resProvince) $('#res_province').trigger('change');
                   });
                 }
               });
@@ -280,8 +305,10 @@
                 if (province_psgc) {
                   $.get('/cities/' + province_psgc, function(data) {
                     data.forEach(function(city) {
-                      $('#res_city').append('<option value="' + city.psgc + '">' + city.name + '</option>');
+                      let selected = (city.psgc === resCity) ? 'selected' : '';
+                      $('#res_city').append('<option value="' + city.psgc + '" ' + selected + '>' + city.name + '</option>');
                     });
+                    if (resCity) $('#res_city').trigger('change');
                   });
                 }
               });
@@ -293,14 +320,14 @@
                 if (city_psgc) {
                   $.get('/barangays/' + city_psgc, function(data) {
                     data.forEach(function(barangay) {
-                      $('#res_barangay').append('<option value="' + barangay.psgc + '">' + barangay.name + '</option>');
+                      let selected = (barangay.psgc === resBarangay) ? 'selected' : '';
+                      $('#res_barangay').append('<option value="' + barangay.psgc + '" ' + selected + '>' + barangay.name + '</option>');
                     });
                   });
                 }
               });
 
               // ======== SAME AS PERMANENT CHECKBOX =========
-
               $('#sameAddress').on('change', function() {
                 if ($(this).is(':checked')) {
                   // Copy text fields
@@ -308,10 +335,10 @@
                   $('#res_house_no').val($('#perm_house_no').val());
                   $('#res_zip').val($('#perm_zip').val());
 
-                  // Copy region, province, city, barangay (by value)
+                  // Copy select values (trigger for dependent fields)
                   $('#res_region').val($('#perm_region').val()).trigger('change');
 
-                  // Load dependent dropdowns dynamically
+                  // Cascade population with delay to ensure AJAX loads finish
                   setTimeout(() => {
                     $('#res_province').val($('#perm_province').val()).trigger('change');
                     setTimeout(() => {
@@ -329,6 +356,7 @@
               });
             });
           </script>
+
 
         </div>
 
@@ -364,8 +392,6 @@
           });
         </script>
         @endpush
-
-
 
       </div>
 

@@ -3,6 +3,9 @@
 @section('title', 'Office Location')
 
 @section('content')
+@php
+use Illuminate\Support\Str;
+@endphp
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -51,16 +54,16 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-          <h5 class="modal-title">Add New Office Location</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+        <h5 class="modal-title">Add New Office Location</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
       <form id="locationForm">
         <div class="modal-body">
           <div class="mb-3">
             <label>Location Name</label>
-           <input type="text" name="name" class="form-control text-uppercase" required>
+            <input type="text" name="name" class="form-control text-uppercase" required>
           </div>
-          <div class="mb-3">  
+          <div class="mb-3">
             <label>Abbreviation</label>
             <input type="text" name="abbreviation" class="form-control  text-uppercase" required>
           </div>
@@ -87,7 +90,7 @@
           <input type="hidden" name="id" id="editLocationId">
           <div class="mb-3">
             <label>Location Name</label>
-          <input type="text" name="name" id="editLocationName" class="form-control text-uppercase" required>
+            <input type="text" name="name" id="editLocationName" class="form-control text-uppercase" required>
           </div>
           <div class="mb-3">
             <label>Abbreviation</label>

@@ -18,24 +18,10 @@ use Illuminate\Support\Str;
 <div class="card">
   <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h4 style="color: #1d4bb2;">
-        @if (Request::is('planning/retired-employees'))
-        Retired Employees
-        @elseif (Request::is('planning/resigned-employees'))
-        Resigned Employees
-        @elseif (Request::is('planning/active-employees'))
-        Active Employees
-        @else
-        List of Employees
-        @endif
-      </h4>
-
-      @unless (Request::is('planning/retired-employees') || Request::is('planning/resigned-employees'))
       <div class="d-flex gap-2">
         <a href="{{ url('planning/registration-form') }}" class="btn btn-success">Add New Employee</a>
         <a href="{{ url('planning/import-form') }}" class="btn btn-primary">Import Employees</a>
       </div>
-      @endunless
     </div>
     <div class="table-responsive">
       <table id="empTable" class="table">
@@ -79,11 +65,7 @@ use Illuminate\Support\Str;
             <td>
               <div class="d-flex gap-1">
                 <a href="{{ route('employee.show-view', $employee->id) }}" class="btn btn-sm btn-primary">View</a>
-                <form action="{{ route('employee.delete', $employee->id) }}" method="POST">
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                </form>
+
               </div>
             </td>
           </tr>

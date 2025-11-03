@@ -9,8 +9,8 @@
       <h5 style="color: #1d4bb2;" class="mb-0">Employee Details</h5>
     </div>
     <div class="card-body">
+      <a href="{{ route('employee.view-blade') }}" class="btn btn-secondary mb-3">Back to List</a>
 
-      <a href="{{ route('employee.list-of-employee') }}" class="btn btn-secondary mb-3">Back to List</a>
 
       <div class="row mb-3">
         <div class="col-md-4">
@@ -53,6 +53,7 @@
 
       <div class="d-flex justify-content-end">
         <a href="{{ route('employee.edit', $employee->id) }}" class="btn btn-warning me-2">Edit</a>
+
         <form action="{{ route('employee.delete', $employee->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this employee?');">
           @csrf
           @method('DELETE')

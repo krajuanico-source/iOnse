@@ -13,7 +13,7 @@
   <div class="alert alert-success">{{ session('success') }}</div>
   @endif
 
-  <form method="POST" action="{{ route('planning.jo-requests.store') }}" class="row g-3 mb-4">
+  <form method="POST" action="{{ route('planning.jo-requests.store') }}" class="row g-3 mb-4">bfg
     @csrf
 
     <div class="col-md-3">
@@ -171,9 +171,6 @@
         </td>
       </tr>
       @empty
-      <tr>
-        <td colspan="11" class="text-center">No requests submitted yet.</td>
-      </tr>
       @endforelse
     </tbody>
   </table>

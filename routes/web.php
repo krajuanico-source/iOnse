@@ -137,8 +137,13 @@ Route::prefix('planning')->group(function () {
 
 // Employee List & Profile Routes
 Route::get('/planning/list-of-employee', [UserController::class, 'bladeIndex'])->name('employee.view-blade');
-
-Route::get('/planning/list-of-employee/{id}/view', [UserController::class, 'showEmployeeView'])->name('employee.show-view');
+// Edit employee form
+Route::get('/planning/list-of-employee/{id}/edit', [UserController::class, 'edit'])
+  ->name('employee.edit');
+// Delete employee
+Route::delete('/planning/list-of-employee/{id}', [UserController::class, 'destroy'])
+  ->name('employee.delete');
+Route::get('/planning/list-of-employee/{id}/view', [UserController::class, 'show'])->name('employee.show-view');
 Route::get('/planning/list-of-employee/{id}', [UserController::class, 'show'])->name('employee.view');
 
 // Filtered Employee Lists
@@ -150,7 +155,7 @@ Route::put('/employee/{id}/assign-role', [UserController::class, 'assignRole'])-
 
 // //import
 // Route::prefix('planning')->group(function () {
-//   Route::get('/import-form', [\App\Http\Controllers\Api\UserController::class, 'showImportForm'])->name('planning.import-form');
+Route::get('/import-form', [\App\Http\Controllers\Api\UserController::class, 'showImportForm'])->name('planning.import-form');
 //   Route::post('/import', [\App\Http\Controllers\Api\UserController::class, 'importEmployees'])->name('planning.import');
 // });
 

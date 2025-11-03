@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
   style="background-image: url('{{ asset('assets/img/dswd-bg.png') }}');
          background-size: cover;
          background-repeat: no-repeat;
-         color: #fff;">
+        ">
 
   <div class="app-brand demo mt-4">
     <a href="{{ url('dashboard') }}" class="app-brand-link">
