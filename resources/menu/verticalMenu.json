@@ -14,13 +14,25 @@
         {
           "url": "/dashboard/dashboards-analytics",
           "name": "Analytics",
-          "slug": "dashboards-analytics"
+          "slug": "dashboards-analytics",
+          "roles": [
+            "HR-Planning",
+            "HR-Welfare",
+            "HR-PAS",
+            "HR-L&D"
+          ]
         }
       ]
     },
     {
       "name": "User Profile",
       "slug": "profile",
+      "roles": [
+        "HR-Planning",
+        "HR-Welfare",
+        "HR-PAS",
+        "HR-L&D"
+      ],
       "submenu": [
         {
           "url": "profile/basic-information",
@@ -30,60 +42,60 @@
         {
           "url": "profile/family-background",
           "name": "Family Background",
-          "slug": "background"
+          "slug": "family-background"
         },
         {
-          "url": "planning/profile/education",
-          "name": "Educational",
+          "url": "profile/education",
+          "name": "Educational Background",
           "slug": "education"
         },
         {
-          "url": "planning/profile/cs-eligibilty",
+          "url": "profile/cs-eligibility",
           "name": "CS Eligibility",
-          "slug": "eligibility"
+          "slug": "cs-eligibility"
         },
         {
-          "url": "planning/profile/experience",
+          "url": "profile/work-experience",
           "name": "Work Experience",
-          "slug": "experience"
+          "slug": "work-experience"
         },
         {
-          "url": "planning/profile/voluntary-work",
+          "url": "profile/voluntary-work",
           "name": "Voluntary Work",
-          "slug": "voluntary"
+          "slug": "voluntary-work"
         },
         {
-          "url": "planning/profile/learning-developmwnt",
+          "url": "profile/learning-development",
           "name": "Learning and Development",
           "slug": "landd"
         },
         {
-          "url": "planning/profile/reference",
+          "url": "profile/references",
           "name": "References",
           "slug": "references"
         },
         {
-          "url": "planning/profile/government-id",
+          "url": "profile/government-ids",
           "name": "Government ID",
           "slug": "id"
         },
         {
-          "url": "planning/profile/non-academic",
+          "url": "profile/non-academic",
           "name": "Non-academic",
           "slug": "non-academic"
         },
         {
-          "url": "planning/profile/organization",
+          "url": "profile/organization",
           "name": "Organization",
           "slug": "organization"
         },
         {
-          "url": "planning/profile/skills",
+          "url": "profile/skills",
           "name": "Skills",
           "slug": "skills"
         },
         {
-          "url": "planning/profile/other-information",
+          "url": "profile/other-information",
           "name": "Other Information",
           "slug": "other-information"
         }

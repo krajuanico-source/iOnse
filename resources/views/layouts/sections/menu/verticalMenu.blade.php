@@ -90,7 +90,6 @@ use Illuminate\Support\Facades\Route;
   .layout-menu .menu-item .menu-link::before,
   .layout-menu .menu-toggle::after {
     color: #ffffff !important;
-    background-color: #ffffff !important;
   }
 
   .layout-menu .menu-item.active::before,

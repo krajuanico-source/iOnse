@@ -1,7 +1,5 @@
 <?php
 
-
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\dashboard\Analytics;
 use App\Http\Controllers\pages\AccountSettingsAccount;
@@ -32,8 +30,19 @@ use App\Http\Controllers\learning\ScholarshipController;
 
 //Profile
 use App\Http\Controllers\Profile\BasicInformationController;
-use App\Http\Controllers\Profile\LocationController;
-
+use App\Http\Controllers\Profile\FamilyBackgroundController;
+use App\Http\Controllers\Profile\EducationController;
+use App\Http\Controllers\Profile\CsEligibilityController;
+use App\Http\Controllers\Profile\WorkExperienceController;
+use App\Http\Controllers\Profile\VoluntaryWorkController;
+use App\Http\Controllers\Profile\LearningAndDevelopmentController;
+use App\Http\Controllers\Profile\ReferenceController;
+use App\Http\Controllers\Profile\GovernmentIdController;
+use App\Http\Controllers\Profile\NonAcademicController;
+use App\Http\Controllers\Profile\OrganizationController;
+use App\Http\Controllers\Profile\SkillController;
+use App\Http\Controllers\Profile\OtherInformationController;
+use App\Http\Controllers\Profile\PdsController;
 
 //Planning
 use App\Http\Controllers\planning\DashboardController;
@@ -113,6 +122,92 @@ Route::prefix('profile')->group(function () {
     ->name('profile.basic-info.update');
 });
 
+Route::middleware(['auth'])->group(function() {
+    Route::get('/profile/family-background', [FamilyBackgroundController::class, 'edit'])->name('profile.family-background.edit');
+    Route::post('/profile/family-background', [FamilyBackgroundController::class, 'update'])->name('profile.family-background.update');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/education', [EducationController::class, 'index'])->name('profile.education.index');
+    Route::post('profile/education/save', [EducationController::class, 'save'])->name('profile.education.save');
+    Route::get('profile/education/{id}', [EducationController::class, 'show']);
+    Route::put('profile/education/{id}/update', [EducationController::class, 'update'])->name('profile.education.update');
+    Route::delete('profile/education/delete/{id}', [EducationController::class, 'delete']);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/cs-eligibility', [CsEligibilityController::class, 'index'])->name('profile.cs-eligibility.index');
+    Route::post('profile/cs-eligibility/store', [CsEligibilityController::class, 'store'])->name('profile.cs-eligibility.store');
+    Route::put('profile/cs-eligibility/{id}', [CsEligibilityController::class, 'update'])->name('profile.cs-eligibility.update');
+    Route::delete('profile/cs-eligibility/{id}', [CsEligibilityController::class, 'destroy'])->name('profile.cs-eligibility.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/work-experience', [WorkExperienceController::class, 'index'])->name('profile.work-experience.index');
+    Route::post('profile/work-experience/store', [WorkExperienceController::class, 'store'])->name('profile.work-experience.store');
+    Route::put('profile/work-experience/{id}', [WorkExperienceController::class, 'update'])->name('profile.work-experience.update');
+    Route::delete('profile/work-experience/{id}', [WorkExperienceController::class, 'destroy'])->name('profile.work-experience.destroy');
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/voluntary-work', [VoluntaryWorkController::class, 'index'])->name('profile.voluntary-work.index');
+    Route::post('profile/voluntary-work/store', [VoluntaryWorkController::class, 'store'])->name('profile.voluntary-work.store');
+    Route::put('profile/voluntary-work/{id}', [VoluntaryWorkController::class, 'update'])->name('profile.voluntary-work.update');
+    Route::delete('profile/voluntary-work/{id}', [VoluntaryWorkController::class, 'destroy'])->name('profile.voluntary-work.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/learning-development', [LearningAndDevelopmentController::class, 'index'])->name('profile.ld.index');
+    Route::post('profile/learning-development/store', [LearningAndDevelopmentController::class, 'store'])->name('profile.ld.store');
+    Route::put('profile/learning-development/{id}', [LearningAndDevelopmentController::class, 'update'])->name('profile.ld.update');
+    Route::delete('profile/learning-development/{id}', [LearningAndDevelopmentController::class, 'destroy'])->name('profile.ld.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/references', [ReferenceController::class, 'index'])->name('profile.references.index');
+    Route::post('profile/references/store', [ReferenceController::class, 'store'])->name('profile.references.store');
+    Route::put('profile/references/{id}', [ReferenceController::class, 'update'])->name('profile.references.update');
+    Route::delete('profile/references/{id}', [ReferenceController::class, 'destroy'])->name('profile.references.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/government-ids', [GovernmentIdController::class, 'index'])->name('profile.government-ids.index');
+    Route::post('profile/government-ids/store', [GovernmentIdController::class, 'store'])->name('profile.government-ids.store');
+    Route::put('profile/government-ids/{id}', [GovernmentIdController::class, 'update'])->name('profile.government-ids.update');
+    Route::delete('profile/government-ids/{id}', [GovernmentIdController::class, 'destroy'])->name('profile.government-ids.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/non-academic', [NonAcademicController::class, 'index'])->name('profile.non-academic.index');
+    Route::post('profile/non-academic', [NonAcademicController::class, 'store'])->name('profile.non-academic.store');
+    Route::get('profile/non-academic/{id}', [NonAcademicController::class, 'show'])->name('profile.non-academic.show');  // 👈 for edit modal
+    Route::put('profile/non-academic/{id}', [NonAcademicController::class, 'update'])->name('profile.non-academic.update');
+    Route::delete('profile/non-academic/{id}', [NonAcademicController::class, 'destroy'])->name('profile.non-academic.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/organization', [OrganizationController::class, 'index'])->name('profile.organization.index');
+    Route::post('profile/organization', [OrganizationController::class, 'store'])->name('profile.organization.store');
+    Route::get('profile/organization/{id}', [OrganizationController::class, 'show'])->name('profile.organization.show');
+    Route::put('profile/organization/{id}', [OrganizationController::class, 'update'])->name('profile.organization.update');
+    Route::delete('profile/organization/{id}', [OrganizationController::class, 'destroy'])->name('profile.organization.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/skills', [SkillController::class, 'index'])->name('profile.skills.index');
+    Route::post('profile/skills', [SkillController::class, 'store'])->name('profile.skills.store');
+    Route::get('profile/skills/{id}', [SkillController::class, 'show'])->name('profile.skills.show');
+    Route::put('profile/skills/{id}', [SkillController::class, 'update'])->name('profile.skills.update');
+    Route::delete('profile/skills/{id}', [SkillController::class, 'destroy'])->name('profile.skills.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('profile/other-information', [OtherInformationController::class, 'index'])->name('profile.other-information.index');
+    Route::post('profile/other-information', [OtherInformationController::class, 'store'])->name('profile.other-information.store');
+});
+
+Route::get('/pds/print', [PdsController::class, 'generate'])->name('pds.print');
 
 //Address
 //-------------------------------------------------------START OF PLANNING-----------------------------------------------------------
@@ -125,11 +220,11 @@ Route::prefix('planning')->group(function () {
 
 Route::get('/planning/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// Registration Form Routes
-Route::prefix('planning')->group(function () {
-  Route::get('/registration-form', [RegistrationForm::class, 'index'])->name('registration-form.index');
-  Route::post('/list-of-employee', [UserController::class, 'store'])->name('employee.store');
-});
+// // Registration Form Routes
+// Route::prefix('planning')->group(function () {
+//   Route::get('/registration-form', [RegistrationForm::class, 'index'])->name('registration-form.index');
+//   Route::post('/list-of-employee', [UserController::class, 'store'])->name('employee.store');
+// });
 
 // // Show Registration Form (from API\UserController)
 // Route::get('/planning/registration-form', [\App\Http\Controllers\Api\UserController::class, 'create'])->name('employee.registration-form');

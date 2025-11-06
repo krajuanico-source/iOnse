@@ -3,6 +3,13 @@
 @section('title', 'Basic Information')
 
 @section('content')
+
+<style>
+  .uppercase {
+    text-transform: uppercase;
+  }
+</style>
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
@@ -17,7 +24,9 @@
       <div class="row">
         {{-- Left Column --}}
         <div class="col-md-9 border-end">
-          <h5 class="mb-4 fw-bold">Basic Information</h5>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 style="color: #1d4bb2;">Basic Information</h4>
+          </div>
           <div class="row g-3">
             <div class="col-md-4">
               <label class="form-label fw-bold">First Name</label>
@@ -32,7 +41,7 @@
               <input type="text" name="last_name" class="form-control mt-1" value="{{ $employee->last_name }}">
             </div>
             <div class="col-md-4">
-              <label>Extension Name</label>
+              <label class="form-label fw-bold">Extension Name</label>
               <select class="form-select" name="extension_name">
                 <option value="">-- Extension name --</option>
                 @foreach(['JR','SR','II','III','IV'] as $ext)
@@ -70,7 +79,6 @@
                 <option value="Female" {{ $employee->gender == 'Female' ? 'selected' : '' }}>Female</option>
               </select>
             </div>
-
             <div class="col-md-4">
               <label class="form-label fw-bold">Civil Status</label>
               <select name="civil_status" class="form-select">
@@ -81,7 +89,6 @@
                 <option value="Separated" {{ $employee->civil_status == 'Separated' ? 'selected' : '' }}>Separated</option>
               </select>
             </div>
-
             <div class="col-md-4">
               <label class="form-label fw-bold">Height(M)</label>
               <input type="number" step="0.01" name="height" class="form-control" value="{{ $employee->height }}">
@@ -111,6 +118,14 @@
             <div class="col-md-4">
               <label class="form-label fw-bold">Mobile Number</label>
               <input type="text" name="mobile_no" class="form-control" value="{{ $employee->mobile_no }}">
+            </div>
+            <div class="col-md-4 mb-8">
+              <label class="form-label fw-bold">Citizenship</label>
+              <input type="text" name="citizenship" class="form-control" value="{{ $employee->citizenship }}">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-bold">Country</label>
+              <input type="text" name="perm_country" class="form-control" value="{{ $employee->perm_country }}">
             </div>
           </div>
 
@@ -193,9 +208,44 @@
               <input type="text" name="res_house_no" id="res_house_no" class="form-control mb-3" value="{{ $employee->res_house_no ?? '' }}">
 
               <label class="form-label fw-bold">ZIP</label>
-              <input type="text" name="res_zipcode" id="res_zipcode" class="form-control" value="{{ $employee->res_zipcode ?? '' }}">
+              <input type="text" name="res_zipcode" id="res_zipcode" class="form-control" value="{{ $employee->res_zipcode   ?? '' }}">
             </div>
           </div>
+
+          <script>
+            $(document).ready(function() {
+              $('#employeeForm').submit(function(e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+
+                $('#employeeForm').submit(function(e) {
+                  e.preventDefault();
+                  if (!confirm('Are you sure you want to save changes?')) return;
+
+                  $.ajax({
+                    url: '{{ route("profile.basic-info.update") }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, // Needed for file upload
+                    processData: false, // Needed for file upload
+                    headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                      toastr.success('Basic Information updated successfully!');
+                      // optional reload
+                      setTimeout(() => location.reload(), 500);
+                    },
+                    error: function(xhr) {
+                      toastr.error('Failed to update Basic Information.');
+                      console.log(xhr.responseText);
+                    }
+                  });
+                });
+              });
+            });
+          </script>
 
           {{-- jQuery Script --}}
           <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -404,83 +454,3 @@
   </div>
 </div>
 @endsection
-@push('scripts')
-<script>
-  $(document).ready(function() {
-    // Load all Regions
-    $.get('/get-regions', function(regions) {
-      regions.forEach(region => {
-        $('#perm_region').append(`<option value="${region.psgc}">${region.name}</option>`);
-        $('#res_region').append(`<option value="${region.psgc}">${region.name}</option>`);
-      });
-
-      // Preselect saved values (if any)
-      if ($('#perm_region_psgc').val()) {
-        $('#perm_region').val($('#perm_region_psgc').val()).trigger('change');
-      }
-      if ($('#res_region_psgc').val()) {
-        $('#res_region').val($('#res_region_psgc').val()).trigger('change');
-      }
-    });
-
-
-    function loadDropdowns(regionSelect, provinceSelect, citySelect, barangaySelect, regionCode, provinceCode, cityCode, barangayCode) {
-      // When Region changes
-      regionSelect.on('change', function() {
-        const code = $(this).val();
-        provinceSelect.html('<option value="">-- Select Province --</option>');
-        citySelect.html('<option value="">-- Select City --</option>');
-        barangaySelect.html('<option value="">-- Select Barangay --</option>');
-        if (code) {
-          $.get(`/get-provinces/${code}`, function(provinces) {
-            provinces.forEach(p => provinceSelect.append(`<option value="${p.psgc}">${p.name}</option>`));
-            if (provinceCode) provinceSelect.val(provinceCode).trigger('change');
-          });
-        }
-      });
-
-      // Province to City
-      provinceSelect.on('change', function() {
-        const code = $(this).val();
-        citySelect.html('<option value="">-- Select City --</option>');
-        barangaySelect.html('<option value="">-- Select Barangay --</option>');
-        if (code) {
-          $.get(`/get-municipalities/${code}`, function(cities) {
-            cities.forEach(c => citySelect.append(`<option value="${c.psgc}">${c.name}</option>`));
-            if (cityCode) citySelect.val(cityCode).trigger('change');
-          });
-        }
-      });
-
-      // City to Barangay
-      citySelect.on('change', function() {
-        const code = $(this).val();
-        barangaySelect.html('<option value="">-- Select Barangay --</option>');
-        if (code) {
-          $.get(`/get-barangays/${code}`, function(barangays) {
-            barangays.forEach(b => barangaySelect.append(`<option value="${b.psgc}">${b.name}</option>`));
-            if (barangayCode) barangaySelect.val(barangayCode);
-          });
-        }
-      });
-    }
-
-
-    let permRegionCode = $('#perm_region_psgc').val();
-    let permProvinceCode = $('#perm_province_psgc').val();
-    let permCityCode = $('#perm_city_psgc').val();
-    let permBarangayCode = $('#perm_barangay_psgc').val();
-
-    loadDropdowns($('#perm_region'), $('#perm_province'), $('#perm_city'), $('#perm_barangay'),
-      permRegionCode, permProvinceCode, permCityCode, permBarangayCode);
-
-    let resRegionCode = $('#res_region_psgc').val();
-    let resProvinceCode = $('#res_province_psgc').val();
-    let resCityCode = $('#res_city_psgc').val();
-    let resBarangayCode = $('#res_barangay_psgc').val();
-
-    loadDropdowns($('#res_region'), $('#res_province'), $('#res_city'), $('#res_barangay'),
-      resRegionCode, resProvinceCode, resCityCode, resBarangayCode);
-  });
-</script>
-@endpush
