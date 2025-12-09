@@ -9,7 +9,6 @@ class FamilyBackground extends Model
 {
     use HasFactory;
 
-<<<<<<< HEAD
     protected $table = 'family_backgrounds'; // Table name
 
     protected $fillable = [
@@ -31,26 +30,8 @@ class FamilyBackground extends Model
 {
     return $this->hasMany(Child::class);
 }
-=======
-    protected $table = 'family_backgrounds';
-
-    protected $fillable = [
-        // spouse
-        's_lname', 's_fname', 's_mname', 's_ext',
-        's_occ', 's_emp', 's_addr',
-
-        // father
-        'f_lname', 'f_fname', 'f_mname', 'f_ext',
-
-        // mother
-        'm_lname', 'm_fname', 'm_mname', 'm_ext',
-
-        // children
-        'children',
-    ];
 
     protected $casts = [
         'children' => 'array', // automatically JSON encode/decode
     ];
->>>>>>> dc4e45e32fbe22834c7fa85287e2e37c57d782bc
 }

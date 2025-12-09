@@ -1,267 +1,12 @@
 {
   "menu": [
     {
+      "url": "planning/dashboard",
       "name": "Dashboard",
-      "icon": "menu-icon tf-icons ri-home-smile-line",
       "slug": "dashboard",
+      "icon": "menu-icon tf-icons ri-dashboard-line",
       "roles": [
-        "HR-Planning",
-        "HR-Welfare",
-        "HR-PAS",
-        "HR-L&D"
-      ],
-      "submenu": [
-        {
-          "url": "/dashboard/dashboards-analytics",
-          "name": "Analytics",
-          "slug": "dashboards-analytics",
-          "roles": [
-            "HR-Planning",
-            "HR-Welfare",
-            "HR-PAS",
-            "HR-L&D"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "User Profile",
-      "icon": "menu-icon tf-icons ri-user-fill",    
-      "slug": "profile",
-      "roles": [
-        "HR-Planning",
-        "HR-Welfare",
-        "HR-PAS",
-        "HR-L&D"
-      ],
-      "submenu": [
-        {
-          "url": "profile/basic-information",
-          "name": "Basic Information",
-          "slug": "basic"
-        },
-        {
-          "url": "profile/family-background",
-          "name": "Family Background",
-          "slug": "family-background"
-        },
-        {
-          "url": "profile/education",
-          "name": "Educational Background",
-          "slug": "education"
-        },
-        {
-          "url": "profile/cs-eligibility",
-          "name": "CS Eligibility",
-          "slug": "cs-eligibility"
-        },
-        {
-          "url": "profile/work-experience",
-          "name": "Work Experience",
-          "slug": "work-experience"
-        },
-        {
-          "url": "profile/voluntary-work",
-          "name": "Voluntary Work",
-          "slug": "voluntary-work"
-        },
-        {
-          "url": "profile/learning-development",
-          "name": "Learning and Development",
-          "slug": "landd"
-        },
-        {
-          "url": "profile/references",
-          "name": "References",
-          "slug": "references"
-        },
-        {
-          "url": "profile/government-ids",
-          "name": "Government ID",
-          "slug": "id"
-        },
-        {
-          "url": "profile/non-academic",
-          "name": "Non-academic",
-          "slug": "non-academic"
-        },
-        {
-          "url": "profile/organization",
-          "name": "Organization",
-          "slug": "organization"
-        },
-        {
-          "url": "profile/skills",
-          "name": "Skills",
-          "slug": "skills"
-        },
-        {
-          "url": "profile/other-information",
-          "name": "Other Information",
-          "slug": "other-information"
-        }
-      ]
-    },
-    {
-      "name": "Forms",
-      "slug": "profile",
-      "roles": [
-        "HR-Planning",
-        "HR-Welfare",
-        "HR-PAS",
-        "HR-L&D"
-      ],
-      "submenu": [
-        {
-          "url": "forms/outslips",
-          "name": "Out Slip",
-          "slug": "outslips",
-          "children": [
-            {
-              "url": "forms/outslips",
-              "name": "List",
-              "slug": "outslips-list"
-            },
-            {
-              "url": "forms/outslip/form",
-              "name": "Form",
-              "slug": "outslip-form"
-            }
-          ]
-        },
-        {
-          "url": "forms/leaves",
-          "name": "Leave",
-          "slug": "leaves",
-          "children": [
-            {
-              "url": "forms/leaves",
-              "name": "List",
-              "slug": "leave-list"
-            },
-            {
-              "url": "forms/leaves/form",
-              "name": "Form",
-              "slug": "leave-form"
-            }
-          ]
-        },
-        {
-          "url": "forms/gad_profile/create",
-          "name": "GAD Profile",
-          "slug": "gad_profile"
-        },
-        {
-          "url": "forms/ethnicity/create",
-          "name": "Ethnicity",
-          "slug": "ethnicity"
-        },
-        {
-          "url": "forms/medical/create",
-          "name": "Medical health",
-          "slug": "medical"
-        },
-        {
-          "url": "forms/solo_parent/create",
-          "name": "Solo Parent",
-          "slug": "solo_parent"
-        },
-        {
-          "url": "forms/travel",
-          "name": "Travel Order",
-          "slug": "travel",
-          "children": [
-            {
-              "url": "forms/travel",
-              "name": "List",
-              "slug": "travel-list"
-            },
-            {
-              "url": "forms/travel/create",
-              "name": "Form",
-              "slug": "travel-form"
-            }
-          ]
-        },
-        {
-          "url": "forms/special/index",
-          "name": "Special Order",
-          "slug": "special-order"
-        },
-        {
-          "url": "profile/government-ids",
-          "name": "Request Form Application",
-          "slug": "id"
-        }
-      ]
-    },
-    {
-      "name": "SALN",
-      "slug": "profile",
-      "roles": [
-        "HR-Planning",
-        "HR-Welfare",
-        "HR-PAS",
-        "HR-L&D"
-      ],
-      "submenu": [
-        {
-          "url": "profile/basic-information",
-          "name": "Real Properties",
-          "slug": "basic"
-        },
-        {
-          "url": "profile/family-background",
-          "name": "Personal Properties",
-          "slug": "family-background"
-        },
-        {
-          "url": "profile/education",
-          "name": "Creditors",
-          "slug": "education"
-        },
-        {
-          "url": "profile/cs-eligibility",
-          "name": "Business Interest and Financial Connections",
-          "slug": "cs-eligibility"
-        },
-        {
-          "url": "profile/work-experience",
-          "name": "Relatove in the Government Service",
-          "slug": "work-experience"
-        },
-        {
-          "url": "profile/voluntary-work",
-          "name": "Print SALN",
-          "slug": "voluntary-work"
-        }
-      ]
-    },
-    {
-      "name": "History",
-      "slug": "profile",
-      "roles": [
-        "HR-Planning",
-        "HR-Welfare",
-        "HR-PAS",
-        "HR-L&D"
-      ],
-      "submenu": [
-        {
-          "url": "outslip/form",
-          "name": "Outslip",
-          "slug": "family-background"
-        },
-        {
-          "url": "profile/education",
-          "name": "Leave",
-          "slug": "education"
-        },
-        {
-          "url": "profile/cs-eligibility",
-          "name": "Forms Requested",
-          "slug": "cs-eligibility"
-        }
+        "HR-Planning"
       ]
     },
     {
@@ -272,14 +17,6 @@
         "HR-Planning"
       ],
       "submenu": [
-        {
-          "url": "planning/dashboard",
-          "name": "Dashboard",
-          "slug": "dashboard",
-          "roles": [
-            "HR-Planning"
-          ]
-        },
         {
           "url": "planning/list-of-employee",
           "name": "List of Employee",
@@ -369,6 +106,249 @@
           "roles": [
             "HR-Planning"
           ]
+        }
+      ]
+    },
+    {
+      "name": "User Profile",
+      "icon": "menu-icon tf-icons ri-user-line",
+      "slug": "profile",
+      "roles": [
+        "HR-Planning",
+        "HR-Welfare",
+        "HR-PAS",
+        "HR-L&D"
+      ],
+      "submenu": [
+        {
+          "url": "profile/basic-information",
+          "name": "Basic Information",
+          "slug": "basic"
+        },
+        {
+          "url": "profile/family-background",
+          "name": "Family Background",
+          "slug": "family-background"
+        },
+        {
+          "url": "profile/education",
+          "name": "Educational Background",
+          "slug": "education"
+        },
+        {
+          "url": "profile/cs-eligibility",
+          "name": "CS Eligibility",
+          "slug": "cs-eligibility"
+        },
+        {
+          "url": "profile/work-experience",
+          "name": "Work Experience",
+          "slug": "work-experience"
+        },
+        {
+          "url": "profile/voluntary-work",
+          "name": "Voluntary Work",
+          "slug": "voluntary-work"
+        },
+        {
+          "url": "profile/learning-development",
+          "name": "Learning and Development",
+          "slug": "landd"
+        },
+        {
+          "url": "profile/references",
+          "name": "References",
+          "slug": "references"
+        },
+        {
+          "url": "profile/government-ids",
+          "name": "Government ID",
+          "slug": "id"
+        },
+        {
+          "url": "profile/non-academic",
+          "name": "Non-academic",
+          "slug": "non-academic"
+        },
+        {
+          "url": "profile/organization",
+          "name": "Organization",
+          "slug": "organization"
+        },
+        {
+          "url": "profile/skills",
+          "name": "Skills",
+          "slug": "skills"
+        },
+        {
+          "url": "profile/other-information",
+          "name": "Other Information",
+          "slug": "other-information"
+        }
+      ]
+    },
+    {
+      "name": "Forms",
+      "icon": "menu-icon tf-icons ri-file-list-3-line",
+      "slug": "profile",
+      "roles": [
+        "HR-Planning",
+        "HR-Welfare",
+        "HR-PAS",
+        "HR-L&D"
+      ],
+      "submenu": [
+        {
+          "url": "forms/outslips",
+          "name": "Out Slip",
+          "slug": "outslips",
+          "children": [
+            {
+              "url": "forms/outslips",
+              "name": "List",
+              "slug": "outslips-list"
+            },
+            {
+              "url": "forms/outslip/form",
+              "name": "Form",
+              "slug": "outslip-form"
+            }
+          ]
+        },  
+        {
+          "url": "forms/leaves",
+          "name": "Leave",
+          "slug": "leaves",
+          "children": [
+            {
+              "url": "forms/leaves",
+              "name": "List",
+              "slug": "leave-list"
+            },
+            {
+              "url": "forms/leaves/form",
+              "name": "Form",
+              "slug": "leave-form"
+            }
+          ]
+        },
+        {
+          "url": "forms/gad_profile/create",
+          "name": "GAD Profile",
+          "slug": "gad_profile"
+        },
+        {
+          "url": "forms/ethnicity/create",
+          "name": "Ethnicity",
+          "slug": "ethnicity"
+        },
+        {
+          "url": "forms/medical/create",
+          "name": "Medical health",
+          "slug": "medical"
+        },
+        {
+          "url": "forms/solo_parent/create",
+          "name": "Solo Parent",
+          "slug": "solo_parent"
+        },
+        {
+          "url": "forms/travel",
+          "name": "Travel Order",
+          "slug": "travel",
+          "children": [
+            {
+              "url": "forms/travel",
+              "name": "List",
+              "slug": "travel-list"
+            },
+            {
+              "url": "forms/travel/create",
+              "name": "Form",
+              "slug": "travel-form"
+            }
+          ]
+        },
+        {
+          "url": "forms/special/index",
+          "name": "Special Order",
+          "slug": "special-order"
+        },
+        {
+          "url": "profile/government-ids",
+          "name": "Request Form Application",
+          "slug": "id"
+        }
+      ]
+    },
+    {
+      "name": "SALN",
+      "icon": "menu-icon tf-icons ri-file-shield-line",
+      "slug": "profile",
+      "roles": [
+        "HR-Planning",
+        "HR-Welfare",
+        "HR-PAS",
+        "HR-L&D"
+      ],
+      "submenu": [
+        {
+          "url": "profile/basic-information",
+          "name": "Real Properties",
+          "slug": "basic"
+        },
+        {
+          "url": "profile/family-background",
+          "name": "Personal Properties",
+          "slug": "family-background"
+        },
+        {
+          "url": "profile/education",
+          "name": "Creditors",
+          "slug": "education"
+        },
+        {
+          "url": "profile/cs-eligibility",
+          "name": "Business Interest and Financial Connections",
+          "slug": "cs-eligibility"
+        },
+        {
+          "url": "profile/work-experience",
+          "name": "Relatove in the Government Service",
+          "slug": "work-experience"
+        },
+        {
+          "url": "profile/voluntary-work",
+          "name": "Print SALN",
+          "slug": "voluntary-work"
+        }
+      ]
+    },
+    {
+      "name": "History",
+      "icon": "menu-icon tf-icons ri-history-line",
+      "slug": "profile",
+      "roles": [
+        "HR-Planning",
+        "HR-Welfare",
+        "HR-PAS",
+        "HR-L&D"
+      ],
+      "submenu": [
+        {
+          "url": "outslip/form",
+          "name": "Outslip",
+          "slug": "family-background"
+        },
+        {
+          "url": "profile/education",
+          "name": "Leave",
+          "slug": "education"
+        },
+        {
+          "url": "profile/cs-eligibility",
+          "name": "Forms Requested",
+          "slug": "cs-eligibility"
         }
       ]
     },

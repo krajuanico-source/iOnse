@@ -45,7 +45,6 @@ use App\Http\Controllers\Profile\OtherInformationController;
 use App\Http\Controllers\Profile\PdsController;
 
 //Planning
-use App\Http\Controllers\planning\DashboardController;
 use App\Http\Controllers\planning\ListofEmployee;
 use App\Http\Controllers\Planning\ApplicantController;
 use App\Http\Controllers\planning\RegistrationForm;
@@ -106,11 +105,7 @@ Route::get('/', function () {
 
 Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
 
-// Dashboard (you can protect this later with auth middleware)
 Route::get('/dashboard', [Analytics::class, 'index'])->name('dashboard-analytics');
-
-// Dashboard (you can protect this later with auth middleware)
-Route::get('/dashboard/dashboards-analytics', [Analytics::class, 'index'])->name('dashboards-analytics');
 
 //-------------------------------------------------------START OF PROFILE-----------------------------------------------------------
 
@@ -237,7 +232,7 @@ Route::prefix('planning')->group(function () {
 });
 
 
-Route::get('/planning/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/planning/dashboard', [Analytics::class, 'index'])->name('dashboard');
 
 // Registration Form Routes
 Route::prefix('planning')->group(function () {
@@ -615,7 +610,6 @@ Route::get('/pages/misc-under-maintenance', [MiscUnderMaintenance::class, 'index
 Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-register-basic');
 Route::get('/auth/forgot-password-basic', [ForgotPasswordBasic::class, 'index'])->name('auth-forgot-password-basic');
 Route::post('/auth/register-basic', [RegisterBasic::class, 'store'])->name('register.store');
-Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
 Route::post('/auth/login-basic', [LoginBasic::class, 'store'])->name('login.store');
 Route::get('/auth/otp', [LoginBasic::class, 'showOtpForm'])->name('otp.form');
 Route::post('/auth/otp', [LoginBasic::class, 'verifyOtp'])->name('otp.verify');

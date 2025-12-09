@@ -23,8 +23,6 @@ use Illuminate\Support\Facades\Route;
 
   <ul class="menu-inner py-1">
     @foreach ($menuData[0]->menu as $menu)
-
-    {{-- Skip menu if user cannot view --}}
     @if (!userCanView($menu))
     @continue
     @endif

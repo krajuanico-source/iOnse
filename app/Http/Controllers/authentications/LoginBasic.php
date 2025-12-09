@@ -82,7 +82,7 @@ class LoginBasic extends Controller
       switch ($role) {
 
         case 'HR-Planning':
-          return redirect()->route('dashboard-analytics'); // ✅ correct
+          return redirect()->route('content.planning.dashboard'); // ✅ correct
 
         case 'HR-Welfare':
           return redirect()->route('dashboard-analytics'); // update to your real route name

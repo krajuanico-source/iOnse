@@ -156,18 +156,37 @@ class PdsController extends Controller
         $this->fillEducation($pdf, $educations, $writeAutoFitMultiCell);
     }
 
-    private function fillCitizenship($pdf, $employee)
-    {
-        $dual = strtolower($employee->dual_citizenship);
-        if ($dual === 'yes') {
-            $pdf->SetXY(50, 90); $pdf->Write(0, 'X');
-            $type = strtolower($employee->citizenship_type);
-            if ($type === 'by_birth') $pdf->SetXY(70, 90); $pdf->Write(0, 'X');
-            if ($type === 'by_naturalization') $pdf->SetXY(90, 90); $pdf->Write(0, 'X');
-        } elseif ($dual === 'no') {
-            $pdf->SetXY(40, 90); $pdf->Write(0, 'X');
+       private function fillCitizenship($pdf, $employee)
+        {
+            $dual = strtolower($employee->dual_citizenship);
+
+            // If Filipino (not dual citizen)
+            if ($dual === 'no') {
+                // Mark Filipino checkbox
+                $pdf->SetXY(133, 61);
+                $pdf->Write(0, '/');
+                return; // Stop here
+            }
+
+            // If Dual Citizenship YES
+            if ($dual === 'yes') {
+                $pdf->SetXY(50, 90);
+                $pdf->Write(0, 'X');
+
+                $type = strtolower($employee->citizenship_type);
+
+                if ($type === 'by_birth') {
+                    $pdf->SetXY(70, 90);
+                    $pdf->Write(0, 'X');
+                }
+
+                if ($type === 'by_naturalization') {
+                    $pdf->SetXY(90, 90);
+                    $pdf->Write(0, 'X');
+                }
+            }
         }
-    }
+
 
     private function fillAddresses($pdf, $employee, $writeAutoFitMultiCell)
     {
@@ -384,7 +403,7 @@ class PdsController extends Controller
 
             $writeAutoFitMultiCell($pdf, 37, 251, 30, 4, $concatText);
             
-            $otherInfo = $employee->otherInformations->first();
+            $employee->otherInformations()->first();
 
             // Third-degree YES/NO coordinates
             $thirdDegreeMap = [

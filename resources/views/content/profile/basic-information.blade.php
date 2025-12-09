@@ -11,6 +11,7 @@
 </style>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
@@ -55,12 +56,16 @@
               </select>
             </div>
             <div class="col-md-3">
+              <label class="form-label fw-bold">Email Address</label>
+              <input type="text" name="email" class="form-control" value="{{ $employee->email }}" readonly style="background-color: #e9ecef;">
+            </div>
+            <div class="col-md-3">
               <label class="form-label fw-bold">Employee ID</label>
-              <input type="text" name="employee_id" class="form-control" value="{{ $employee->employee_id }}">
+              <input type="text" name="employee_id" class="form-control" value="{{ $employee->employee_id }}" readonly style="background-color: #e9ecef;">
             </div>
             <div class="col-md-3">
               <label class="form-label fw-bold">Username</label>
-              <input type="text" name="username" class="form-control" value="{{ $employee->username }}">
+              <input type="text" name="username" class="form-control" value="{{ $employee->username }}" readonly style="background-color: #e9ecef;">
             </div>
             <div class="col-md-3">
               <label class="form-label fw-bold">Password</label>
@@ -115,6 +120,10 @@
               <input type="number" step="0.1" name="weight" class="form-control" value="{{ $employee->weight }}">
             </div>
             <div class="col-md-3">
+              <label class="form-label fw-bold">Age</label>
+              <input type="number" step="0.1" name="age" class="form-control" value="{{ $employee->age }}">
+            </div>
+            <div class="col-md-3">
               <label class="form-label fw-bold">Tel No.</label>
               <input type="text" name="tel_no" class="form-control" value="{{ $employee->tel_no }}">
             </div>
@@ -134,22 +143,29 @@
                 </select>
             </div>
 
-            <div class="col-md-3" id="dual_citizenship_type_container" style="display: none;">
-                <label class="form-label d-block">If Dual Citizenship, indicate:</label>
-                <select name="dual_citizenship_type" id="dual_citizenship_type" class="form-select">
-                    <option value="by_birth" {{ $employee->dual_citizenship_type == 'by_birth' ? 'selected' : '' }}>By Birth</option>
-                    <option value="by_naturalization" {{ $employee->dual_citizenship_type == 'by_naturalization' ? 'selected' : '' }}>By Naturalization</option>
+            <div class="col-md-3" id="citizenship_type_container" style="display: none;">
+                <label class="form-label d-block">If Dual Citizenship, Indicate:</label>
+                <select name="citizenship_type" id="citizenship_type" class="form-select">
+                    <option value="by_birth" {{ $employee->citizenship_type == 'by_birth' ? 'selected' : '' }}>By Birth</option>
+                    <option value="by_naturalization" {{ $employee->citizenship_type == 'by_naturalization' ? 'selected' : '' }}>By Naturalization</option>
                 </select>
             </div>
+
+            <div class="col-md-3" id="dual_country_container" style="display: none;">
+                <label class="form-label">Dual Citizenship Country</label>
+                <input type="text" name="dual_citizenship" id="dual_citizenship" 
+                      value="{{ $employee->dual_citizenship }}" class="form-control">
+            </div>
+
 
 <script>
 $(document).ready(function() {
     function toggleDualType() {
         if ($('#citizenship').val() === 'Dual Citizenship') {
-            $('#dual_citizenship_type_container').show();
+            $('#citizenship_type_container').show();
         } else {
-            $('#dual_citizenship_type_container').hide();
-            $('#dual_citizenship_type').val(''); // reset
+            $('#citizenship_type_container').hide();
+            $('#citizenship_type').val(''); // reset
         }
     }
 
@@ -246,42 +262,45 @@ $(document).ready(function() {
           </div>
 
           <script>
-            $(document).ready(function() {
-              $('#employeeForm').submit(function(e) {
-                e.preventDefault();
+$(document).ready(function() {
+    $('#employeeForm').submit(function(e) {
+        e.preventDefault();
 
-                let formData = new FormData(this);
+        if (!confirm('Are you sure you want to save changes?')) return;
 
-                $('#employeeForm').submit(function(e) {
-                  e.preventDefault();
-                  if (!confirm('Are you sure you want to save changes?')) return;
+        let formData = new FormData(this);
 
-                  $.ajax({
-                    url: '{{ route("profile.basic-info.update") }}',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false, // Needed for file upload
-                    processData: false, // Needed for file upload
-                    headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                      toastr.success('Basic Information updated successfully!');
-                      // optional reload
-                      setTimeout(() => location.reload(), 500);
-                    },
-                    error: function(xhr) {
-                      toastr.error('Failed to update Basic Information.');
-                      console.log(xhr.responseText);
+        $.ajax({
+            url: '{{ route("profile.basic-info.update") }}',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            },
+            success: function(response) {
+                toastr.success('Basic Information updated successfully!');
+                setTimeout(() => location.reload(), 500);
+            },
+            error: function(xhr) {
+                if(xhr.responseJSON && xhr.responseJSON.errors){
+                    let errors = xhr.responseJSON.errors;
+                    let msg = '';
+                    for(let key in errors){
+                        msg += errors[key].join(', ') + '\n';
                     }
-                  });
-                });
-              });
-            });
-          </script>
-
-          {{-- jQuery Script --}}
-          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    toastr.error(msg);
+                } else {
+                    toastr.error('Failed to update Basic Information.');
+                }
+                console.log(xhr.responseText);
+            }
+        });
+    });
+});
+</script>
           <script>
             $(document).ready(function() {
               // ======== GET DATABASE VALUES =========

@@ -17,17 +17,14 @@ use Illuminate\Support\Str;
 
 <div class="card">
   <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-<<<<<<< HEAD
-
-=======
-      <div class="d-flex gap-2">
-        <a href="{{ url('planning/registration-form') }}" class="btn btn-success">Add New Employee</a>
-        <a href="{{ url('planning/import-form') }}" class="btn btn-primary">Import Employees</a>
-      </div>
->>>>>>> bf0251197533e5c0a2f7d041bd46ee2e8142b8c1
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="ms-auto d-flex gap-2">
+      <!-- <a href="{{ url('planning/registration-form') }}" class="btn btn-success">Add New Employee</a>
+      <a href="{{ url('planning/import-form') }}" class="btn btn-primary">Import Employee's Data</a> -->
+    </div>
     </div>
     <div class="table-responsive">
+      
       <table id="empTable" class="table">
         <thead class="table-light">
           <tr>
@@ -69,11 +66,7 @@ use Illuminate\Support\Str;
             <td>
               <div class="d-flex gap-1">
                 <a href="{{ route('employee.show-view', $employee->id) }}" class="btn btn-sm btn-primary">View</a>
-<<<<<<< HEAD
                
-=======
-
->>>>>>> bf0251197533e5c0a2f7d041bd46ee2e8142b8c1
               </div>
             </td>
           </tr>

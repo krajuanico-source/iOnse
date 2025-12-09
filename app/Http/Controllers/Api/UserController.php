@@ -241,4 +241,54 @@ class UserController extends Controller
 
     return redirect()->back()->with('success', 'User details updated successfully!');
   }
+  public function showImportForm()
+{
+    return view('content.planning.import-form'); // adjust the view name as needed
+}
+
+public function importEmployees(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:csv,txt',
+    ]);
+
+    $file = $request->file('file');
+
+    $rows = array_map('str_getcsv', file($file));
+    $header = array_shift($rows); // first row = header
+
+    foreach ($rows as $row) {
+        $data = array_combine($header, $row);
+
+        \App\Models\User::updateOrCreate(
+            ['employee_id' => $data['EMPLOYEE ID NO']], // match exact CSV column name
+            [
+                'first_name' => $data['FIRST NAME (JUAN)'] ?? null,
+                'middle_name' => $data['MIDDLE NAME (PEREZ)'] ?? null,
+                'last_name' => $data['LASTNAME (CRUZ)'] ?? null,
+                'username' => $data['LASTNAME (CRUZ)'] ?? null,
+                'email' => $data['ACTIVE AND WORKING EMAIL ADDRESS'] ?? null,
+                'division' => $data['DIVISION'] ?? null,
+                'section' => $data['SECTION'] ?? null,
+                'employment_status' => $data['EMPLOYMENT STATUS'] ?? null,
+                'position_title' => $data['POSITION TITLE'] ?? null,
+                'position_level' => $data['LEVEL'] ?? null,
+                'birthdate' => isset($data['DATE OF BIRTH (DD-MMM-YYYY)']) 
+                    ? \Carbon\Carbon::createFromFormat('d-M-Y', $data['DATE OF BIRTH (DD-MMM-YYYY)']) 
+                    : null,
+                'age' => $data['AGE'] ?? null,
+                'gender' => $data['GENDER'] ?? null,
+            ]
+        );
+    }
+
+    \App\Models\ImportLog::create([
+        'filename' => $file->getClientOriginalName(),
+        'status' => 'success',
+        'imported_at' => now(),
+    ]);
+
+    return redirect()->back()->with('success', 'Imported successfully!');
+}
+
 }

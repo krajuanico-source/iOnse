@@ -20,73 +20,83 @@ class BasicInformationController extends Controller
         return view('content.profile.basic-information', compact('employee'));
     }
 
-    public function update(Request $request)
-    {
-        $employee = auth()->user();
+   public function update(Request $request)
+{
+    $employee = auth()->user();
 
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            'password'   => 'nullable|min:8',
-        ]);
+    // Validate basic fields
+    $request->validate([
+        'first_name'   => 'required|string|max:255',
+        'last_name'    => 'required|string|max:255',
+        'username'     => 'required|string|max:255|unique:users,username,' . $employee->id,
+        'employee_id'  => 'required|string|max:50|unique:users,employee_id,' . $employee->id,
+        'password'     => 'nullable|min:8',
+        'citizenship'  => 'required|string|in:Filipino,Dual Citizenship',
+        'citizenship_type' => 'nullable|string|in:by_birth,by_naturalization',
+    ]);
 
-        // ✅ Basic Information
-        $employee->employee_id = $request->employee_id;
-        $employee->username = $request->username;
-        $employee->first_name = $request->first_name;
-        $employee->middle_name = $request->middle_name;
-        $employee->last_name = $request->last_name;
-        $employee->extension_name = $request->extension_name;
-        $employee->birthday = $request->birthday;
-        $employee->place_of_birth = $request->place_of_birth;
-        $employee->gender = $request->gender;
-        $employee->civil_status = $request->civil_status;
-        $employee->height = $request->height;
-        $employee->weight = $request->weight;
-        $employee->blood_type = $request->blood_type;
-        $employee->tel_no = $request->tel_no;
-        $employee->mobile_no = $request->mobile_no;
-        $employee->citizenship = $request->citizenship;
-        $employee->dual_citizenship = $request->dual_citizenship;
-        $employee->citizenship_type = $request->citizenship_type;
-        $employee->perm_country = $request->perm_country;
+    // ✅ Basic Information
+    $employee->employee_id = $request->employee_id;
+    $employee->username    = $request->username;
+    $employee->first_name  = $request->first_name;
+    $employee->middle_name = $request->middle_name;
+    $employee->last_name   = $request->last_name;
+    $employee->extension_name = $request->extension_name;
+    $employee->birthday       = $request->birthday;
+    $employee->place_of_birth = $request->place_of_birth;
+    $employee->gender         = $request->gender;
+    $employee->civil_status   = $request->civil_status;
+    $employee->height         = $request->height;
+    $employee->weight         = $request->weight;
+    $employee->age            = $request->age;
+    $employee->blood_type     = $request->blood_type;
+    $employee->tel_no         = $request->tel_no;
+    $employee->mobile_no      = $request->mobile_no;
+    $employee->perm_country   = $request->perm_country;
+    $employee->citizenship    = $request->citizenship;
 
-        // ✅ Permanent Address
-        $employee->perm_region = $request->perm_region;
-        $employee->perm_province = $request->perm_province;
-        $employee->perm_city = $request->perm_city;
-        $employee->perm_barangay = $request->perm_barangay;
-        $employee->perm_street = $request->perm_street;
-        $employee->perm_house_no = $request->perm_house_no;
-        $employee->perm_zipcode = $request->perm_zipcode;
+    // ✅ Dual citizenship handling
+    $employee->citizenship_type = $request->citizenship === 'Dual Citizenship' 
+        ? $request->citizenship_type 
+        : null;
 
-        // ✅ Residence Address
-        $employee->res_region = $request->res_region;
-        $employee->res_province = $request->res_province;
-        $employee->res_city = $request->res_city;
-        $employee->res_barangay = $request->res_barangay;
-        $employee->res_street = $request->res_street;
-        $employee->res_house_no = $request->res_house_no;
-        $employee->res_zipcode = $request->res_zipcode;
+    // ✅ Permanent Address
+    $employee->perm_region   = $request->perm_region;
+    $employee->perm_province = $request->perm_province;
+    $employee->perm_city     = $request->perm_city;
+    $employee->perm_barangay = $request->perm_barangay;
+    $employee->perm_street   = $request->perm_street;
+    $employee->perm_house_no = $request->perm_house_no;
+    $employee->perm_zipcode  = $request->perm_zipcode;
 
-        // ✅ Profile image upload
-        if ($request->hasFile('profile_image')) {
-            $path = $request->file('profile_image')->store('profile_images', 'public');
-            $employee->profile_image = $path;
-        }
+    // ✅ Residence Address
+    $employee->res_region   = $request->res_region;
+    $employee->res_province = $request->res_province;
+    $employee->res_city     = $request->res_city;
+    $employee->res_barangay = $request->res_barangay;
+    $employee->res_street   = $request->res_street;
+    $employee->res_house_no = $request->res_house_no;
+    $employee->res_zipcode  = $request->res_zipcode;
 
-        // ✅ Password update
-        if ($request->filled('password')) {
-            $employee->password = Hash::make($request->password);
-        }
-
-        $employee->save();
-
-        // ✅ If AJAX request, respond as JSON
-        if ($request->ajax()) {
-            return response()->json(['success' => true]);
-        }
-
-        return redirect()->back()->with('success', 'Profile updated successfully!');
+    // ✅ Profile image upload
+    if ($request->hasFile('profile_image')) {
+        $path = $request->file('profile_image')->store('profile_images', 'public');
+        $employee->profile_image = $path;
     }
+
+    // ✅ Password update
+    if ($request->filled('password')) {
+        $employee->password = Hash::make($request->password);
+    }
+
+    $employee->save();
+
+    // ✅ AJAX or normal response
+    if ($request->ajax()) {
+        return response()->json(['success' => true]);
+    }
+
+    return redirect()->back()->with('success', 'Profile updated successfully!');
+}
+
 }
