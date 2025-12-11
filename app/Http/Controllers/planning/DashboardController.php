@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\dashboard;
+namespace App\Http\Controllers\Planning;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -12,7 +12,7 @@ use App\Models\Division;
 use App\Models\Section;
 use App\Models\ItemNumber;
 
-class Analytics extends Controller
+class DashboardController extends Controller
 {
 
     public function index()
@@ -67,23 +67,17 @@ class Analytics extends Controller
         //     ->pluck('total', 'division'); // returns collection keyed by division
 
         $office_locations = DB::table('users')
-            ->join('office_locations', 'users.office_location', '=', 'office_locations.id') // join on ID
-            ->select('office_locations.name', DB::raw('COUNT(*) as total'))
+            ->join('office_locations', 'users.name', '=', 'office_locations.name')
+            ->select('office_locations.name', DB::raw('count(*) as total'))
             ->groupBy('office_locations.name')
             ->orderBy('total', 'desc')
-            ->pluck('total', 'office_locations.name')
-            ->toArray();
-
-
+            ->pluck('total', 'name')
+            ->toArray(); // convert collection to array
 
         $employment_status = DB::table('users')
-        ->join('employment_statuses', 'users.employment_status_id', '=', 'employment_statuses.id')
-        ->select('employment_statuses.name', DB::raw('COUNT(*) as total'))
-        ->groupBy('employment_statuses.name')
-        ->orderBy('total', 'desc')
-        ->pluck('total', 'name')
-        ->toArray();
-
+            ->select('employment_status_id', DB::raw('count(*) as total'))
+            ->groupBy('employment_status_id')
+            ->pluck('total', 'employment_status_id');
 
         return view('content.planning.dashboard', compact(
 
@@ -96,8 +90,8 @@ class Analytics extends Controller
             'female',
             'ageGroups',
             'divisions',
-            'office_locations',
-            'employment_status'
+            'office_locations'
+            // 'contracts'
         ));
     }
 }

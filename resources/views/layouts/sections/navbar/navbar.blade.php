@@ -3,6 +3,7 @@
   use Illuminate\Support\Facades\Route;
   @endphp
 
+   
   <style>
     .custom-navbar-bg {
       background-color:rgb(255, 255, 255);
@@ -42,16 +43,27 @@
           <li class="nav-item dropdown-user dropdown">
             <a class="nav-link dropdown-toggle hide-arrow p-0" href="#" data-bs-toggle="dropdown">
               <div class="avatar avatar-online">
-                <img src="{{ asset('assets/img/avatars/1.png') }}" class="w-px-40 h-auto rounded-circle" alt="Avatar">
+                <img 
+                      src="{{ Auth::user()->profile_image && file_exists(storage_path('app/public/' . Auth::user()->profile_image)) 
+                              ? asset('storage/' . Auth::user()->profile_image) 
+                              : asset('assets/img/avatars/1.png') }}" 
+                      class="rounded-circle" 
+                      alt="Avatar"
+                      style="width: 40px; height: 40px; object-fit: cover; border: 1px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.2); margin-right: 10px;">
+                      
               </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end mt-3 py-2">
               <li>
                 <a class="dropdown-item" href="#">
                   <div class="d-flex align-items-center">
-                    <div class="avatar avatar-online me-2">
-                      <img src="{{ asset('assets/img/avatars/1.png') }}" class="w-px-40 h-auto rounded-circle" alt="Avatar">
-                    </div>
+                    <img 
+                      src="{{ Auth::user()->profile_image && file_exists(storage_path('app/public/' . Auth::user()->profile_image)) 
+                              ? asset('storage/' . Auth::user()->profile_image) 
+                              : asset('assets/img/avatars/1.png') }}" 
+                      class="rounded-circle" 
+                      alt="Avatar"
+                      style="width: 40px; height: 40px; object-fit: cover; border: 1px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.2); margin-right: 10px;">
                       <div>
                         <h6 class="mb-0 small text-uppercase">
                           {{ Auth::user()->first_name }} 
@@ -67,12 +79,10 @@
               </li>
               <li><hr class="dropdown-divider"></li>
               <li>
-                <a class="dropdown-item" href="{{ url('/pages/account-settings-account') }}">
+                <!-- <a class="dropdown-item" href="{{ url('/pages/account-settings-account') }}">
                   <i class="ri-user-line me-2"></i> My Profile
-                </a>
+                </a> -->
               </li>
-              <li><a class="dropdown-item" href="#"><i class="ri-settings-3-line me-2"></i> Settings</a></li>
-              <li><a class="dropdown-item" href="#"><i class="ri-file-list-line me-2"></i> Billing</a></li>
               <li><hr class="dropdown-divider"></li>
               <li>
                 <div class="px-3 py-1">

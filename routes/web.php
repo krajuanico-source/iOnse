@@ -105,7 +105,7 @@ Route::get('/', function () {
 
 Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
 
-Route::get('/dashboard', [Analytics::class, 'index'])->name('dashboard-analytics');
+Route::get('/planning/dashboard', [Analytics::class, 'index'])->name('dashboard-analytics');
 
 //-------------------------------------------------------START OF PROFILE-----------------------------------------------------------
 
@@ -232,7 +232,8 @@ Route::prefix('planning')->group(function () {
 });
 
 
-Route::get('/planning/dashboard', [Analytics::class, 'index'])->name('dashboard');
+Route::get('/planning/dashboard', [Analytics::class, 'index'])
+    ->name('content.planning.dashboard');
 
 // Registration Form Routes
 Route::prefix('planning')->group(function () {

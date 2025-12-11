@@ -11,7 +11,7 @@
 </style>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+ 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
@@ -582,10 +582,12 @@ $(document).ready(function() {
         {{-- Right Column: Profile Picture --}}
         <div class="col-md-3 text-center d-flex flex-column align-items-center justify-content-start mt-4">
           <div class="position-relative mb-3" style="width: 180px; height: 180px;">
-            <img id="preview-image"
-              src="{{ $employee->profile_image ? asset('storage/' . $employee->profile_image) : asset('default-user.png') }}"
+          <img id="preview-image"
+              src="{{ $employee->profile_image && file_exists(storage_path('app/public/' . $employee->profile_image)) 
+                    ? asset('storage/' . $employee->profile_image) 
+                    : asset('default-avatar.png') }}"
               class="rounded-circle border border-3 border-secondary shadow-sm"
-              style="width: 100%; height: 100%; object-fit: cover;">
+              style="width: 180px; height: 180px; object-fit: cover;">
           </div>
 
           {{-- Upload Button --}}

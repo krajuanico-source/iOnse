@@ -14,8 +14,18 @@
       <!-- Reset Password Card -->
       <div class="card p-7">
 
+              <!-- Logo -->
+        <div class="app-brand justify-content-center mt-5">
+        <a href="{{ url('/') }}" class="app-brand-link d-flex align-items-center gap-3">
+          <span class="app-brand-logo d-flex align-items-center gap-2 bg-white p-2 rounded">
+            <img src="{{ asset('assets/img/logo-dswd1.png') }}" alt="DSWD Logo" height="80">
+            <img src="{{ asset('assets/img/hrprime-logo.png') }}" alt="HR Prime Logo" height="90">
+          </span>
+        </a>
+        </div>
+
         <div class="card-body mt-1">
-          <h4 class="mb-1">Reset Your Password 🔐</h4>
+          <h4 class="mb-4 text-center text-2xl font-semibold">Reset Password</h4>
           <p class="mb-4">Enter your new password below to reset your account password.</p>
 
           @if ($errors->any())

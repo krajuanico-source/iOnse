@@ -16,7 +16,7 @@
 
   <!-- Toastr CSS -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+ 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
@@ -101,14 +101,14 @@
 <div class="row g-4">
   <div class="col-md-6">
     <div class="card h-100">
-      <div class="card-header"><h6>Headcount by Location</h6></div>
+      <div class="card-header"><h6>Headcount by Office Location</h6></div>
       <div class="card-body"><div id="locationChart"></div></div>
     </div>
   </div>
 
   <div class="col-md-6">
     <div class="card h-100">
-      <div class="card-header"><h6>Headcount by Contract Type</h6></div>
+      <div class="card-header"><h6>Headcount by Employment Status</h6></div>
       <div class="card-body"><div id="contractChart"></div></div>
     </div>
   </div>
@@ -140,16 +140,38 @@ document.addEventListener("DOMContentLoaded", function () {
         colors: ['#1d4bb2']
     }).render();
 
+    // DIVISION
     new ApexCharts(document.querySelector("#divisionChart"), {
-    chart: { type: 'bar', height: 280 },
-    series: [{
-        name: "Employees",
-        data: @json(array_values($divisions))
-    }],
-    xaxis: {
-        categories: @json(array_keys($divisions)) // division names
-    },
-    colors: ['#1d4bb2']
+        chart: { type: 'bar', height: 280 },
+        series: [{
+            name: "Employees",
+            data: @json(array_values($divisions))
+        }],
+        xaxis: {
+            categories: @json(array_keys($divisions))
+        },
+        colors: ['#1d4bb2']
+    }).render();
+
+    // OFFICE LOCATION
+    new ApexCharts(document.querySelector("#locationChart"), {
+        chart: { type: 'bar', height: 280 },
+        series: [{
+            name: "Employees",
+            data: @json(array_values($office_locations))
+        }],
+        xaxis: {
+            categories: @json(array_keys($office_locations))
+        },
+        colors: ['#1d4bb2']
+    }).render();
+
+    // EMPLOYMENT STATUS — FIXED ✔✔
+    new ApexCharts(document.querySelector("#contractChart"), {
+        chart: { type: 'donut', height: 280 },
+        series: @json(array_values($employment_status)),
+        labels: @json(array_keys($employment_status)),   // Names, not IDs
+        colors: ['#1d4bb2', '#b21810ff', '#ffcc00', '#00897b', '#6a1b9a']
     }).render();
 
     new ApexCharts(document.querySelector("#locationChart"), {
@@ -164,9 +186,9 @@ document.addEventListener("DOMContentLoaded", function () {
     colors: ['#1d4bb2']
 }).render();
 
-
 });
 </script>
+
 
 
 @endsection

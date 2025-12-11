@@ -38,6 +38,7 @@ class LoginBasic extends Controller
       // Generate OTP
       $otp = rand(100000, 999999);
       Session::put('otp', $otp);
+Session::put('otp_expires_at', now()->addMinutes(5)); // OTP valid for 5 minutes
 
       // Get user email
       $user = \App\Models\User::where($loginType, $request->login)->first();

@@ -199,6 +199,23 @@
       ],
       "submenu": [
         {
+          "url": "pds/fill",
+          "name": "Personal Data Sheet",
+          "slug": "pds",
+          "children": [
+            {
+              "url": "forms/outslips",
+              "name": "List",
+              "slug": "outslips-list"
+            },
+            {
+              "url": "forms/outslip/form",
+              "name": "Form",
+              "slug": "outslip-form"
+            }
+          ]
+        },
+        {
           "url": "forms/outslips",
           "name": "Out Slip",
           "slug": "outslips",
@@ -214,7 +231,7 @@
               "slug": "outslip-form"
             }
           ]
-        },  
+        },
         {
           "url": "forms/leaves",
           "name": "Leave",
