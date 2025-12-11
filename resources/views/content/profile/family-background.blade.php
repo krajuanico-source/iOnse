@@ -2,7 +2,7 @@
 @section('title', 'Family Background')
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
- 
+ <!-- Family Background -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 

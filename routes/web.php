@@ -120,7 +120,7 @@ Route::prefix('profile')->group(function () {
   Route::post('basic-information/update', [BasicInformationController::class, 'update'])->name('profile.basic-info.update');
 });
 
-
+//Family Background
 Route::middleware(['auth'])->group(function () {
   Route::get('/profile/family-background', [FamilyBackgroundController::class, 'edit'])->name('profile.family-background.edit');
   Route::post('/profile/family-background', [FamilyBackgroundController::class, 'update'])->name('profile.family-background.update');

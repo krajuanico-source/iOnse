@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class FamilyBackgroundController extends Controller
 {
+    // Family Background
     public function edit()
     {
         $employee_id = Auth::id(); // Assuming logged-in employee
