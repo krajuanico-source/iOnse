@@ -273,7 +273,7 @@
             <td style='border-right: thin solid;' colspan='9' align='left'><label style='font-size:8px'>7.D DISAPPROVED DUE TO:</td>
           </tr>
           <tr>
-            <td style=';border-left: thin solid;' colspan='11' align='left'><label style='font-size:8px'>&emsp;________days with pay</td>
+            <td style='border-left: thin solid;' colspan='11' align='left'><label style='font-size:8px'>&emsp;________days with pay</td>
             <td style='border-right: thin solid;' colspan='9' align='center'>______________________________________________</td>
 
           </tr>

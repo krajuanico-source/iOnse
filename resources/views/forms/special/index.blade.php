@@ -10,10 +10,10 @@
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="text-primary">Special Orders</h4>
-    <a href="{{ route('forms.special.create') }}" class="btn btn-primary">New special Order</a>
+    <a href="{{ route('forms.special.create') }}" class="btn btn-primary">New Special Order</a>
   </div>
 
-  <!-- special Orders Table -->
+  <!-- Special Orders Table -->
   <table id="specialTable" class="table table-bordered">
     <thead>
       <tr>
@@ -27,80 +27,106 @@
       </tr>
     </thead>
     <tbody>
+
       @php
-      $groupedSpecialls = $specials->groupBy('special_reference_number');
+      // Group all items by special_reference_number
+      $groupedSpecials = $specials->groupBy('special_reference_number');
       @endphp
 
-      @foreach($groupedSpecialls as $ref => $batch)
+      @foreach($groupedSpecials as $ref => $batch)
       <tr>
         <td>{{ $ref }}</td>
+
+        <!-- EMPLOYEES -->
         <td>
           @php
-          $employees = $batch->pluck('employee.full_name')->filter()->all();
+          $employees = $batch->pluck('employee.full_name')->filter()->values()->all();
           $firstEmployee = $employees[0] ?? ($batch->first()->empid ?? 'N/A');
-          $employeeCount = count($employees);
           @endphp
 
           {{ $firstEmployee }}
-          @if($employeeCount > 1)
+          @if(count($employees) > 1)
           et. al.
           @endif
         </td>
 
+        <!-- PURPOSES -->
         <td>
           @php
-          $purposes = $batch->pluck('special_purpose')->filter()->all();
+          $purposes = $batch->pluck('special_purpose')->filter()->values()->all();
           $firstPurpose = $purposes[0] ?? 'N/A';
           @endphp
+
           {{ $firstPurpose }}
-          @if(count($purposes) > 1)@endif
+          @if(count($purposes) > 1)
+          et. al.
+          @endif
         </td>
 
+        <!-- DESTINATIONS -->
         <td>
           @php
-          $destinations = $batch->pluck('special_destination')->filter()->all();
+          $destinations = $batch->pluck('special_destination')->filter()->values()->all();
           $firstDestination = $destinations[0] ?? 'N/A';
           @endphp
+
           {{ $firstDestination }}
-          @if(count($destinations) > 1) @endif
+          @if(count($destinations) > 1)
+          et. al.
+          @endif
         </td>
 
+        <!-- STATUS -->
         <td>{{ $batch->pluck('status')->unique()->implode(', ') }}</td>
+
+        <!-- DATE REQUESTED -->
         <td>{{ \Carbon\Carbon::parse($batch->first()->date_requested)->format('Y-m-d H:i') }}</td>
+
+        <!-- ACTION -->
         <td>
-          <!-- Action Buttons -->
+          <!-- Sign -->
           <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#signatureTypeModal_{{ $ref }}">
             Sign
           </button>
-          <a href="{{ route('forms.special.edit', $ref) }}" class="btn btn-warning btn-sm">Edit</a>
-          <form action="{{ route('forms.special.destroy', $ref) }}" method="POST" class="d-inline">
+
+          <!-- Edit -->
+          <a href="{{ route('forms.special.edit', $batch->first()->id) }}" class="btn btn-warning btn-sm">
+            Edit
+          </a>
+
+          <!-- Delete -->
+          <form action="{{ route('forms.special.destroy', $batch->first()->id) }}" method="POST" class="d-inline">
             @csrf
             @method('DELETE')
-            <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this special batch?')">Delete</button>
+            <button class="btn btn-danger btn-sm" onclick="return confirm('Delete this special batch?')">
+              Delete
+            </button>
           </form>
-          <a href="{{ route('forms.special.print', $ref) }}" class="btn btn-primary btn-sm" target="_blank">Print</a>
+
+          <!-- Print -->
+          <a href="{{ route('forms.special.print', $ref) }}" class="btn btn-primary btn-sm" target="_blank">
+            Print
+          </a>
         </td>
       </tr>
 
-      <!-- Modals (inside the loop, so $ref is available) -->
+      <!-- Modals -->
       <x-modals.signature-type :ref="$ref" />
       <x-modals.digital-signature :ref="$ref" />
       <x-modals.electronic-signature :ref="$ref" />
 
       @endforeach
     </tbody>
-
   </table>
-
 </div>
 
 <!-- Toast Notification -->
 @if(session('success'))
 <div class="toast-container p-3 position-fixed top-0 end-0">
-  <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast text-bg-success show">
     <div class="d-flex">
       <div class="toast-body">{{ session('success') }}</div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      <button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
     </div>
   </div>
 </div>
@@ -108,10 +134,10 @@
 
 @if(session('error'))
 <div class="toast-container p-3 position-fixed top-0 end-0">
-  <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast text-bg-danger show">
     <div class="d-flex">
       <div class="toast-body">{{ session('error') }}</div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      <button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
     </div>
   </div>
 </div>
@@ -119,20 +145,23 @@
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <script>
-  $(function() {
+  // DataTable Init
+  jQuery(function($) {
     $('#specialTable').DataTable({
       paging: true,
       searching: true,
       info: true
     });
+  });
 
-    // Auto-show toast
+  $(function() {
+
     $('.toast').toast({
       delay: 5000
-    });
-    $('.toast').toast('show');
+    }).toast('show');
   });
 </script>
 @endsection

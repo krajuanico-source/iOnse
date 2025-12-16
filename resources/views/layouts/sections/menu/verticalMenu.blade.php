@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
   <div class="app-brand demo mt-4">
     <a href="{{ url('dashboard') }}" class="app-brand-link">
       <span class="app-brand-logo demo me-1">
-        <img src="{{ asset('assets/img/logo-dswd.png') }}" alt="DSWD Logo" height="68" style="margin: 30px 0;" />
+        <img src="{{ asset('assets/img/logo-dswd.png') }}" alt="DSWD Logo" height="68" style="margin: 100px 0 100px 0 ;" />
       </span>
     </a>
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">

@@ -82,12 +82,12 @@
     </div>
   </div>
 
-  <div class="col-md-4">
+<div class="col-md-4">
     <div class="card h-100">
-      <div class="card-header"><h6>Headcount by Age Group</h6></div>
-      <div class="card-body"><div id="ageChart"></div></div>
+        <div class="card-header"><h6>Headcount by Age Group</h6></div>
+        <div class="card-body"><div id="ageChart"></div></div>
     </div>
-  </div>
+</div>
 
   <div class="col-md-4">
     <div class="card h-100">
@@ -98,21 +98,30 @@
 </div>
 
 <!-- ================= ROW 2 ================= -->
-<div class="row g-4">
-  <div class="col-md-6">
+<div class="row g-4 mb-4">
+  <div class="col-md-4">
     <div class="card h-100">
       <div class="card-header"><h6>Headcount by Office Location</h6></div>
       <div class="card-body"><div id="locationChart"></div></div>
     </div>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-4">
     <div class="card h-100">
-      <div class="card-header"><h6>Headcount by Employment Status</h6></div>
+      <div class="card-header"><h6>Percentage by Employment Status</h6></div>
       <div class="card-body"><div id="contractChart"></div></div>
     </div>
   </div>
+
+  <div class="col-md-4">
+    <div class="card h-100">
+      <div class="card-header"><h6>Headcount by Employment Status</h6></div>
+      <div class="card-body"><div id="employmentStatusChart"></div></div>
+    </div>
+  </div>
 </div>
+
+
 
 <!-- ================= INLINE JS (NO FILE NEEDED) ================= -->
 
@@ -128,17 +137,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }).render();
 
     // AGE GROUP
-    new ApexCharts(document.querySelector("#ageChart"), {
-        chart: { type: 'bar', height: 280 },
-        series: [{
-            name: "Employees",
-            data: @json(array_values($ageGroups))
-        }],
-        xaxis: {
-            categories: ['Under 25', '25–34', '35–44', '45–54', 'Over 55']
-        },
-        colors: ['#1d4bb2']
-    }).render();
+          new ApexCharts(document.querySelector("#ageChart"), {
+              chart: {
+                  type: 'bar',
+                  height: 280,
+                  stacked: true // stacked bars by gender
+              },
+              series: [
+                  { name: 'Male',   data: @json($maleAgeData) },
+                  { name: 'Female', data: @json($femaleAgeData) }
+              ],
+              xaxis: {
+                  categories: @json($ageGroups)
+              },
+              colors: ['#1d4bb2', '#ac1109'], // blue for male, pink/red for female
+              legend: { position: 'top' },
+              dataLabels: { enabled: true }
+          }).render();
+      
+
 
     // DIVISION
     new ApexCharts(document.querySelector("#divisionChart"), {
@@ -168,11 +185,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // EMPLOYMENT STATUS — FIXED ✔✔
     new ApexCharts(document.querySelector("#contractChart"), {
-        chart: { type: 'donut', height: 280 },
+        chart: { 
+            type: 'donut', 
+            height: 350, // adjust the height
+            width: 400   // optional: set a specific width
+        },
         series: @json(array_values($employment_status)),
         labels: @json(array_keys($employment_status)),   // Names, not IDs
-        colors: ['#1d4bb2', '#b21810ff', '#ffcc00', '#00897b', '#6a1b9a']
+        colors: ['#1d4bb2', '#b21810ff', '#ffcc00', '#00897b', '#6a1b9a'],
+        legend: { position: 'bottom' } // optional: reposition legend
     }).render();
+
 
     new ApexCharts(document.querySelector("#locationChart"), {
     chart: { type: 'bar', height: 280 },
@@ -185,6 +208,21 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     colors: ['#1d4bb2']
 }).render();
+      // EMPLOYMENT STATUS HORIZONTAL BAR
+      new ApexCharts(document.querySelector("#employmentStatusChart"), {
+          chart: { type: 'bar', height: 350, stacked: true },
+          plotOptions: { bar: { horizontal: true } },
+          series: [
+              { name: 'Male', data: @json($malePerStatus) },
+              { name: 'Female', data: @json($femalePerStatus) }
+          ],
+          xaxis: { categories: @json($statuses) },
+          colors: ['#1d4bb2', '#ac1109'],
+          legend: { position: 'top' },
+          dataLabels: { enabled: true }
+      }).render();
+
+
 
 });
 </script>

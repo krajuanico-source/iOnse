@@ -24,7 +24,6 @@
             <th>Position</th>
             <th>Fund Source</th>
             <th>Stature</th>
-            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -39,7 +38,6 @@
             </td>
 
             <td>{{ ucfirst($item->stature) }}</td>
-            <td>{{ ucfirst($item->status) }}</td>
             <td class="text-nowrap">
               <div class="d-inline-flex gap-1">
                 {{-- Edit button --}}
@@ -146,18 +144,26 @@
     </div>
   </div>
 </div>
-
-
 <!-- Edit Modal -->
-<div class="modal fade" id="editItemNumberModal" tabindex="-1">
+<div class="modal fade" id="editItemNumberModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <h5 class="modal-title m-3">Edit Item Number</h5>
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Item Number</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Form -->
       <form id="editItemNumberForm">
         <input type="hidden" name="id" id="editItemNumberId">
+
         <div class="modal-body">
+
+          <!-- Employment Status -->
           <div class="mb-3">
-            <label>Employment Status</label>
+            <label class="form-label">Employment Status</label>
             <select name="employment_status_id" id="editEmploymentStatusId" class="form-control" required>
               <option value="">-- Select Status --</option>
               @foreach($employmentStatuses as $status)
@@ -165,8 +171,10 @@
               @endforeach
             </select>
           </div>
+
+          <!-- Position -->
           <div class="mb-3">
-            <label>Position</label>
+            <label class="form-label">Position</label>
             <select name="position_id" id="editPositionId" class="form-control" required>
               <option value="">-- Select Position --</option>
               @foreach($positions as $pos)
@@ -174,8 +182,10 @@
               @endforeach
             </select>
           </div>
+
+          <!-- Salary Grade -->
           <div class="mb-3">
-            <label>Salary Grade</label>
+            <label class="form-label">Salary Grade</label>
             <select name="salary_grade_id" id="editSalaryGradeId" class="form-control" required>
               <option value="">-- Select Salary Grade --</option>
               @foreach($salaryGrades as $sg)
@@ -183,22 +193,49 @@
               @endforeach
             </select>
           </div>
+
+          <!-- Fund Source -->
           <div class="mb-3">
-            <label>Item Number</label>
-            <input type="text" name="item_number" id="editItemNumber" class="form-control" readonly required>
-          </div>
-          <div class="mb-3">
-            <label>Status</label>
-            <select name="status" id="editStatus" class="form-control">
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
+            <label class="form-label">Fund Source</label>
+            <select name="fund_source_id" id="editFundSourceId" class="form-control" required>
+              <option value="">-- Select Fund Source --</option>
+              @foreach($fundSources as $source)
+              <option value="{{ $source->id }}"
+                {{ $item->fund_source_id == $source->id ? 'selected' : '' }}>
+                {{ $source->fund_source }}
+              </option>
+              @endforeach
             </select>
           </div>
+
+          <!-- Date of Posting -->
+          <div class="mb-3">
+            <label class="form-label">Date of Posting</label>
+            <input type="date" name="date_posting" id="editDatePosting" class="form-control"
+              value="{{ $item->date_posting ? \Carbon\Carbon::parse($item->date_posting)->format('Y-m-d') : '' }}" required>
+          </div>
+
+          <!-- Date End of Submission -->
+          <div class="mb-3">
+            <label class="form-label">Date End of Submission</label>
+            <input type="date" name="date_end_submission" id="editDateEndSubmission" class="form-control"
+              value="{{ $item->date_end_submission ? \Carbon\Carbon::parse($item->date_end_submission)->format('Y-m-d') : '' }}" required>
+          </div>
+
+          <!-- Item Number -->
+          <div class="mb-3">
+            <label class="form-label">Item Number</label>
+            <input type="text" name="item_number" id="editItemNumber" class="form-control" readonly required>
+          </div>
+
         </div>
+
+        <!-- Modal Footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
           <button type="submit" class="btn btn-success">Save Changes</button>
         </div>
+
       </form>
     </div>
   </div>

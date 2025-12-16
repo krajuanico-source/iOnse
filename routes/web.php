@@ -43,6 +43,7 @@ use App\Http\Controllers\Profile\OrganizationController;
 use App\Http\Controllers\Profile\SkillController;
 use App\Http\Controllers\Profile\OtherInformationController;
 use App\Http\Controllers\Profile\PdsController;
+use App\Http\Controllers\RequestsController;
 
 //Planning
 use App\Http\Controllers\planning\ListofEmployee;
@@ -68,6 +69,9 @@ use App\Http\Controllers\MedicalController;
 use App\Http\Controllers\SoloParentController;
 use App\Http\Controllers\TravelController;
 use App\Http\Controllers\SpecialController;
+use App\Http\Controllers\RequestFormController;
+use App\Http\Controllers\CprController;
+use App\Http\Controllers\CprEmployeeController;
 
 
 
@@ -314,6 +318,23 @@ Route::prefix('forms/travel')->name('forms.travel.')->group(function () {
   Route::get('/{ref}/download', [TravelController::class, 'downloadPdf'])->name('download');
 });
 
+Route::post('/forms/outslip/{id}/digital-sign', [OutSlipController::class, 'digitalSignImage'])
+  ->name('forms.outslip.digitalSignImage')
+  ->middleware(['auth']);
+
+Route::post('/forms/outslip/{id}/electronic-sign', [OutSlipController::class, 'electronicSignImage'])
+  ->name('forms.outslip.electronicSignImage')
+  ->middleware(['auth']);
+
+Route::post('/forms/leaves/{leave_no}/digital-sign', [LeaveController::class, 'digitalSignImage'])
+  ->name('forms.leaves.digitalSignImage')
+  ->middleware(['auth']);
+
+Route::post('/forms/leaves/{leave_no}/electronic-sign', [LeaveController::class, 'electronicSignImage'])
+  ->name('forms.leaves.electronicSignImage')
+  ->middleware(['auth']);
+
+
 
 Route::prefix('forms/special')->name('forms.special.')->group(function () {
 
@@ -347,6 +368,35 @@ Route::prefix('forms/special')->name('forms.special.')->group(function () {
   Route::get('/{ref}/download', [SpecialController::class, 'downloadPdf'])->name('download');
 });
 
+Route::prefix('forms/request_forms')->name('forms.request_forms.')->group(function () {
+
+  // List
+  Route::get('/', [RequestFormController::class, 'index'])->name('index');
+
+  // Create
+  Route::get('/create', [RequestFormController::class, 'create'])->name('create');
+  Route::post('/store', [RequestFormController::class, 'store'])->name('store');
+
+  // Show
+  Route::get('/{req_num}', [RequestFormController::class, 'show'])->name('show');
+
+  // Edit + Update
+  Route::get('/{req_num}/edit', [RequestFormController::class, 'edit'])->name('edit');
+  Route::put('/{req_num}', [RequestFormController::class, 'update'])->name('update');
+
+  // Delete
+  Route::delete('/{req_num}', [RequestFormController::class, 'destroy'])->name('destroy');
+
+  // Print PDF
+  Route::get('/{req_num}/print', [RequestFormController::class, 'print'])->name('print');
+});
+
+Route::prefix('requests')->middleware(['auth'])->group(function () {
+  Route::get('leave', [RequestsController::class, 'leave'])->name('requests.leave');
+  Route::get('outslip', [RequestsController::class, 'outslip'])->name('requests.outslip');
+  Route::get('payslip', [RequestsController::class, 'payslip'])->name('requests.payslip');
+  Route::get('request_forms', [RequestsController::class, 'requestForms'])->name('requests.request_forms');
+});
 
 // Filtered Employee Lists
 Route::get('/planning/active-employees', [\App\Http\Controllers\Api\UserController::class, 'active'])->name('employee.active');
@@ -505,27 +555,72 @@ Route::post('/planning/item-numbers/store', [ItemNumberController::class, 'store
 Route::get('/planning/item-numbers/next-number', [ItemNumberController::class, 'getNextNumber']);
 
 Route::prefix('planning/unfilled-positions')->group(function () {
-  // List of all unfilled positions
   Route::get('/', [UnfilledPositionsController::class, 'index'])->name('unfilled_positions.index');
-
-  // Show specific position details
   Route::get('/{id}', [UnfilledPositionsController::class, 'show'])->name('unfilled_positions.show');
-
-  // 🆕 Dedicated page for applicants per position
-  Route::get('/{id}/applicants', [UnfilledPositionsController::class, 'applicants'])
-    ->name('unfilled_positions.applicants');
-
-  // POST to add a new applicant
-  Route::post('/{id}/applicants', [UnfilledPositionsController::class, 'storeApplicant'])
-    ->name('unfilled_positions.applicants.store');
+  Route::get('/{id}/applicants', [UnfilledPositionsController::class, 'applicants'])->name('unfilled_positions.applicants');
+  Route::post('/{id}/applicants', [UnfilledPositionsController::class, 'storeApplicant'])->name('unfilled_positions.applicants.store');
 });
 
-// Update applicant status
-Route::put('/planning/applicants/{id}/update-status', [ApplicantController::class, 'updateStatus'])
-  ->name('applicants.updateStatus');
+Route::put('/positions/{id}/update-status', [PositionController::class, 'updateStatus'])
+  ->name('positions.updateStatus');
+
+Route::prefix('planning')->group(function () {
+  Route::put(
+    '/applicants/{id}/update-status',
+    [ApplicantController::class, 'updateStatus']
+  )->name('applicants.updateStatus');
+});
+
+Route::put(
+  '/itemnumbers/{id}/update-status',
+  [ItemNumberController::class, 'updateStatus']
+)->name('itemnumbers.updateStatus');
+
 
 Route::get('/item-numbers/{id}/print', [ItemNumberController::class, 'print'])->name('itemNumbers.print');
 
+
+// Routes for CPR forms
+Route::prefix('forms')->group(function () {
+
+  // Standard CRUD routes for CPR
+  Route::resource('cpr', CprController::class);
+
+  // Optional: if you want a separate explicit route for create
+  // Route::get('cpr/create', [CprController::class, 'create'])->name('forms.cpr.create');
+
+  // Optional: route for printing a CPR record
+  Route::get('cpr/{cpr}/print', [CprController::class, 'print'])->name('forms.cpr.print');
+
+  // Optional: route for viewing CPR details
+  Route::get('cpr/{cpr}', [CprController::class, 'show'])->name('forms.cpr.show');
+
+
+  // Optional: route for editing a CPR record
+  // This is already included in resource routes as 'cpr/{cpr}/edit'
+});
+
+Route::prefix('forms')->name('forms.')->group(function () {
+  Route::resource('cpr', CprController::class);
+});
+
+// CPR Employee list/dashboard
+Route::get('/forms/cpremployee', [CprEmployeeController::class, 'index'])->name('employee.index');
+
+// CPR Employee add form page (optional, if you want a separate page)
+Route::get('/forms/cpremployee/form', [CprEmployeeController::class, 'create'])->name('employee.create');
+
+// Store CPR Employee submission
+Route::post('/forms/cpremployee', [CprEmployeeController::class, 'store'])->name('employee.store');
+
+// Delete CPR Employee record
+Route::delete('/forms/cpremployee/{id}', [CprEmployeeController::class, 'destroy'])->name('employee.destroy');
+Route::put('/forms/cpr/{id}', [CprController::class, 'update'])->name('forms.cpr.update');
+
+Route::post('/forms/request-activation', [CprEmployeeController::class, 'requestActivation'])
+  ->name('cpr.requestActivation');
+
+Route::put('/employee/{cpr}/update', [CprEmployeeController::class, 'update'])->name('employee.update');
 
 //PAS
 Route::prefix('/pas/fundsource')->group(function () {

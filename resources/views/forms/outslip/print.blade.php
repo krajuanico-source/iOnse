@@ -261,7 +261,7 @@
             <td colspan='2' align='left'>&emsp;<font size='1'>
                 <img src="{{ asset('assets/img/logo-dswd-form.png') }}" alt="DSWD Logo"></td>
             <td colspan='2' align='right'>
-              <font size='1'><b>EMPLOYEE'S COPY</b>
+              <font size='1'><b>HR COPY</b>
             </td>
 
           </tr>

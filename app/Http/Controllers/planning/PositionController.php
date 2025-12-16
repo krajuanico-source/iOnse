@@ -90,4 +90,16 @@ class PositionController extends Controller
 
     return response()->json(['success' => true, 'message' => 'Position deleted successfully.']);
   }
+  public function updateStatus(Request $request, $id)
+  {
+    $request->validate([
+      'status' => 'required|in:On going Hiring,Close Hiring,For Examination,For Interview'
+    ]);
+
+    $position = Position::findOrFail($id);
+    $position->status = $request->status;
+    $position->save();
+
+    return redirect()->back()->with('success', 'Position status updated successfully!');
+  }
 }

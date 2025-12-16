@@ -19,16 +19,16 @@ class GovernmentIdController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'sss_id' => 'nullable|string|max:50',
-            'gsis_id' => 'nullable|string|max:50',
-            'pagibig_id' => 'nullable|string|max:50',
-            'philhealth_id' => 'nullable|string|max:50',
-            'tin' => 'nullable|string|max:50',
-            'philsys' => 'nullable|string|max:50',
-            'gov_issued_id' => 'nullable|string|max:100',
-            'id_number' => 'nullable|string|max:100',
-            'date_issuance' => 'nullable|date',
-            'place_issuance' => 'nullable|string|max:150',
+            'sss_id'                => 'nullable|string|max:50',
+            'gsis_id'               => 'nullable|string|max:50',
+            'pagibig_id'            => 'nullable|string|max:50',
+            'philhealth_id'         => 'nullable|string|max:50',
+            'tin'                   => 'nullable|string|max:50',
+            'philsys'               => 'nullable|string|max:50',
+            'gov_issued_id'         => 'nullable|string|max:100',
+            'id_number'             => 'nullable|string|max:100',
+            'date_issuance'         => 'nullable|date',
+            'place_issuance'        => 'nullable|string|max:150',
         ]);
 
         // ✅ Create a new record (since your Blade expects multiple records)
@@ -64,16 +64,16 @@ class GovernmentIdController extends Controller
             $gov = GovernmentId::find($govData['id']);
             if($gov) {
                 $gov->update([
-                    'sss_id' => $govData['sss_id'] ?? null,
-                    'gsis_id' => $govData['gsis_id'] ?? null,
-                    'pagibig_id' => $govData['pagibig_id'] ?? null,
-                    'philhealth_id' => $govData['philhealth_id'] ?? null,
-                    'tin' => $govData['tin'] ?? null,
-                    'philsys' => $govData['philsys'] ?? null,
-                    'gov_issued_id' => $govData['gov_issued_id'] ?? null,
-                    'id_number' => $govData['id_number'] ?? null,
-                    'date_issuance' => $govData['date_issuance'] ?? null,
-                    'place_issuance' => $govData['place_issuance'] ?? null,
+                    'sss_id'            => $govData['sss_id'] ?? null,
+                    'gsis_id'           => $govData['gsis_id'] ?? null,
+                    'pagibig_id'        => $govData['pagibig_id'] ?? null,
+                    'philhealth_id'     => $govData['philhealth_id'] ?? null,
+                    'tin'               => $govData['tin'] ?? null,
+                    'philsys'           => $govData['philsys'] ?? null,
+                    'gov_issued_id'     => $govData['gov_issued_id'] ?? null,
+                    'id_number'         => $govData['id_number'] ?? null,
+                    'date_issuance'     => $govData['date_issuance'] ?? null,
+                    'place_issuance'    => $govData['place_issuance'] ?? null,
                 ]);
             }
         }

@@ -34,14 +34,19 @@
         <td>{{ $slip->purpose }}</td>
         <td>{{ $slip->status }}</td>
         <td>
-          @if($slip->status === 'Pending')
-          <button class="btn btn-danger btn-sm rejects" data-id="{{ $slip->id }}">Cancel</button>
-          @endif
+          <!-- Cancel button -->
+          <button class="btn btn-danger btn-sm rejects"
+            data-id="{{ $slip->id }}"
+            @if($slip->status !== 'Pending') disabled @endif>
+            Cancel
+          </button>
 
           <!-- Print button always available -->
-          <a href="{{ url('forms/outslips/'.$slip->id.'/print') }}" target="_blank" class="btn btn-primary btn-sm">Print</a>
+          <a href="{{ url('forms/outslips/'.$slip->id.'/print') }}"
+            target="_blank" class="btn btn-secondary btn-sm">
+            Print
+          </a>
         </td>
-
 
       </tr>
       @endforeach
@@ -49,7 +54,7 @@
   </table>
 </div>
 
-
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>

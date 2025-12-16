@@ -134,4 +134,23 @@ class ItemNumberController extends Controller
       ->setPaper('a4', 'portrait')
       ->stream("Notice_of_Vacancy_{$item->item_number}.pdf");
   }
+
+  public function updateStatus(Request $request, $id)
+  {
+    $request->validate([
+      'status' => 'required|in:On going Hiring,Close Hiring,For Examination,For Interview,Filled',
+    ]);
+
+    $item = ItemNumber::findOrFail($id);
+    $item->status = $request->status;
+
+    // Automatically update stature if status is Filled
+    if ($request->status === 'Filled') {
+      $item->stature = 'filled';
+    }
+
+    $item->save();
+
+    return redirect()->back()->with('success', 'Item Number status updated successfully!');
+  }
 }

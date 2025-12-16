@@ -21,6 +21,42 @@ class FamilyBackgroundController extends Controller
 {
     $employee_id = Auth::id();
 
+     $validated = $request->validate([
+            // SPOUSE
+            'spouse_surname'            => 'nullable|string|max:255',
+            'spouse_first_name'         => 'nullable|string|max:255',
+            'spouse_middle_name'        => 'nullable|string|max:255',
+            'spouse_extension_name'     => 'nullable|string|max:20',
+            'spouse_occupation'         => 'nullable|string|max:255',
+            'spouse_employer'           => 'nullable|string|max:255',
+            'spouse_employer_address'   => 'nullable|string|max:255',
+            'spouse_employer_telephone' => 'nullable|string|max:50',
+
+            // FATHER
+            'father_surname'            => 'nullable|string|max:255',
+            'father_first_name'         => 'nullable|string|max:255',
+            'father_middle_name'        => 'nullable|string|max:255',
+            'father_extension_name'     => 'nullable|string|max:20',
+
+            // MOTHER
+            'mother_maiden_name'        => 'nullable|string|max:255',
+            'mother_surname'            => 'nullable|string|max:255',
+            'mother_first_name'         => 'nullable|string|max:255',
+            'mother_middle_name'        => 'nullable|string|max:255',
+            'mother_extension_name'     => 'nullable|string|max:20',
+
+            // CHILDREN (ARRAY)
+            'children' => 'nullable|array',
+            'children.*.id'         => 'nullable|integer|exists:children,id',
+            'children.*.first_name' => 'nullable|string|max:255',
+            'children.*.middle_name'=> 'nullable|string|max:255',
+            'children.*.last_name'  => 'nullable|string|max:255',
+            'children.*.birthday'   => 'nullable|date',
+
+            // Deleted Child IDs
+            'deleted_children' => 'nullable|string',
+        ]);
+
     // Update family background
     $data = $request->only([
         'spouse_surname','spouse_first_name','spouse_middle_name','spouse_extension_name',

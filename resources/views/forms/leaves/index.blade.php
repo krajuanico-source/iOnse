@@ -37,23 +37,35 @@
         <td>{{ $leave->status }}</td>
 
         <td>
-          <a href="{{ route('leaves.edit', $leave->leave_no) }}" class="btn btn-warning btn-sm">Edit</a>
+          <!-- Edit button -->
+          <a href="{{ route('leaves.edit', $leave->leave_no) }}"
+            class="btn btn-warning btn-sm"
+            @if($leave->status === 'Approved')
+            onclick="return false;" style="pointer-events: none; opacity: 0.6;"
+            @endif>
+            Edit
+          </a>
 
-          <form action="{{ route('leaves.destroy', $leave->leave_no) }}" 
-                method="POST" style="display:inline">
+          <!-- Delete button -->
+          <form action="{{ route('leaves.destroy', $leave->leave_no) }}" method="POST" style="display:inline"
+            @if($leave->status === 'Approved')
+            onsubmit="return false;" style="pointer-events: none; opacity: 0.6;"
+            @endif>
             @csrf
             @method('DELETE')
-            <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+            <button class="btn btn-danger btn-sm"
+              @if($leave->status === 'Approved') disabled @endif
+              onclick="return confirm('Are you sure?')">
               Delete
             </button>
           </form>
 
-          <a href="{{ route('leaves.print', $leave->leave_no) }}" 
-             target="_blank" 
-             class="btn btn-primary btn-sm">
+          <!-- Print button (always enabled) -->
+          <a href="{{ route('leaves.print', $leave->leave_no) }}" target="_blank" class="btn btn-primary">
             Print
           </a>
         </td>
+
       </tr>
       @endforeach
     </tbody>

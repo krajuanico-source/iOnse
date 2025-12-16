@@ -7,31 +7,37 @@ use Illuminate\Database\Eloquent\Model;
 
 class FamilyBackground extends Model
 {
-    use HasFactory;
-    // Family Background
-    protected $table = 'family_backgrounds'; // Table name
+  use HasFactory;
 
-    protected $fillable = [
-        // Spouse
-        'spouse_surname', 'spouse_first_name', 'spouse_middle_name', 'spouse_extension_name', 'mother_maiden_name',
-        'spouse_occupation', 'spouse_employer', 'spouse_employer_address', 'spouse_employer_telephone',
+  protected $table = 'family_backgrounds';
 
-        // Father
-        'father_surname', 'father_first_name', 'father_middle_name', 'father_extension_name',
+  protected $fillable = [
+    // spouse
+    's_lname',
+    's_fname',
+    's_mname',
+    's_ext',
+    's_occ',
+    's_emp',
+    's_addr',
 
-        // Mother
-        'mother_surname', 'mother_first_name', 'mother_middle_name', 'mother_extension_name',
+    // father
+    'f_lname',
+    'f_fname',
+    'f_mname',
+    'f_ext',
 
-        // Reference to employee
-        'employee_id',
-    ];
-    
-    public function children()
-{
-    return $this->hasMany(Child::class);
-}
+    // mother
+    'm_lname',
+    'm_fname',
+    'm_mname',
+    'm_ext',
 
-    protected $casts = [
-        'children' => 'array', // automatically JSON encode/decode
-    ];
+    // children
+    'children',
+  ];
+
+  protected $casts = [
+    'children' => 'array', // automatically JSON encode/decode
+  ];
 }

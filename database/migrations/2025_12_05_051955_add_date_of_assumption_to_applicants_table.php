@@ -8,14 +8,15 @@ return new class extends Migration
 {
   public function up(): void
   {
-    Schema::table('jo_requests', function (Blueprint $table) {
-      $table->string('status')->default('pending');
+    Schema::table('applicants', function (Blueprint $table) {
+      $table->date('date_of_assumption')->nullable()->after('date_interviewed');
     });
   }
+
   public function down(): void
   {
-    Schema::table('jo_requests', function (Blueprint $table) {
-      //
+    Schema::table('applicants', function (Blueprint $table) {
+      $table->dropColumn('date_of_assumption');
     });
   }
 };

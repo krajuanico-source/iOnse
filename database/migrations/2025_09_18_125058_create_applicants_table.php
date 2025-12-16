@@ -34,6 +34,7 @@ return new class extends Migration
       $table->text('remarks')->nullable();
       $table->date('date_hired')->nullable();
       $table->timestamps();
+      $table->boolean('archived')->default(false);
 
       $table->foreign('item_number_id')->references('id')->on('item_numbers')->onDelete('cascade');
     });

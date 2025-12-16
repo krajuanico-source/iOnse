@@ -1,9 +1,9 @@
-
 @php
 $container = 'container-fluid';
 $containerNav = 'container-fluid';
-@endphp
 
+use Illuminate\Support\Str;
+@endphp
 @extends('layouts/contentNavbarLayout')
 
 @section('title', 'List of Employee')
@@ -22,36 +22,36 @@ $containerNav = 'container-fluid';
 
     <div class="table-responsive">
       <table id="employeesTable" class="table">
-      <thead class="table-light">
-        <tr>
-          <th style="width: 0;">ID No.</th>
-          <th>Employee Name</th>
-          <th>Email</th>
-          <th>Employment Status</th>
-          <th>Section</th>
-          <th>Division</th>
-          <th>Username</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($employees as $employee)
-        <tr>
-             <td>{{ $employee->employee_id }}</td>
-          <td>
-            {{ Str::upper($employee->first_name) }}
-            {{ Str::upper($employee->middle_name) }}
-            {{ Str::upper($employee->last_name) }}
-            {{ Str::upper($employee->extension_name) }}
-          </td>
-          <td>{{ $employee->email }}</td>
-          <td>{{ Str::upper($employee->employmentStatus->abbreviation ?? '') }}</td>
-          <td>{{ Str::upper($employee->section->abbreviation ?? '') }}</td>
-          <td>{{ Str::upper($employee->division->abbreviation ?? '') }}</td>
-          <td>{{ Str::lower($employee->username) }}</td>
-        </tr>
-        @endforeach
-      </tbody>
-    </table>
+        <thead class="table-light">
+          <tr>
+            <th style="width: 0;">ID No.</th>
+            <th>Employee Name</th>
+            <th>Email</th>
+            <th>Employment Status</th>
+            <th>Section</th>
+            <th>Division</th>
+            <th>Username</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($employees as $employee)
+          <tr>
+            <td>{{ $employee->employee_id }}</td>
+            <td>
+              {{ Str::upper($employee->first_name) }}
+              {{ Str::upper($employee->middle_name) }}
+              {{ Str::upper($employee->last_name) }}
+              {{ Str::upper($employee->extension_name) }}
+            </td>
+            <td>{{ $employee->email }}</td>
+            <td>{{ Str::upper($employee->employmentStatus->abbreviation ?? '') }}</td>
+            <td>{{ Str::upper($employee->section->abbreviation ?? '') }}</td>
+            <td>{{ Str::upper($employee->division->abbreviation ?? '') }}</td>
+            <td>{{ Str::lower($employee->username) }}</td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -67,11 +67,14 @@ $containerNav = 'container-fluid';
 
 
 <script>
- $('#employeesTable').DataTable({
-  columnDefs: [
-    { targets: 0, width: "50px", visible: true, searchable: false }
-  ]
-});
+  $('#employeesTable').DataTable({
+    columnDefs: [{
+      targets: 0,
+      width: "50px",
+      visible: true,
+      searchable: false
+    }]
+  });
 </script>
 
 @endpush

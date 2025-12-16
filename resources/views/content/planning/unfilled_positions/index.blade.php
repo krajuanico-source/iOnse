@@ -6,7 +6,6 @@
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
 <div class="card">
   <div class="container py-4">
@@ -69,23 +68,29 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
 <!-- Make sure bootstrap.bundle.js is included in your layout -->
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+
+    // Redirect to applicants page when "View Details" button is clicked
     document.querySelectorAll('.view-details').forEach(button => {
       button.addEventListener('click', function() {
-        let id = this.dataset.id;
-        // ✅ Redirect to applicants page instead of fetching modal
+        const id = this.dataset.id;
         window.location.href = `/planning/unfilled-positions/${id}/applicants`;
       });
     });
-
-    // Initialize DataTables
-    $('#unfilledpos').DataTable();
-    $('#applicantsTable').DataTable();
   });
 </script>
-
+<script>
+  // Initialize DataTable
+  $('#unfilledpos').DataTable({
+    paging: true, // Enable pagination
+    searching: true, // Enable search/filter
+    info: true, // Show "Showing X of Y entries"
+    ordering: true, // Enable column sorting
+    lengthChange: true, // Allow user to change page length
+    pageLength: 10 // Default rows per page
+  });
+</script>
 
 @endpush

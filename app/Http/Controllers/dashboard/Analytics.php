@@ -17,7 +17,7 @@ class Analytics extends Controller
 
     public function index()
     {
-        // === KPIs ===
+
         $overallEmployees = DB::table('users')->count();
         $activeemployees  = DB::table('users')->where('status', 'Active')->count();
         // $vacancy          = DB::table('users')->where('status', 'Vacant')->count();
@@ -39,13 +39,32 @@ class Analytics extends Controller
         $male   = DB::table('users')->where('gender', 'Male')->count();
         $female = DB::table('users')->where('gender', 'Female')->count();
         
-        $ageGroups = [
-          DB::table('users')->whereBetween('age', [18, 24])->count(),
-          DB::table('users')->whereBetween('age', [25, 34])->count(),
-          DB::table('users')->whereBetween('age', [35, 44])->count(),
-          DB::table('users')->whereBetween('age', [45, 54])->count(),
-          DB::table('users')->where('age', '>=', 55)->count(),
-        ];
+        // === Charts ===
+        $ageGroups = ['Under 25', '25–34', '35–44', '45–54', 'Over 55'];
+
+        // Initialize arrays with zeros
+        $maleAgeData = array_fill(0, count($ageGroups), 0);
+        $femaleAgeData = array_fill(0, count($ageGroups), 0);
+
+        // Fetch users
+        $users = DB::table('users')->select('age', 'gender')->get();
+
+        foreach ($users as $user) {
+            $age = $user->age;
+            $gender = $user->gender;
+
+            // Determine age group index
+            if ($age < 25) $index = 0;
+            elseif ($age < 35) $index = 1;
+            elseif ($age < 45) $index = 2;
+            elseif ($age < 55) $index = 3;
+            else $index = 4;
+
+            // Increment count based on gender
+            if ($gender === 'Male') $maleAgeData[$index]++;
+            elseif ($gender === 'Female') $femaleAgeData[$index]++;
+        }
+
 
         $divisions = User::with('division')
             ->get()
@@ -54,10 +73,10 @@ class Analytics extends Controller
 
         $divisions = DB::table('users')
             ->join('divisions', 'users.division_id', '=', 'divisions.id')
-            ->select('divisions.name', DB::raw('count(*) as total'))
-            ->groupBy('divisions.name')
+            ->select('divisions.abbreviation', DB::raw('count(*) as total'))
+            ->groupBy('divisions.abbreviation')
             ->orderBy('total', 'desc')
-            ->pluck('total', 'name')
+            ->pluck('total', 'abbreviation')
             ->toArray(); // convert collection to array
 
         // $divisions = DB::table('users')
@@ -68,10 +87,10 @@ class Analytics extends Controller
 
         $office_locations = DB::table('users')
             ->join('office_locations', 'users.office_location', '=', 'office_locations.id') // join on ID
-            ->select('office_locations.name', DB::raw('COUNT(*) as total'))
-            ->groupBy('office_locations.name')
+            ->select('office_locations.abbreviation', DB::raw('COUNT(*) as total'))
+            ->groupBy('office_locations.abbreviation')
             ->orderBy('total', 'desc')
-            ->pluck('total', 'office_locations.name')
+            ->pluck('total', 'office_locations.abbreviation')
             ->toArray();
 
 
@@ -84,20 +103,48 @@ class Analytics extends Controller
         ->pluck('total', 'name')
         ->toArray();
 
+        // Fetch all employment statuses
+        $statuses = DB::table('employment_statuses')->pluck('name')->toArray();
+
+        // Initialize arrays
+        $malePerStatus = [];
+        $femalePerStatus = [];
+
+        foreach ($statuses as $status) {
+            $maleCount = DB::table('users')
+                ->join('employment_statuses', 'users.employment_status_id', '=', 'employment_statuses.id')
+                ->where('employment_statuses.name', $status)
+                ->where('gender', 'Male')
+                ->count();
+
+            $femaleCount = DB::table('users')
+                ->join('employment_statuses', 'users.employment_status_id', '=', 'employment_statuses.id')
+                ->where('employment_statuses.name', $status)
+                ->where('gender', 'Female')
+                ->count();
+
+            $malePerStatus[] = $maleCount;
+            $femalePerStatus[] = $femaleCount;
+        }
+
+
 
         return view('content.planning.dashboard', compact(
-
+            'maleAgeData',
+            'femaleAgeData',
+            'ageGroups',
             'overallEmployees',
             'activeemployees',
-            // 'vacancy',
-            // 'attritionRate',
             'averageAge',
-            'male',
-            'female',
-            'ageGroups',
             'divisions',
             'office_locations',
-            'employment_status'
+            'employment_status',
+            'male',
+            'female',
+            'statuses',       
+            'malePerStatus',  
+            'femalePerStatus' 
         ));
+
     }
 }

@@ -101,6 +101,7 @@ class ProvinceSeeder extends Seeder
       ['psgc' => '175900000', 'name' => 'ROMBLON'],
     ];
 
-    DB::table('provinces')->insert($provinces);
+    // Insert without failing on duplicates
+    DB::table('provinces')->insertOrIgnore($provinces);
   }
 }

@@ -6,7 +6,10 @@
       "slug": "dashboard",
       "icon": "menu-icon tf-icons ri-dashboard-line",
       "roles": [
-        "HR-Planning"
+        "HR-Planning",
+        "HR-Welfare",
+        "HR-PAS",
+        "HR-L&D"
       ]
     },
     {
@@ -103,6 +106,14 @@
           "url": "planning/unfilled-positions",
           "name": "Unfilled Positions",
           "slug": "unfilled-positions",
+          "roles": [
+            "HR-Planning"
+          ]
+        },
+        {
+          "url": "forms/cpr",
+          "name": "CPR",
+          "slug": "cpr",
           "roles": [
             "HR-Planning"
           ]
@@ -394,6 +405,14 @@
           ],
           "submenu": [
             {
+              "url": "pas/dtr",
+              "name": "Upload DTR",
+              "slug": "DTR",
+              "roles": [
+                "HR-PAS"
+              ]
+            },
+            {
               "url": "pas/importpayroll",
               "name": "Import Payroll",
               "slug": "importpayroll",
@@ -460,41 +479,33 @@
           ]
         },
         {
-          "url": "layouts/without-menu",
+          "url": "#",
           "name": "Requests",
-          "slug": "without-menu",
+          "slug": "requests",
           "roles": [
             "HR-PAS"
           ],
           "submenu": [
             {
-              "url": "layouts/without-menu",
+              "url": "/requests/leave",
               "name": "Leave",
-              "slug": "without-menu",
+              "slug": "leave",
               "roles": [
                 "HR-PAS"
               ]
             },
             {
-              "url": "layouts/without-menu",
+              "url": "/requests/outslip",
               "name": "Outslip",
-              "slug": "without-menu",
+              "slug": "outslip",
               "roles": [
                 "HR-PAS"
               ]
             },
             {
-              "url": "layouts/without-menu",
-              "name": "Payslip",
-              "slug": "without-menu",
-              "roles": [
-                "HR-PAS"
-              ]
-            },
-            {
-              "url": "layouts/without-menu",
-              "name": "Certificates",
-              "slug": "without-menu",
+              "url": "/requests/request_forms",
+              "name": "Request Forms",
+              "slug": "request_forms",
               "roles": [
                 "HR-PAS"
               ]

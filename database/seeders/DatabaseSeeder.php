@@ -28,20 +28,23 @@ class DatabaseSeeder extends Seeder
     $this->call([
       Barangayb2Seeder::class,
     ]);
-        $this->call([
+    $this->call([
       Barangayb3Seeder::class,
     ]);
-        $this->call([
+    $this->call([
       Barangayb4Seeder::class,
     ]);
-        $this->call([
+    $this->call([
       Barangayb5Seeder::class,
     ]);
-        $this->call([
+    $this->call([
       ProvinceSeeder::class,
     ]);
-        $this->call([
+    $this->call([
       CitiesSeeder::class,
+    ]);
+    $this->call([
+      UsersTableSeeder::class,
     ]);
   }
 }
