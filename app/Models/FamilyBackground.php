@@ -13,25 +13,27 @@ class FamilyBackground extends Model
 
   protected $fillable = [
     // spouse
-    's_lname',
-    's_fname',
-    's_mname',
-    's_ext',
-    's_occ',
-    's_emp',
-    's_addr',
+    'spouse_surname',
+    'spouse_first_name',
+    'spouse_middle_name',
+    'spouse_extension_name',
+    'spouse_occupation',
+    'spouse_employer',
+    'spouse_employer_address',
+    'spouse_employer_telephone',
 
     // father
-    'f_lname',
-    'f_fname',
-    'f_mname',
-    'f_ext',
+    'father_surname',
+    'father_first_name',
+    'father_middle_name',
+    'father_extension_name',
 
     // mother
-    'm_lname',
-    'm_fname',
-    'm_mname',
-    'm_ext',
+    'mother_maiden_name',
+    'mother_surname',
+    'mother_first_name',
+    'mother_middle_name',
+    'mother_extension_name',
 
     // children
     'children',
