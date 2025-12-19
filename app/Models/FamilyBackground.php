@@ -12,6 +12,7 @@ class FamilyBackground extends Model
   protected $table = 'family_backgrounds';
 
   protected $fillable = [
+    'user_id',
     // spouse
     'spouse_surname',
     'spouse_first_name',

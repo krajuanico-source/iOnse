@@ -45,33 +45,36 @@
   use App\Http\Controllers\Profile\PdsController;
   use App\Http\Controllers\RequestsController;
 
-  //Planning
-  use App\Http\Controllers\planning\ListofEmployee;
-  use App\Http\Controllers\Planning\ApplicantController;
-  use App\Http\Controllers\planning\RegistrationForm;
-  use App\Http\Controllers\planning\ListofPosition;
-  use App\Http\Controllers\planning\VacantPositionController;
-  use App\Http\Controllers\planning\OfficeLocation;
-  use App\Http\Controllers\planning\DivisionController;
-  use App\Http\Controllers\planning\UnitController;
-  use App\Http\Controllers\planning\SectionController;
-  use App\Http\Controllers\Planning\EmploymentStatusController;
-  use App\Http\Controllers\Planning\OfficeLocationController;
-  use App\Http\Controllers\Planning\QualificationController;
-  use App\Http\Controllers\Planning\SalaryGradeController;
-  use App\Http\Controllers\Planning\PositionLevelController;
-  use App\Http\Controllers\Planning\ParentheticalTitleController;
-  use App\Http\Controllers\Planning\ReportController;
-  use App\Http\Controllers\Planning\JoRequestController;
-  use App\Http\Controllers\GadResponseController;
-  use App\Http\Controllers\EthnicityController;
-  use App\Http\Controllers\MedicalController;
-  use App\Http\Controllers\SoloParentController;
-  use App\Http\Controllers\TravelController;
-  use App\Http\Controllers\SpecialController;
-  use App\Http\Controllers\RequestFormController;
-  use App\Http\Controllers\CprController;
-  use App\Http\Controllers\CprEmployeeController;
+//Planning
+use App\Http\Controllers\Planning\UserPermissionController;
+use App\Http\Controllers\Planning\UserManagementController;
+use App\Http\Controllers\planning\DashboardController;
+use App\Http\Controllers\planning\ListofEmployee;
+use App\Http\Controllers\Planning\ApplicantController;
+use App\Http\Controllers\planning\RegistrationForm;
+use App\Http\Controllers\planning\ListofPosition;
+use App\Http\Controllers\planning\VacantPositionController;
+use App\Http\Controllers\planning\OfficeLocation;
+use App\Http\Controllers\planning\DivisionController;
+use App\Http\Controllers\planning\UnitController;
+use App\Http\Controllers\planning\SectionController;
+use App\Http\Controllers\Planning\EmploymentStatusController;
+use App\Http\Controllers\Planning\OfficeLocationController;
+use App\Http\Controllers\Planning\QualificationController;
+use App\Http\Controllers\Planning\SalaryGradeController;
+use App\Http\Controllers\Planning\PositionLevelController;
+use App\Http\Controllers\Planning\ParentheticalTitleController;
+use App\Http\Controllers\Planning\ReportController;
+use App\Http\Controllers\Planning\JoRequestController;
+use App\Http\Controllers\GadResponseController;
+use App\Http\Controllers\EthnicityController;
+use App\Http\Controllers\MedicalController;
+use App\Http\Controllers\SoloParentController;
+use App\Http\Controllers\TravelController;
+use App\Http\Controllers\SpecialController;
+use App\Http\Controllers\RequestFormController;
+use App\Http\Controllers\CprController;
+use App\Http\Controllers\CprEmployeeController;
 
 
 
@@ -126,15 +129,13 @@
   // Logout
   Route::post('/logout', [LoginBasic::class, 'logout'])->name('logout');
   // PROTECTED ROUTES
-  Route::middleware(['auth'])->group(function () {
 
-      Route::get('/dashboard', fn () => view('dashboard'))
-          ->name('dashboard-analytics');
-
-      Route::get('/planning/dashboard', fn () => view('content.planning.dashboard'))
-          ->name('content.planning.dashboard');
-
+  
+  Route::middleware(['auth', 'prevent-back-history'])->group(function () {
+      Route::get('/dashboard', fn () => view('dashboard'))->name('dashboard-analytics');
+      Route::get('/planning/dashboard', fn () => view('content.planning.dashboard'))->name('content.planning.dashboard');
   });
+
 
   //-------------------------------------------------------START OF PROFILE-----------------------------------------------------------
 
@@ -257,6 +258,20 @@
     Route::get('/import-form', [UserController::class, 'showImportForm'])->name('planning.import-form');
     Route::post('/import', [UserController::class, 'importEmployees'])->name('planning.import');
   });
+
+ 
+Route::prefix('planning/user-management')->group(function () {
+    Route::get('/', [UserManagementController::class, 'index'])->name('user-management.index');
+    Route::get('/list', [UserManagementController::class, 'list'])->name('user-management.list');
+    Route::get('/edit/{id}', [UserManagementController::class, 'edit']);
+    Route::post('/store', [UserManagementController::class, 'store'])->name('user-management.store');
+    Route::post('/update/{id}', [UserManagementController::class, 'update']);
+    Route::delete('/destroy/{id}', [UserManagementController::class, 'destroy']);
+});
+
+Route::get('planning/user-permission', [UserPermissionController::class, 'index'])->name('user-permission.index');
+Route::get('planning/user-permission/{user_id}', [UserPermissionController::class, 'getUserPermissions']);
+Route::post('planning/user-permission/update', [UserPermissionController::class, 'update'])->name('user-permission.update');
 
 
   Route::get('/planning/dashboard', [Analytics::class, 'index'])
@@ -645,7 +660,7 @@
   Route::post('/forms/request-activation', [CprEmployeeController::class, 'requestActivation'])
     ->name('cpr.requestActivation');
 
-  Route::put('/employee/{cpr}/update', [CprEmployeeController::class, 'update'])->name('employee.update');
+Route::put('/employee/{cpr}/update', [CprEmployeeController::class, 'update'])->name('employee.update');
 
   //PAS
   Route::prefix('/pas/fundsource')->group(function () {

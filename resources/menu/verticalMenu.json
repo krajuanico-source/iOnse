@@ -6,7 +6,7 @@
       "slug": "dashboard",
       "icon": "menu-icon tf-icons ri-dashboard-line",
       "roles": [
-        "HR-Planning",
+        "HR-PLANNING",
         "HR-Welfare",
         "HR-PAS",
         "HR-L&D"
@@ -17,7 +17,7 @@
       "icon": "menu-icon tf-icons ri-layout-2-line",
       "slug": "planning",
       "roles": [
-        "HR-Planning"
+        "HR-PLANNING"
       ],
       "submenu": [
         {
@@ -25,14 +25,14 @@
           "name": "List of Employee",
           "slug": "list-of-employee",
           "roles": [
-            "HR-Planning"
+            "HR-PLANNING"
           ]
         },
         {
           "name": "Employment Data",
           "slug": "employment-data",
           "roles": [
-            "HR-Planning"
+            "HR-PLANNING"
           ],
           "submenu": [
             {
@@ -40,7 +40,7 @@
               "name": "Employment Status",
               "slug": "employment-status",
               "roles": [
-                "HR-Planning"
+                "HR-PLANNING"
               ]
             },
             {
@@ -48,7 +48,7 @@
               "name": "Position",
               "slug": "position",
               "roles": [
-                "HR-Planning"
+                "HR-PLANNING"
               ]
             },
             {
@@ -56,7 +56,7 @@
               "name": "Item Number",
               "slug": "item-numbers",
               "roles": [
-                "HR-Planning"
+                "HR-PLANNING"
               ]
             }
           ]
@@ -65,7 +65,7 @@
           "name": "OBSU",
           "slug": "OBSU",
           "roles": [
-            "HR-Planning"
+            "HR-PLANNING"
           ],
           "submenu": [
             {
@@ -73,7 +73,7 @@
               "name": "Office Locations",
               "slug": "office-location",
               "roles": [
-                "HR-Planning"
+                "HR-PLANNING"
               ]
             },
             {
@@ -81,7 +81,7 @@
               "name": "Divisions",
               "slug": "division",
               "roles": [
-                "HR-Planning"
+                "HR-PLANNING"
               ]
             },
             {
@@ -89,7 +89,7 @@
               "name": "Sections",
               "slug": "section",
               "roles": [
-                "HR-Planning"
+                "HR-PLANNING"
               ]
             },
             {
@@ -97,7 +97,7 @@
               "name": "Units",
               "slug": "unit",
               "roles": [
-                "HR-Planning"
+                "HR-PLANNING"
               ]
             }
           ]
@@ -107,7 +107,7 @@
           "name": "Unfilled Positions",
           "slug": "unfilled-positions",
           "roles": [
-            "HR-Planning"
+            "HR-PLANNING"
           ]
         },
         {
@@ -115,7 +115,32 @@
           "name": "CPR",
           "slug": "cpr",
           "roles": [
-            "HR-Planning"
+            "HR-PLANNING"
+          ]
+        },
+        {
+          "name": "User Management",
+          "slug": "user-management",
+          "roles": [
+            "HR-PLANNING"
+          ],
+          "submenu": [
+            {
+              "url": "planning/user-management",
+              "name": "User Enrollment",
+              "slug": "user-management",
+              "roles": [
+                "HR-PLANNING"
+              ]
+            },
+            {
+              "url": "planning/user-permission",
+              "name": "User Permission",
+              "slug": "user-permission",
+              "roles": [
+                "HR-PLANNING"
+              ]
+            }
           ]
         }
       ]
@@ -125,7 +150,7 @@
       "icon": "menu-icon tf-icons ri-user-line",
       "slug": "profile",
       "roles": [
-        "HR-Planning",
+        "HR-PLANNING",
         "HR-Welfare",
         "HR-PAS",
         "HR-L&D"
@@ -203,28 +228,16 @@
       "icon": "menu-icon tf-icons ri-file-list-3-line",
       "slug": "profile",
       "roles": [
-        "HR-Planning",
+        "HR-PLANNING",
         "HR-Welfare",
         "HR-PAS",
         "HR-L&D"
       ],
       "submenu": [
         {
-          "url": "pds/fill",
-          "name": "Personal Data Sheet",
-          "slug": "pds",
-          "children": [
-            {
-              "url": "forms/outslips",
-              "name": "List",
-              "slug": "outslips-list"
-            },
-            {
-              "url": "forms/outslip/form",
-              "name": "Form",
-              "slug": "outslip-form"
-            }
-          ]
+          "url": "forms/arta",
+          "name": "ARTA ID",
+          "slug": "arta"
         },
         {
           "url": "forms/outslips",
@@ -314,7 +327,7 @@
       "icon": "menu-icon tf-icons ri-file-shield-line",
       "slug": "profile",
       "roles": [
-        "HR-Planning",
+        "HR-PLANNING",
         "HR-Welfare",
         "HR-PAS",
         "HR-L&D"
@@ -357,7 +370,7 @@
       "icon": "menu-icon tf-icons ri-history-line",
       "slug": "profile",
       "roles": [
-        "HR-Planning",
+        "HR-PLANNING",
         "HR-Welfare",
         "HR-PAS",
         "HR-L&D"

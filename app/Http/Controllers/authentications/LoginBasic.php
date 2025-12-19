@@ -48,6 +48,13 @@ class LoginBasic extends Controller
 
         $user = User::where($loginType, $request->login)->first();
 
+        // Check if user is active
+        if (!$user->is_active) {
+            return back()->withErrors([
+                'login' => 'Your account is inactive. Please contact admin.',
+            ])->onlyInput('login');
+        }
+
         // Generate OTP
         $otp = random_int(100000, 999999);
 
@@ -70,7 +77,6 @@ class LoginBasic extends Controller
      */
     public function showOtpForm()
     {
-        // If session expired, redirect to login
         if (!Session::has('pending_login')) {
             return redirect()->route('auth-login-basic')
                 ->withErrors(['login' => 'Session expired. Please login again.']);
@@ -97,7 +103,6 @@ class LoginBasic extends Controller
         // OTP expired
         if (now()->greaterThan(Session::get('otp_expires_at'))) {
             Session::flush();
-
             return redirect()->route('auth-login-basic')
                 ->withErrors(['login' => 'OTP expired. Please login again.']);
         }
@@ -109,23 +114,27 @@ class LoginBasic extends Controller
             ]);
         }
 
+        $pendingLogin = Session::get('pending_login');
+        $loginType = array_key_exists('email', $pendingLogin) ? 'email' : 'username';
+        $user = User::where($loginType, $pendingLogin[$loginType])->first();
+
+        // Prevent login if inactive
+        if (!$user->is_active) {
+            Session::forget(['otp', 'otp_expires_at', 'pending_login', 'otp_user_id']);
+            return redirect()->route('auth-login-basic')
+                ->withErrors(['login' => 'Your account is inactive. Please contact admin.']);
+        }
+
         // Login user
-        Auth::attempt(Session::get('pending_login'));
+        Auth::attempt($pendingLogin);
         $request->session()->regenerate();
 
-        $user = Auth::user();
-
-        // Clear OTP data
-        Session::forget([
-            'otp',
-            'otp_expires_at',
-            'pending_login',
-            'otp_user_id',
-        ]);
+        // Clear OTP session data
+        Session::forget(['otp', 'otp_expires_at', 'pending_login', 'otp_user_id']);
 
         // Role-based redirect
         return match ($user->role) {
-            'HR-Planning' => redirect()->route('content.planning.dashboard'),
+            'HR-PLANNING' => redirect()->route('content.planning.dashboard'),
             'HR-Welfare',
             'HR-PAS',
             'HR-L&D'      => redirect()->route('dashboard-analytics'),
@@ -144,13 +153,15 @@ class LoginBasic extends Controller
             ->withErrors(['login' => 'Unauthorized role.']);
     }
 
+    /**
+     * Logout user
+     */
+      public function logout(Request $request)
+      {
+          Auth::logout();
+          $request->session()->invalidate();
+          $request->session()->regenerateToken();
 
-        public function logout(Request $request)
-        {
-            Auth::logout();                        // Log out the user
-            $request->session()->invalidate();      // Invalidate session
-            $request->session()->regenerateToken(); // Regenerate CSRF token
-
-            return redirect()->route('auth-login-basic'); // Redirect to login
-}
-    }
+          return redirect()->route('auth-login-basic');
+      }
+  }

@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('family_backgrounds', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('employee_id')->unique(); // 1:1 with employee
+            $table->unsignedBigInteger('user_id')->unique(); // 1:1 with employee
             // Spouse
             $table->string('spouse_surname')->nullable();
             $table->string('spouse_first_name')->nullable();

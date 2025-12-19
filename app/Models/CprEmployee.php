@@ -10,6 +10,7 @@ class CprEmployee extends Model
     'employee_id',
     'cpr_id',
     'rating',
+    'cpr_file',
   ];
 
   // Optional relationships

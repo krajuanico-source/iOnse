@@ -7,10 +7,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Spatie\Permission\Traits\HasRoles; // ✅ Add this
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles; // ✅ Add HasRoles here
 
     protected $fillable = [
         'employee_id',
@@ -177,5 +178,6 @@ class User extends Authenticatable
     public function otherInformations()
     {
         return $this->belongsTo(OtherInformation::class, 'user_id', 'id');
-    }
+    }    
+    
 }

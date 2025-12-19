@@ -96,7 +96,10 @@
 <!-- Modal Update CPR Employee -->
 <div class="modal fade" id="updateCprEmployeeModal" tabindex="-1">
   <div class="modal-dialog">
-    <form id="updateCprEmployeeForm" method="POST" class="modal-content">
+    <form id="updateCprEmployeeForm"
+      method="POST"
+      class="modal-content"
+      enctype="multipart/form-data">
       @csrf
       @method('PUT')
 
@@ -111,19 +114,49 @@
         <!-- Employee ID (read-only) -->
         <div class="mb-3">
           <label class="form-label">Employee ID</label>
-          <input type="text" class="form-control" id="update_employee_id" name="employee_id" readonly>
+          <input type="text"
+            class="form-control"
+            id="update_employee_id"
+            name="employee_id"
+            readonly>
         </div>
 
         <!-- Rating -->
         <div class="mb-3">
           <label class="form-label">Rating</label>
-          <input type="number" name="rating" id="update_rating" class="form-control" min="0" max="100" step="0.01" required>
+          <input type="number"
+            name="rating"
+            id="update_rating"
+            class="form-control"
+            min="0"
+            max="100"
+            step="0.01"
+            required>
+        </div>
+
+        <!-- File Upload -->
+        <div class="mb-3">
+          <label class="form-label">Upload Supporting File</label>
+          <input type="file"
+            name="cpr_file"
+            class="form-control"
+            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+          <small class="text-muted">
+            Allowed: PDF, JPG, PNG, DOC, DOCX
+          </small>
         </div>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-success">Update</button>
+        <button type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="submit"
+          class="btn btn-success">
+          Update
+        </button>
       </div>
     </form>
   </div>

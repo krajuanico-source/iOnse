@@ -18,11 +18,8 @@ use Illuminate\Support\Str;
 
 <div class="card">
   <div class="container py-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <div class="ms-auto d-flex gap-2">
-      <!-- <a href="{{ url('planning/registration-form') }}" class="btn btn-success">Add New Employee</a>
-      <a href="{{ url('planning/import-form') }}" class="btn btn-primary">Import Employee's Data</a> -->
-    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 style="color: #1d4bb2;">List of Employees</h4>
     </div>
     <div class="table-responsive">
       
@@ -94,5 +91,5 @@ use Illuminate\Support\Str;
       searchable: false
     }]
   });
-</script>
+</script>Z
 @endpush

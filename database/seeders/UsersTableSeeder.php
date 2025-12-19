@@ -3,26 +3,111 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class UsersTableSeeder extends Seeder
 {
-  /**
-   * Run the database seeds.
-   */
-  public function run(): void
-  {
-    DB::table('users')->insert([
-      'name' => 'Your Name Here',
-      'email' => 'tbadlwanjr@dswd.gov.ph',
-      'password' => Hash::make('password123'), // default password
-      'role' => 'HR-Planning',
-      'email_verified_at' => now(),
-      'created_at' => now(),
-      'updated_at' => now(),
-    ]);
-  }
-
-  //Sample
+    public function run(): void
+    {
+        DB::table('users')->insert([
+            [
+                'item_number_id' => null,
+                'username' => 'KAJUANICO',
+                'employee_id' => '11-7839',
+                'first_name' => 'KIMBERLY ROSE',
+                'middle_name' => 'AUDITOR',
+                'last_name' => 'JUANICO',
+                'extension_name' => null,
+                'gender' => 'FEMALE',
+                'civil_status' => 'SINGLE',
+                'height' => '1.48',
+                'weight' => '70',
+                'blood_type' => 'A+',
+                'tel_no' => null,
+                'mobile_no' => '09171234567',
+                'citizenship' => 'Filipino',
+                'birthday' => '2000-11-29',
+                'place_of_birth' => 'DAVAO CITY',
+                'employment_status_id' => 1,
+                'division_id' => 1,
+                'section_id' => 1,
+                'email' => 'krajuanico@dswd.gov.ph',
+                'role' => 'HR-PLANNING',
+                'profile_image' => null,
+                'status' => 'active',
+                'email_verified_at' => Carbon::now(),
+                'password' => Hash::make('password'),
+                'remember_token' => null,
+                'qualification_id' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'item_number_id' => null,
+                'username' => 'SGVILLALUZ',
+                'employee_id' => '11-7840',
+                'first_name' => 'SAMANTHA',
+                'middle_name' => 'GOMEZ',
+                'last_name' => 'VILLALUZ',
+                'extension_name' => null,
+                'gender' => 'MALE',
+                'civil_status' => 'SINGLE',
+                'height' => '1.70',
+                'weight' => '68',
+                'blood_type' => 'O+',
+                'tel_no' => null,
+                'mobile_no' => '09179876543',
+                'citizenship' => 'Filipino',
+                'birthday' => '1995-06-15',
+                'place_of_birth' => 'CEBU CITY',
+                'employment_status_id' => 1,
+                'division_id' => 1,
+                'section_id' => 1,
+                'email' => 'krjuanico@gmail.com',
+                'role' => 'HR-L&D',
+                'profile_image' => null,
+                'status' => 'active',
+                'email_verified_at' => Carbon::now(),
+                'password' => Hash::make('password'),
+                'remember_token' => null,
+                'qualification_id' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'item_number_id' => null,
+                'username' => 'MLCRUZ',
+                'employee_id' => '11-7841',
+                'first_name' => 'MIKAEL',
+                'middle_name' => 'LOPEZ',
+                'last_name' => 'CRUZ',
+                'extension_name' => null,
+                'gender' => 'MALE',
+                'civil_status' => 'SINGLE',
+                'height' => '1.75',
+                'weight' => '70',
+                'blood_type' => 'B+',
+                'tel_no' => null,
+                'mobile_no' => '09175554444',
+                'citizenship' => 'Filipino',
+                'birthday' => '1990-03-10',
+                'place_of_birth' => 'DAVAO CITY',
+                'employment_status_id' => 1,
+                'division_id' => 1,
+                'section_id' => 1,
+                'email' => 'krajuanico@usep.gov.ph',
+                'role' => 'HR-PAS',
+                'profile_image' => null,
+                'status' => 'active',
+                'email_verified_at' => Carbon::now(),
+                'password' => Hash::make('password'),
+                'remember_token' => null,
+                'qualification_id' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
+    }
 }

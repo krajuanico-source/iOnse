@@ -19,32 +19,16 @@ class DatabaseSeeder extends Seeder
     ]);
 
     // Call individual seeders
-    $this->call([
-      RegionSeeder::class,
-    ]);
-    $this->call([
-      ProvinceSeeder::class,
-    ]);
-    $this->call([
-      Barangayb2Seeder::class,
-    ]);
-    $this->call([
-      Barangayb3Seeder::class,
-    ]);
-    $this->call([
-      Barangayb4Seeder::class,
-    ]);
-    $this->call([
-      Barangayb5Seeder::class,
-    ]);
-    $this->call([
-      ProvinceSeeder::class,
-    ]);
-    $this->call([
-      CitiesSeeder::class,
-    ]);
-    $this->call([
-      UsersTableSeeder::class,
-    ]);
+   $this->call([
+    RegionSeeder::class,
+    ProvinceSeeder::class,
+    Barangayb2Seeder::class,
+    Barangayb3Seeder::class,
+    Barangayb4Seeder::class,
+    Barangayb5Seeder::class,
+    CitiesSeeder::class,
+    UsersTableSeeder::class,
+    ModulePermissionSeeder::class,
+]);
   }
 }
