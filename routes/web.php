@@ -44,37 +44,39 @@
   use App\Http\Controllers\Profile\OtherInformationController;
   use App\Http\Controllers\Profile\PdsController;
   use App\Http\Controllers\RequestsController;
+  use App\Http\Controllers\AuthenticCopyController;
+  use App\Http\Controllers\AuthenticCopyRequestController;
 
-//Planning
-use App\Http\Controllers\Planning\UserPermissionController;
-use App\Http\Controllers\Planning\UserManagementController;
-use App\Http\Controllers\planning\DashboardController;
-use App\Http\Controllers\planning\ListofEmployee;
-use App\Http\Controllers\Planning\ApplicantController;
-use App\Http\Controllers\planning\RegistrationForm;
-use App\Http\Controllers\planning\ListofPosition;
-use App\Http\Controllers\planning\VacantPositionController;
-use App\Http\Controllers\planning\OfficeLocation;
-use App\Http\Controllers\planning\DivisionController;
-use App\Http\Controllers\planning\UnitController;
-use App\Http\Controllers\planning\SectionController;
-use App\Http\Controllers\Planning\EmploymentStatusController;
-use App\Http\Controllers\Planning\OfficeLocationController;
-use App\Http\Controllers\Planning\QualificationController;
-use App\Http\Controllers\Planning\SalaryGradeController;
-use App\Http\Controllers\Planning\PositionLevelController;
-use App\Http\Controllers\Planning\ParentheticalTitleController;
-use App\Http\Controllers\Planning\ReportController;
-use App\Http\Controllers\Planning\JoRequestController;
-use App\Http\Controllers\GadResponseController;
-use App\Http\Controllers\EthnicityController;
-use App\Http\Controllers\MedicalController;
-use App\Http\Controllers\SoloParentController;
-use App\Http\Controllers\TravelController;
-use App\Http\Controllers\SpecialController;
-use App\Http\Controllers\RequestFormController;
-use App\Http\Controllers\CprController;
-use App\Http\Controllers\CprEmployeeController;
+  //Planning
+  use App\Http\Controllers\Planning\UserPermissionController;
+  use App\Http\Controllers\Planning\UserManagementController;
+  use App\Http\Controllers\planning\DashboardController;
+  use App\Http\Controllers\planning\ListofEmployee;
+  use App\Http\Controllers\Planning\ApplicantController;
+  use App\Http\Controllers\planning\RegistrationForm;
+  use App\Http\Controllers\planning\ListofPosition;
+  use App\Http\Controllers\planning\VacantPositionController;
+  use App\Http\Controllers\planning\OfficeLocation;
+  use App\Http\Controllers\planning\DivisionController;
+  use App\Http\Controllers\planning\UnitController;
+  use App\Http\Controllers\planning\SectionController;
+  use App\Http\Controllers\Planning\EmploymentStatusController;
+  use App\Http\Controllers\Planning\OfficeLocationController;
+  use App\Http\Controllers\Planning\QualificationController;
+  use App\Http\Controllers\Planning\SalaryGradeController;
+  use App\Http\Controllers\Planning\PositionLevelController;
+  use App\Http\Controllers\Planning\ParentheticalTitleController;
+  use App\Http\Controllers\Planning\ReportController;
+  use App\Http\Controllers\Planning\JoRequestController;
+  use App\Http\Controllers\GadResponseController;
+  use App\Http\Controllers\EthnicityController;
+  use App\Http\Controllers\MedicalController;
+  use App\Http\Controllers\SoloParentController;
+  use App\Http\Controllers\TravelController;
+  use App\Http\Controllers\SpecialController;
+  use App\Http\Controllers\RequestFormController;
+  use App\Http\Controllers\CprController;
+  use App\Http\Controllers\CprEmployeeController;
 
 
 
@@ -106,19 +108,19 @@ use App\Http\Controllers\CprEmployeeController;
 
 
   // PUBLIC (NO AUTH)
-  Route::get('/', fn () => redirect()->route('auth-login-basic'));
+  Route::get('/', fn() => redirect()->route('auth-login-basic'));
 
   Route::get('/auth/login-basic', [LoginBasic::class, 'index'])
-      ->name('auth-login-basic');
+    ->name('auth-login-basic');
 
   Route::post('/auth/login-basic', [LoginBasic::class, 'store'])
-      ->name('login.store');
+    ->name('login.store');
 
   Route::get('/auth/otp', [LoginBasic::class, 'showOtpForm'])
-      ->name('otp.form');
+    ->name('otp.form');
 
   Route::post('/auth/otp', [LoginBasic::class, 'verifyOtp'])
-      ->name('otp.verify');
+    ->name('otp.verify');
 
   // Show login page
   Route::get('/login', [LoginBasic::class, 'index'])->name('login');
@@ -130,10 +132,10 @@ use App\Http\Controllers\CprEmployeeController;
   Route::post('/logout', [LoginBasic::class, 'logout'])->name('logout');
   // PROTECTED ROUTES
 
-  
+
   Route::middleware(['auth', 'prevent-back-history'])->group(function () {
-      Route::get('/dashboard', fn () => view('dashboard'))->name('dashboard-analytics');
-      Route::get('/planning/dashboard', fn () => view('content.planning.dashboard'))->name('content.planning.dashboard');
+    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard-analytics');
+    Route::get('/planning/dashboard', fn() => view('content.planning.dashboard'))->name('content.planning.dashboard');
   });
 
 
@@ -201,11 +203,11 @@ use App\Http\Controllers\CprEmployeeController;
   });
 
   Route::middleware(['auth'])->group(function () {
-      Route::post('profile/government-ids/update-all', [GovernmentIdController::class, 'updateAll'])->name('profile.government-ids.update-all');
-      Route::get('profile/government-ids', [GovernmentIdController::class, 'index'])->name('profile.government-ids.index');
-      Route::post('profile/government-ids/store', [GovernmentIdController::class, 'store'])->name('profile.government-ids.store');
-      Route::put('profile/government-ids/{id}', [GovernmentIdController::class, 'update'])->name('profile.government-ids.update');
-      Route::delete('profile/government-ids/{id}', [GovernmentIdController::class, 'destroy'])->name('profile.government-ids.destroy');
+    Route::post('profile/government-ids/update-all', [GovernmentIdController::class, 'updateAll'])->name('profile.government-ids.update-all');
+    Route::get('profile/government-ids', [GovernmentIdController::class, 'index'])->name('profile.government-ids.index');
+    Route::post('profile/government-ids/store', [GovernmentIdController::class, 'store'])->name('profile.government-ids.store');
+    Route::put('profile/government-ids/{id}', [GovernmentIdController::class, 'update'])->name('profile.government-ids.update');
+    Route::delete('profile/government-ids/{id}', [GovernmentIdController::class, 'destroy'])->name('profile.government-ids.destroy');
   });
 
 
@@ -259,23 +261,23 @@ use App\Http\Controllers\CprEmployeeController;
     Route::post('/import', [UserController::class, 'importEmployees'])->name('planning.import');
   });
 
- 
-Route::prefix('planning/user-management')->group(function () {
+
+  Route::prefix('planning/user-management')->group(function () {
     Route::get('/', [UserManagementController::class, 'index'])->name('user-management.index');
     Route::get('/list', [UserManagementController::class, 'list'])->name('user-management.list');
     Route::get('/edit/{id}', [UserManagementController::class, 'edit']);
     Route::post('/store', [UserManagementController::class, 'store'])->name('user-management.store');
     Route::post('/update/{id}', [UserManagementController::class, 'update']);
     Route::delete('/destroy/{id}', [UserManagementController::class, 'destroy']);
-});
+  });
 
-Route::get('planning/user-permission', [UserPermissionController::class, 'index'])->name('user-permission.index');
-Route::get('planning/user-permission/{user_id}', [UserPermissionController::class, 'getUserPermissions']);
-Route::post('planning/user-permission/update', [UserPermissionController::class, 'update'])->name('user-permission.update');
+  Route::get('planning/user-permission', [UserPermissionController::class, 'index'])->name('user-permission.index');
+  Route::get('planning/user-permission/{user_id}', [UserPermissionController::class, 'getUserPermissions']);
+  Route::post('planning/user-permission/update', [UserPermissionController::class, 'update'])->name('user-permission.update');
 
 
   Route::get('/planning/dashboard', [Analytics::class, 'index'])
-      ->name('content.planning.dashboard');
+    ->name('content.planning.dashboard');
 
   // Registration Form Routes
   Route::prefix('planning')->group(function () {
@@ -619,29 +621,17 @@ Route::post('planning/user-permission/update', [UserPermissionController::class,
 
   Route::get('/item-numbers/{id}/print', [ItemNumberController::class, 'print'])->name('itemNumbers.print');
 
-
-  // Routes for CPR forms
-  Route::prefix('forms')->group(function () {
-
-    // Standard CRUD routes for CPR
-    Route::resource('cpr', CprController::class);
-
-    // Optional: if you want a separate explicit route for create
-    // Route::get('cpr/create', [CprController::class, 'create'])->name('forms.cpr.create');
-
-    // Optional: route for printing a CPR record
-    Route::get('cpr/{cpr}/print', [CprController::class, 'print'])->name('forms.cpr.print');
-
-    // Optional: route for viewing CPR details
-    Route::get('cpr/{cpr}', [CprController::class, 'show'])->name('forms.cpr.show');
-
-
-    // Optional: route for editing a CPR record
-    // This is already included in resource routes as 'cpr/{cpr}/edit'
-  });
-
   Route::prefix('forms')->name('forms.')->group(function () {
+
+    Route::get('cpr/employee', [CprController::class, 'employeeList'])
+      ->name('cpr.employee');
+
     Route::resource('cpr', CprController::class);
+
+    Route::post(
+      'cpr/{cpr}/employee/validate',
+      [CprController::class, 'validateAndGenerate']
+    )->name('cpr.employee.validate');
   });
 
   // CPR Employee list/dashboard
@@ -660,7 +650,40 @@ Route::post('planning/user-permission/update', [UserPermissionController::class,
   Route::post('/forms/request-activation', [CprEmployeeController::class, 'requestActivation'])
     ->name('cpr.requestActivation');
 
-Route::put('/employee/{cpr}/update', [CprEmployeeController::class, 'update'])->name('employee.update');
+  Route::post('/authentic-copy/request', [AuthenticCopyController::class, 'store'])
+    ->name('authentic-copy.request')
+    ->middleware('auth');
+
+  Route::middleware(['auth'])->group(function () {
+    // Show all CPR requests
+    Route::get('/forms/cprrequest', [AuthenticCopyRequestController::class, 'index'])
+      ->name('forms.cprrequest');
+
+    // Update the status of a specific request
+    Route::post('/forms/cprrequest/{authenticCopyRequest}/update-status', [AuthenticCopyRequestController::class, 'updateStatus'])
+      ->name('forms.cprrequest.updateStatus');
+  });
+
+  Route::prefix('authentic-copy')->group(function () {
+
+    // Digital Signature (P12 / PFX)
+    Route::post('/{id}/digital-sign', [AuthenticCopyRequestController::class, 'digitalSign'])
+      ->name('authentic-copy.digital-sign');
+
+    // Wet / Electronic Signature (image)
+    Route::post('/{id}/wet-sign', [AuthenticCopyRequestController::class, 'wetSign'])
+      ->name('authentic-copy.wet-sign');
+
+    Route::get('/authentic-copy/{id}/wet-sign', [AuthenticCopyRequestController::class, 'wetSignDownload'])
+      ->name('authentic-copy.wetSign');
+  });
+
+
+  Route::put('/employee/{cpr}/update', [CprEmployeeController::class, 'update'])->name('employee.update');
+  Route::middleware(['auth'])->group(function () {
+    Route::get('/forms/cpremployee', [CprEmployeeController::class, 'index'])->name('employee.index');
+    // ... other routes
+  });
 
   //PAS
   Route::prefix('/pas/fundsource')->group(function () {

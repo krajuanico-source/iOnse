@@ -2,25 +2,30 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Cpr;
 
 class CprEmployee extends Model
 {
+  use HasFactory;
+
   protected $fillable = [
-    'employee_id',
     'cpr_id',
+    'employee_id',
     'rating',
     'cpr_file',
+    'status',
   ];
-
-  // Optional relationships
-  public function employee()
-  {
-    return $this->belongsTo(User::class, 'employee_id');
-  }
 
   public function cpr()
   {
-    return $this->belongsTo(Cpr::class, 'cpr_id');
+    return $this->belongsTo(Cpr::class);
+  }
+
+  public function user()
+  {
+    return $this->belongsTo(User::class);
   }
 }

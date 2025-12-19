@@ -6,17 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-  public function up()
+  public function up(): void
   {
     Schema::table('cpr_employees', function (Blueprint $table) {
-      $table->string('cpr_file')->nullable()->after('rating');
+      $table->string('status')->default('Pending')->after('cpr_file');
     });
   }
 
-  public function down()
+  public function down(): void
   {
     Schema::table('cpr_employees', function (Blueprint $table) {
-      $table->dropColumn('cpr_file');
+      $table->dropColumn('status');
     });
   }
 };
