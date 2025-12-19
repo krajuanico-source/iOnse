@@ -17,9 +17,9 @@
               <!-- Logo -->
         <div class="app-brand justify-content-center mt-5">
         <a href="{{ url('/') }}" class="app-brand-link d-flex align-items-center gap-3">
-          <span class="app-brand-logo d-flex align-items-center gap-2 bg-white p-2 rounded">
+          <span class="app-brand-logo d-flex align-items-center gap-3 bg-white p-2 rounded">
             <img src="{{ asset('assets/img/logo-dswd1.png') }}" alt="DSWD Logo" height="80">
-            <img src="{{ asset('assets/img/hrprime-logo.png') }}" alt="HR Prime Logo" height="90">
+            <img src="{{ asset('assets/img/hrprime-logo.png') }}" alt="HR Prime Logo" height="75">
           </span>
         </a>
         </div>
@@ -39,15 +39,20 @@
             <input type="hidden" name="token" value="{{ $token }}">
             <input type="hidden" name="email" value="{{ $email }}">
 
-            <div class="form-floating form-floating-outline mb-4">
-              <input type="password" class="form-control" name="password" placeholder="New password" required autofocus>
-              <label for="password">New Password</label>
-            </div>
+         <div class="mb-4 position-relative">
+            <label for="password" class="form-label position-absolute top-50 start-0 translate-middle-y text-muted ms-3" id="passwordLabel">
+                New Password
+            </label>
+            <input type="password" class="form-control ps-5" id="password" name="password" placeholder="" required>
+        </div>
 
-            <div class="form-floating form-floating-outline mb-4">
-              <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm password" required>
-              <label for="password_confirmation">Confirm Password</label>
-            </div>
+        <div class="mb-4 position-relative">
+            <label for="password_confirmation" class="form-label position-absolute top-50 start-0 translate-middle-y text-muted ms-3" id="passwordConfirmLabel">
+                Confirm Password
+            </label>
+            <input type="password" class="form-control ps-5" id="password_confirmation" name="password_confirmation" placeholder="" required>
+        </div>
+
 
             <button class="btn btn-primary d-grid w-100 mb-4">Reset Password</button>
           </form>
@@ -59,9 +64,50 @@
           </div>
         </div>
       </div>
-      <!-- /Reset Password Card -->
-
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // PASSWORD FIELD
+  const passwordInput = document.getElementById('password');
+  const passwordLabel = document.getElementById('passwordLabel');
+
+  if (passwordInput && passwordLabel) {
+    passwordInput.addEventListener('focus', () => {
+      passwordLabel.style.display = 'none';
+    });
+    passwordInput.addEventListener('blur', () => {
+      if (!passwordInput.value) passwordLabel.style.display = 'block';
+    });
+    passwordLabel.addEventListener('click', () => {
+      passwordLabel.style.display = 'none';
+      passwordInput.focus();
+    });
+  }
+
+  // CONFIRM PASSWORD FIELD
+  const passwordConfirmInput = document.getElementById('password_confirmation');
+  const passwordConfirmLabel = document.getElementById('passwordConfirmLabel');
+
+  if (passwordConfirmInput && passwordConfirmLabel) {
+    passwordConfirmInput.addEventListener('focus', () => {
+      passwordConfirmLabel.style.display = 'none';
+    });
+    passwordConfirmInput.addEventListener('blur', () => {
+      if (!passwordConfirmInput.value) passwordConfirmLabel.style.display = 'block';
+    });
+    passwordConfirmLabel.addEventListener('click', () => {
+      passwordConfirmLabel.style.display = 'none';
+      passwordConfirmInput.focus();
+    });
+  }
+
+});
+</script>
+
+
+
 @endsection

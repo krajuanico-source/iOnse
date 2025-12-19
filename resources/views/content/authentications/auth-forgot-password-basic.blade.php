@@ -17,9 +17,9 @@
         <!-- Logo -->
         <div class="app-brand justify-content-center mt-5">
         <a href="{{ url('/') }}" class="app-brand-link d-flex align-items-center gap-3">
-          <span class="app-brand-logo d-flex align-items-center gap-2 bg-white p-2 rounded">
+          <span class="app-brand-logo d-flex align-items-center gap-3 bg-white p-2 rounded">
             <img src="{{ asset('assets/img/logo-dswd1.png') }}" alt="DSWD Logo" height="80">
-            <img src="{{ asset('assets/img/hrprime-logo.png') }}" alt="HR Prime Logo" height="90">
+            <img src="{{ asset('assets/img/hrprime-logo.png') }}" alt="HR Prime Logo" height="75">
           </span>
         </a>
         </div>
@@ -45,17 +45,21 @@
           <form action="{{ route('password.email') }}" method="POST">
             @csrf
 
-            <div class="form-floating form-floating-outline mb-4">
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                name="email"
-                placeholder="Enter your email"
-                required
-                autofocus>
-              <label for="email">Email</label>
-            </div>
+          <div class="mb-4 position-relative">
+            <label for="email"
+                  id="emailLabel"
+                  class="form-label position-absolute top-50 start-0 translate-middle-y text-muted ms-3">
+              Email
+            </label>
+
+            <input type="email"
+                  class="form-control ps-5"
+                  id="email"
+                  name="email"
+                  required
+                  autofocus>
+          </div>
+
 
             <button class="btn btn-primary d-grid w-100 mb-4" type="submit">
               Send Reset Link
@@ -71,13 +75,28 @@
           </div>
         </div>
       </div>
-      <!-- /Forgot Password Card -->
-
-      <!-- Background Illustrations -->
-      <img src="{{ asset('assets/img/illustrations/tree-3.png') }}" alt="auth-tree" class="authentication-image-object-left d-none d-lg-block">
-      <img src="{{ asset('assets/img/illustrations/auth-basic-mask-light.png') }}" class="authentication-image d-none d-lg-block" height="172" alt="triangle-bg">
-      <img src="{{ asset('assets/img/illustrations/tree.png') }}" alt="auth-tree" class="authentication-image-object-right d-none d-lg-block">
     </div>
   </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  const emailInput = document.getElementById('email');
+  const emailLabel = document.getElementById('emailLabel');
+
+  if (emailInput && emailLabel) {
+    emailInput.addEventListener('focus', () => {
+      emailLabel.style.display = 'none';
+    });
+
+    emailInput.addEventListener('blur', () => {
+      if (!emailInput.value) {
+        emailLabel.style.display = 'block';
+      }
+    });
+  }
+
+});
+</script>
+
 @endsection

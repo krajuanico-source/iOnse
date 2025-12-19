@@ -18,9 +18,9 @@
         <!-- Logo -->
         <div class="app-brand justify-content-center mt-5">
         <a href="{{ url('/') }}" class="app-brand-link d-flex align-items-center gap-3">
-          <span class="app-brand-logo d-flex align-items-center gap-2 bg-white p-2 rounded">
+          <span class="app-brand-logo d-flex align-items-center gap-3 bg-white p-2 rounded">
             <img src="{{ asset('assets/img/logo-dswd1.png') }}" alt="DSWD Logo" height="80">
-            <img src="{{ asset('assets/img/hrprime-logo.png') }}" alt="HR Prime Logo" height="90">
+            <img src="{{ asset('assets/img/hrprime-logo.png') }}" alt="HR Prime Logo" height="75">
           </span>
         </a>
         </div>
@@ -30,10 +30,22 @@
 
               <form method="POST" action="{{ route('otp.verify') }}">
                 @csrf
-                <div class="form-floating form-floating-outline mb-4">
-                  <input type="text" class="form-control" name="otp" placeholder="Enter 6-digits OTP" required>
-                  <label for="otp">One-Time Password</label>
+                <div class="mb-4 position-relative">
+                  <label for="otp"
+                        id="otpLabel"
+                        class="form-label position-absolute top-50 start-0 translate-middle-y text-muted ms-3">
+                    One-Time Password
+                  </label>
+
+                  <input type="text"
+                        class="form-control ps-5"
+                        id="otp"
+                        name="otp"
+                        maxlength="6"
+                        inputmode="numeric"
+                        required>
                 </div>
+
 
                 <button type="submit" class="mt-8 btn btn-primary d-grid w-100">Verify</button>
 
@@ -45,11 +57,28 @@
               </form>
 
         </div>
-      <!-- </div>
-      <img src="{{asset('assets/img/illustrations/tree-3.png')}}" alt="auth-tree" class="authentication-image-object-left d-none d-lg-block">
-      <img src="{{asset('assets/img/illustrations/auth-basic-mask-light.png')}}" class="authentication-image d-none d-lg-block" height="172" alt="triangle-bg">
-      <img src="{{asset('assets/img/illustrations/tree.png')}}" alt="auth-tree" class="authentication-image-object-right d-none d-lg-block">
-    </div> -->
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  const otpInput = document.getElementById('otp');
+  const otpLabel = document.getElementById('otpLabel');
+
+  if (otpInput && otpLabel) {
+    otpInput.addEventListener('focus', () => {
+      otpLabel.style.display = 'none';
+    });
+
+    otpInput.addEventListener('blur', () => {
+      if (!otpInput.value) {
+        otpLabel.style.display = 'block';
+      }
+    });
+  }
+
+});
+</script>
+
 @endsection

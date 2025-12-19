@@ -18,9 +18,9 @@
         <!-- Logo -->
         <div class="app-brand justify-content-center mt-5">
         <a href="{{ url('/') }}" class="app-brand-link d-flex align-items-center gap-3">
-          <span class="app-brand-logo d-flex align-items-center gap-2 bg-white p-2 rounded">
+          <span class="app-brand-logo d-flex align-items-center gap-3 bg-white p-2 rounded">
             <img src="{{ asset('assets/img/logo-dswd1.png') }}" alt="DSWD Logo" height="80">
-            <img src="{{ asset('assets/img/hrprime-logo.png') }}" alt="HR Prime Logo" height="90">
+            <img src="{{ asset('assets/img/hrprime-logo.png') }}" alt="HR Prime Logo" height="75">
           </span>
         </a>  
         </div>
@@ -33,33 +33,37 @@
             @csrf
 
             {{-- Email or Username --}}
-            <div class="form-floating form-floating-outline mb-5">
-              <input type="text" class="form-control" id="login" name="login" placeholder="Enter your email or username" autofocus required>
-              <label for="login">Email or Username</label>
-            </div>
+          <div class="mb-5 position-relative">
+            <label for="login" class="form-label position-absolute top-50 start-0 translate-middle-y text-muted ms-3" id="loginLabel">
+              Email or Username
+            </label>
+            <input type="text" class="form-control ps-5" id="login" name="login" placeholder="" autofocus required>
+          </div>
 
             {{-- Password --}}
-            <div class="mb-5">
-              <div class="form-password-toggle">
-                <div class="input-group input-group-merge">
-                  <div class="form-floating form-floating-outline">
-                    <input type="password" id="password" class="form-control" name="password" placeholder="Password" required>
-                    <label for="password">Password</label>
-                  </div>
-                  <span class="input-group-text cursor-pointer">
-                    <i class="ri-eye-off-line ri-20px"></i>
-                  </span>
-                </div>
+            <div class="mb-5 position-relative">
+              <label for="password" 
+                    class="form-label position-absolute top-50 start-0 translate-middle-y text-muted ms-3"
+                    id="passwordLabel">
+                Password
+              </label>
+
+              <div class="input-group">
+                <input type="password"
+                      id="password"
+                      class="form-control ps-5"
+                      name="password"
+                      required>
+
+                <span class="input-group-text cursor-pointer" id="togglePassword">
+                  <i class="ri-eye-off-line ri-20px"></i>
+                </span>
               </div>
             </div>
 
             {{-- Remember Me --}}
             <div class="mb-5 pb-2 d-flex justify-content-between pt-2 align-items-center">
               <div class="form-check mb-0">
-                <!-- <input class="form-check-input" type="checkbox" id="remember-me" name="remember">
-                <label class="form-check-label" for="remember-me">
-                  Remember Me
-                </label> -->
               </div>
               <a href="{{ url('auth/forgot-password-basic') }}" class="float-end mb-1">
                 <span>Forgot Password?</span>
@@ -93,4 +97,56 @@
     </div> -->
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // LOGIN FIELD
+  const loginInput = document.getElementById('login');
+  const loginLabel = document.getElementById('loginLabel');
+
+  if (loginInput && loginLabel) {
+    loginInput.addEventListener('focus', () => {
+      loginLabel.style.display = 'none';
+    });
+
+    loginInput.addEventListener('blur', () => {
+      if (!loginInput.value) {
+        loginLabel.style.display = 'block';
+      }
+    });
+  }
+
+  // PASSWORD FIELD
+  const passwordInput = document.getElementById('password');
+  const passwordLabel = document.getElementById('passwordLabel');
+  const togglePassword = document.getElementById('togglePassword');
+  const icon = togglePassword?.querySelector('i');
+
+  if (passwordInput && passwordLabel) {
+    passwordInput.addEventListener('focus', () => {
+      passwordLabel.style.display = 'none';
+    });
+
+    passwordInput.addEventListener('blur', () => {
+      if (!passwordInput.value) {
+        passwordLabel.style.display = 'block';
+      }
+    });
+  }
+
+  // PASSWORD VISIBILITY TOGGLE
+  if (togglePassword && icon) {
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.type === 'password' ? 'text' : 'password';
+      passwordInput.type = type;
+
+      icon.classList.toggle('ri-eye-line');
+      icon.classList.toggle('ri-eye-off-line');
+    });
+  }
+
+});
+</script>
+
 @endsection
