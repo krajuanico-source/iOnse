@@ -3,95 +3,180 @@
 @section('title', 'CPR List')
 
 @section('content')
-
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <div class="card p-4">
   <div class="d-flex justify-content-between mb-3">
     <h4 class="fw-bold">CPR – Employee Ratings</h4>
   </div>
-
+  <div class="mt-3 text-end">
+    <button
+      class="btn btn-success"
+      id="requestAuthenticCopyBtn"
+      disabled>
+      Request Authentic Copy
+    </button>
+  </div><br>
   <table id="outslipTable" class="table table-bordered">
     <thead class="table-light">
       <tr>
         <th>#</th>
-        <th>Employee ID</th>
+        <th>Select</th>
         <th>Rating</th>
-        <th>CPR ID</th>
+        <th hidden>CPR ID</th>
+        <th>Supporting File</th> <!-- ✅ NEW -->
         <th>Date Created</th>
         <th>Status</th>
         <th width="250">Action</th>
       </tr>
     </thead>
+
     <tbody>
       @foreach($cprs as $cpr)
+      @php
+      $firstEmployee = $cpr->employees->first();
+      $filePath = $firstEmployee?->cpr_file;
+      @endphp
+
       <tr>
         <td>{{ $cpr->id }}</td>
 
-        <!-- Employees IDs -->
+        <!-- Employee IDs -->
         <td>
-          @if($cpr->employees->count())
-          @foreach($cpr->employees as $emp)
-          {{ $emp->employee_id }}<br>
-          @endforeach
-          @else
-          N/A
-          @endif
+          @forelse($cpr->employees as $emp)
+          <div class="form-check">
+            <input
+              class="form-check-input employeeCheckbox"
+              type="checkbox"
+              name="employee_ids[]"
+              value="{{ $emp->employee_id }}"
+              id="emp_{{ $cpr->id }}_{{ $emp->employee_id }}"
+              data-rating="{{ $emp->rating }}"
+              data-cpr-id="{{ $cpr->id }}"
+              data-status="{{ $emp->status ?? 'Pending' }}"
+              @if($emp->status !== 'Validated') disabled @endif
+            @if($emp->employee_id === auth()->user()->employee?->id && $emp->status === 'Validated') checked @endif
+            >
+          </div>
+          @empty
+          <span class="text-muted">N/A</span>
+          @endforelse
         </td>
 
         <!-- Ratings -->
         <td>
-          @if($cpr->employees->count())
-          @foreach($cpr->employees as $emp)
+          @forelse($cpr->employees as $emp)
           {{ $emp->rating }}<br>
-          @endforeach
-          @else
+          @empty
           N/A
+          @endforelse
+        </td>
+
+        <td hidden>{{ $cpr->id }}</td>
+
+        <!-- Supporting File -->
+        <td class="text-center">
+          @if($filePath && Storage::disk('public')->exists($filePath))
+          <a href="{{ asset('storage/' . $filePath) }}"
+            target="_blank"
+            class="btn btn-sm btn-outline-primary">
+            View File
+          </a>
+          @else
+          <span class="text-muted">No File</span>
           @endif
         </td>
 
-        <td>{{ $cpr->id }}</td>
         <td>{{ $cpr->created_at->format('Y-m-d') }}</td>
+
         <td>
-          <!-- Status badge -->
-          @if($cpr->status == 'Active')
-          <span class="badge bg-success">Active</span>
-          @endif
+          @forelse($cpr->employees as $emp)
+          @switch($emp->status ?? 'Pending')
+          @case('Validated')
+          <span class="badge bg-success">Validated</span>
+          @break
+          @case('Pending')
+          <span class="badge bg-warning text-dark">Pending</span>
+          @break
+          @default
+          <span class="badge bg-secondary">{{ $emp->pivot->status }}</span>
+          @endswitch
+          <br>
+          @empty
+          N/A
+          @endforelse
+
         </td>
-
-        <!-- Edit button -->
-        @php
-        $isActive = trim(strtolower($cpr->status)) === 'active';
-        $firstEmployee = $cpr->employees->first();
-        $userId = \Illuminate\Support\Facades\Auth::id(); // logged-in user
-        @endphp
-
+        <!-- Actions -->
         <td>
-          <!-- Update button -->
+          @php
+          $isActive = strtolower(trim($cpr->status)) === 'active';
+          $userId = auth()->id();
+          $employeeStatus = $cpr->employees
+          ->where('user_id', $userId)
+          ->first()?->pivot->status ?? 'Pending';
+          $isValidated = $employeeStatus === 'Validated';
+          $signedPath = $cpr->signed_pdf_path ?? null;
+          @endphp
+
           @if($isActive)
-          <button class="btn btn-sm btn-primary updateCprBtn"
+          @forelse($cpr->employees as $emp)
+          @switch($emp->status ?? 'Pending')
+          @case('Validated')
+          <button
+            class="btn btn-sm btn-primary updateCprBtn" disabled
             data-cpr-id="{{ $cpr->id }}"
             data-employee-id="{{ $userId }}"
-            data-rating="{{ $firstEmployee ? $firstEmployee->rating : '' }}">
+            data-rating="{{ $firstEmployee?->rating }}"
+            @if($isValidated) disabled title="This CPR is already validated" @endif>
             Update
           </button>
+          @break
+          @case('Pending')
+          <button
+            class="btn btn-sm btn-primary updateCprBtn"
+            data-cpr-id="{{ $cpr->id }}"
+            data-employee-id="{{ $userId }}"
+            data-rating="{{ $firstEmployee?->rating }}"
+            @if($isValidated) disabled title="This CPR is already validated" @endif>
+            Update
+          </button>
+          @break
+          @default
+          <span class="badge bg-secondary">{{ $emp->pivot->status }}</span>
+          @endswitch
+          <br>
+          @empty
+          N/A
+          @endforelse
+
+          @if($isValidated)
+          <small class="text-muted d-block mt-1">Already validated</small>
           @endif
 
-          <!-- Request Activation -->
-          @if(!$isActive)
-          <button class="btn btn-sm btn-warning requestActivationBtn"
+          <!-- Download Signed PDF Button -->
+          <a href="{{ route('authentic-copy.wetSign', $cpr->id) }}"
+            class="btn btn-sm btn-success mt-1">
+            <i class="bi bi-download"></i> Download Signed PDF
+          </a>
+
+          @else
+          <button
+            class="btn btn-sm btn-warning requestActivationBtn"
             data-cpr-id="{{ $cpr->id }}">
             Request Activation
           </button>
           @endif
-
         </td>
+
 
       </tr>
       @endforeach
-
     </tbody>
-
   </table>
+
 </div>
 <!-- Modal Update CPR Employee -->
 <div class="modal fade" id="updateCprEmployeeModal" tabindex="-1">
@@ -118,8 +203,10 @@
             class="form-control"
             id="update_employee_id"
             name="employee_id"
+            value="{{ auth()->user()->id }}"
             readonly>
         </div>
+
 
         <!-- Rating -->
         <div class="mb-3">
@@ -166,68 +253,9 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script>
-  $(document).ready(function() {
-    // Cancel (Reject) button click
-    $('.rejects').click(function() {
-      const id = $(this).data('id');
-
-      // Confirmation dialog
-      if (!confirm('Are you sure you want to cancel this Out Slip?')) {
-        return; // Stop if user clicks "Cancel"
-      }
-
-      // AJAX request to reject the out slip
-      $.post('/forms/outslips/' + id + '/reject', {
-        _token: '{{ csrf_token() }}'
-      }, function(res) {
-        toastr.error(res.message);
-        location.reload();
-      });
-    });
-
-    // Approve button click
-    $('.approve').click(function() {
-      const id = $(this).data('id');
-
-      if (!confirm('Are you sure you want to approve this Out Slip?')) {
-        return; // Stop if user clicks "Cancel"
-      }
-
-      $.post('/forms/outslips/' + id + '/approve', {
-        _token: '{{ csrf_token() }}'
-      }, function(res) {
-        toastr.success(res.message);
-        location.reload();
-      });
-    });
-  });
-</script>
 
 
 <script>
-  $(document).ready(function() {
-    $('.approve').click(function() {
-      const id = $(this).data('id');
-      $.post('/forms/outslips/' + id + '/approve', {
-        _token: '{{ csrf_token() }}'
-      }, function(res) {
-        toastr.success(res.message);
-        location.reload();
-      });
-    });
-
-    $('.reject').click(function() {
-      const id = $(this).data('id');
-      $.post('/forms/outslips/' + id + '/reject', {
-        _token: '{{ csrf_token() }}'
-      }, function(res) {
-        toastr.error(res.message);
-        location.reload();
-      });
-    });
-  });
-
   // DataTable Init
   jQuery(function($) {
     $('#outslipTable').DataTable({
@@ -268,50 +296,79 @@
     });
   });
 </script>
-
 <script>
   $(document).ready(function() {
-    $('.updateCprBtn').click(function() {
-      let cprId = $(this).data('cpr-id');
-      let employeeId = $(this).data('employee-id');
-      let rating = $(this).data('rating');
 
-      $('#update_cpr_id').val(cprId);
-      $('#update_employee_id').val(employeeId);
-      $('#update_rating').val(rating);
+    $('.updateCprBtn').on('click', function() {
+      $('#update_cpr_id').val($(this).data('cpr-id'));
+      $('#update_employee_id').val($(this).data('employee-id'));
+      $('#update_rating').val($(this).data('rating'));
 
       $('#updateCprEmployeeModal').modal('show');
     });
 
-    // Handle form submission
-    $('#updateCprEmployeeForm').submit(function(e) {
+    // ✅ FIXED SUBMIT HANDLER
+    $('#updateCprEmployeeForm').on('submit', function(e) {
       e.preventDefault();
 
-      let cprId = $('#update_cpr_id').val();
-      let employeeId = $('#update_employee_id').val();
-      let rating = $('#update_rating').val();
-      let token = $('input[name="_token"]').val();
+      const cprId = $('#update_cpr_id').val();
+      const formData = new FormData(this); // 👈 INCLUDES cpr_file
 
       $.ajax({
         url: '/employee/' + cprId + '/update',
-        type: 'PUT',
-        data: {
-          _token: token,
-          employee_id: employeeId,
-          rating: rating
+        method: 'POST', // 👈 MUST be POST
+        data: formData,
+        processData: false, // 👈 REQUIRED
+        contentType: false, // 👈 REQUIRED
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(res) {
           alert('Rating updated successfully!');
-          location.reload(); // refresh table
+          location.reload();
         },
         error: function(err) {
+          console.error(err.responseText);
           alert('Error updating rating.');
-          console.log(err);
         }
       });
     });
+
   });
 </script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const requestBtn = document.getElementById('requestAuthenticCopyBtn');
 
+    document.addEventListener('change', () => {
+      const checked = document.querySelectorAll('.employeeCheckbox:checked');
+      requestBtn.disabled = checked.length === 0;
+    });
+
+    requestBtn.addEventListener('click', () => {
+      const selected = [...document.querySelectorAll('.employeeCheckbox:checked')]
+        .map(cb => ({
+          cpr_id: cb.dataset.cprId,
+          rating: cb.dataset.rating
+        }));
+
+      fetch("{{ route('authentic-copy.request') }}", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+          },
+          body: JSON.stringify({
+            selections: selected
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          alert(data.message);
+          location.reload();
+        });
+    });
+  });
+</script>
 
 @endsection

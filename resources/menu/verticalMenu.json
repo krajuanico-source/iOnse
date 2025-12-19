@@ -111,11 +111,36 @@
           ]
         },
         {
-          "url": "forms/cpr",
-          "name": "CPR",
-          "slug": "cpr",
+          "name": "CPR ",
+          "slug": "CPR Employee",
           "roles": [
             "HR-PLANNING"
+          ],
+          "submenu": [
+            {
+              "url": "forms/cpr",
+              "name": "CPR",
+              "slug": "cpr",
+              "roles": [
+                "HR-PLANNING"
+              ]
+            },
+            {
+              "url": "/forms/cpr/employee",
+              "name": "CPR Employee",
+              "slug": "forms.cpr.employee",
+              "roles": [
+                "HR-PLANNING"
+              ]
+            },
+            {
+              "url": "/forms/cprrequest",
+              "name": "CPR Request",
+              "slug": "forms.cprrequest",
+              "roles": [
+                "HR-PLANNING"
+              ]
+            }
           ]
         },
         {
@@ -319,6 +344,11 @@
           "url": "profile/government-ids",
           "name": "Request Form Application",
           "slug": "id"
+        },
+        {
+          "url": "forms/cpremployee",
+          "name": "CPR",
+          "slug": "id"
         }
       ]
     },
@@ -387,9 +417,86 @@
           "slug": "education"
         },
         {
-          "url": "profile/cs-eligibility",
-          "name": "Forms Requested",
-          "slug": "cs-eligibility"
+          "name": "Employment Data",
+          "slug": "employment-data",
+          "roles": [
+            "HR-PLANNING"
+          ],
+          "submenu": [
+            {
+              "url": "planning/employment-status",
+              "name": "Employment Status",
+              "slug": "employment-status",
+              "roles": [
+                "HR-PLANNING"
+              ]
+            },
+            {
+              "url": "planning/position",
+              "name": "Position",
+              "slug": "position",
+              "roles": [
+                "HR-PLANNING"
+              ]
+            },
+            {
+              "url": "planning/item-numbers",
+              "name": "Item Number",
+              "slug": "item-numbers",
+              "roles": [
+                "HR-PLANNING"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "OBSU",
+          "slug": "OBSU",
+          "roles": [
+            "HR-PLANNING"
+          ],
+          "submenu": [
+            {
+              "url": "planning/office-location",
+              "name": "Office Locations",
+              "slug": "office-location",
+              "roles": [
+                "HR-PLANNING"
+              ]
+            },
+            {
+              "url": "planning/division",
+              "name": "Divisions",
+              "slug": "division",
+              "roles": [
+                "HR-PLANNING"
+              ]
+            },
+            {
+              "url": "planning/section",
+              "name": "Sections",
+              "slug": "section",
+              "roles": [
+                "HR-PLANNING"
+              ]
+            },
+            {
+              "url": "planning/unit",
+              "name": "Units",
+              "slug": "unit",
+              "roles": [
+                "HR-PLANNING"
+              ]
+            }
+          ]
+        },
+        {
+          "url": "planning/unfilled-positions",
+          "name": "Unfilled Positions",
+          "slug": "unfilled-positions",
+          "roles": [
+            "HR-PLANNING"
+          ]
         }
       ]
     },

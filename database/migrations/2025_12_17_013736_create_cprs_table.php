@@ -11,11 +11,17 @@ return new class extends Migration
     Schema::create('cprs', function (Blueprint $table) {
       $table->id();
 
-      // Store year-month only (YYYY-MM)
-      $table->string('rating_period_start', 7);  // Example: 2025-12
+      // Requestor (user who submitted the CPR)
+      $table->foreignId('requestor_id')
+        ->nullable()
+        ->constrained('users')
+        ->onDelete('set null');
+
+      // Rating period (YYYY-MM)
+      $table->string('rating_period_start', 7);
 
       // Semester
-      $table->string('semester'); // "1st Semester" or "2nd Semester"
+      $table->string('semester');
 
       // Status
       $table->string('status')->default('Active');

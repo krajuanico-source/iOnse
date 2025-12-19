@@ -7,19 +7,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Cpr;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CprActivationRequestMail;
 
 
 class CprEmployeeController extends Controller
 {
   public function index()
   {
-    // Get all CPRs with their employees
     $cprs = Cpr::with('employees')->latest()->get();
-
     $userId = Auth::id();
+    $loggedEmployeeId = Auth::user()->employee?->id; // 🔹 Get employee ID
 
-    return view('forms.cpremployee.index', compact('cprs', 'userId'));
+    return view('forms.cpremployee.index', compact('cprs', 'userId', 'loggedEmployeeId'));
   }
+
 
   public function store(Request $request)
   {
@@ -47,6 +49,7 @@ class CprEmployeeController extends Controller
 
     return back()->with('success', 'CPR Employee deleted successfully.');
   }
+
   public function requestActivation(Request $request)
   {
     $request->validate([
@@ -55,14 +58,25 @@ class CprEmployeeController extends Controller
 
     $cpr = Cpr::findOrFail($request->cpr_id);
 
-    // Mark as Requested for HR
-    $cpr->status = 'Requested';
+    // Get requestor info (logged-in user)
+    $user = $request->user(); // Authenticated user
+    $requestorName  = $user->name;
+    $requestorEmail = $user->email;
+
+    // Update requestor_id and mark as Requested
+    $cpr->requestor_id = $user->id;
+    $cpr->status       = 'Requested';
     $cpr->save();
+
+    // Send email to HR
+    $hrEmail = 'tbadlwanjr@dswd.gov.ph'; // HR email
+    Mail::to($hrEmail)->send(new CprActivationRequestMail($cpr, $requestorName, $requestorEmail));
 
     return response()->json([
       'message' => 'Activation request sent to HR successfully!'
     ]);
   }
+
 
   public function update(Request $request, $cprId)
   {

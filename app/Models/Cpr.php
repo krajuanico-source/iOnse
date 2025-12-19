@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\CprEmployee; // make sure to import the model
+use App\Models\CprEmployee;
+use App\Models\User;
 
 class Cpr extends Model
 {
@@ -14,11 +15,22 @@ class Cpr extends Model
     'rating_period_start',
     'semester',
     'status',
+    'requestor_id',
   ];
 
-  // Define relationship to CprEmployee
+  protected $attributes = [
+    'status' => 'Pending',
+  ];
+
+  // CPR → CprEmployee (pivot-like table)
   public function employees()
   {
     return $this->hasMany(CprEmployee::class, 'cpr_id');
+  }
+
+  // Requestor (user)
+  public function requestor()
+  {
+    return $this->belongsTo(User::class, 'requestor_id');
   }
 }
