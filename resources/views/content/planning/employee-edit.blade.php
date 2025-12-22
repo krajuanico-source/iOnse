@@ -3,134 +3,129 @@
 @section('title', 'Edit Employee')
 
 @section('content')
-<div class="container mb-4">
-  <div class="card">
-    <div class="card-header bg-white">
-      <h5 style="color: #1d4bb2;" class="mb-0">Edit Employee</h5>
-    </div>
-    <div class="card-body">
+<div class="container py-4">
+  <div class="card p-4 shadow-sm">
+    <h4 style="color: #1d4bb2;" class="mb-4">Edit Employee</h4>
 
-      {{-- Display Validation Errors --}}
-      @if($errors->any())
-      <div class="alert alert-danger">
-        <ul class="mb-0">
-          @foreach($errors->all() as $error)
-          <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div>
-      @endif
+    <form method="POST" action="{{ route('employee.update', $employee->id) }}" enctype="multipart/form-data">
+      @csrf
+      @method('PUT')
 
-      <form action="{{ route('employee.update', $employee->id) }}" method="POST">
-        @csrf
-        @method('PUT')
-
-        {{-- Employee ID --}}
-        <div class="row mb-3">
-          <div class="col-md-4">
-            <label>Employee ID</label>
-            <input type="text" class="form-control" name="employee_id" value="{{ old('employee_id', $employee->employee_id) }}" required>
-          </div>
-          <div class="col-md-4">
-            <label>First Name</label>
-            <input type="text" class="form-control" name="first_name" value="{{ old('first_name', $employee->first_name) }}" required>
-          </div>
-          <div class="col-md-4">
-            <label>Middle Name</label>
-            <input type="text" class="form-control" name="middle_name" value="{{ old('middle_name', $employee->middle_name) }}">
-          </div>
+      <div class="row">
+        <div class="d-flex justify-content-center mb-4">
+          @if($employee->profile_image)
+            <div style="width: 200px; height: 200px; border: 2px solid #1d4bb2; border-radius: 50%; overflow: hidden;">
+              <img src="{{ asset($employee->profile_image) }}" alt="Profile Image" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          @else
+            <div style="width: 200px; height: 200px; border: 4px solid #6c757d; border-radius: 50%; overflow: hidden;">
+              <img src="{{ asset('default-user.png') }}" alt="No Photo" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          @endif
         </div>
 
-        <div class="row mb-3">
-          <div class="col-md-4">
-            <label>Last Name</label>
-            <input type="text" class="form-control" name="last_name" value="{{ old('last_name', $employee->last_name) }}" required>
-          </div>
-          <div class="col-md-4">
-            <label>Extension Name</label>
-            <select class="form-select" name="extension_name">
-              <option value="">Choose...</option>
-              @foreach(['JR','SR','II','III','IV'] as $ext)
-              <option value="{{ $ext }}" {{ old('extension_name', $employee->extension_name) == $ext ? 'selected' : '' }}>{{ $ext }}</option>
-              @endforeach
-            </select>
-          </div>
-          <div class="col-md-4">
-            <label>Item Number</label>
-            <select class="form-select" name="item_number_id" required>
-              <option value="" disabled {{ old('item_number_id', $employee->item_number_id) ? '' : 'selected' }}>Choose...</option>
-              @foreach($itemNumbers as $item)
-              <option value="{{ $item->id }}" {{ old('item_number_id', $employee->item_number_id ?? '') == $item->id ? 'selected' : '' }}>
-                {{ $item->item_number }}
+        <div class="col-md-12 mb-4 mx-auto">
+          <label for="profile_image" class="form-label">Change Profile Image</label>
+          <input type="file" name="profile_image" id="profile_image" class="form-control" accept="image/*">
+          <small class="text-muted">Accepted: jpeg, png, jpg (max: 2MB)</small>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="employee_id" class="form-label">ID No</label>
+          <input type="text" name="employee_id" id="employee_id" class="form-control text-uppercase" value="{{ strtoupper($employee->employee_id) }}" readonly>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" name="username" id="username" class="form-control" value="{{ $employee->username }}" readonly>
+        </div>
+
+        <!-- Employment Status -->
+        <div class="col-md-3 mb-3">
+          <label for="employment_status_id" class="form-label">Employment Status</label>
+          <select name="employment_status_id" id="employment_status_id" class="form-select text-uppercase">
+            <option value="">-- Select Status --</option>
+            @foreach(App\Models\EmploymentStatus::all() as $status)
+              <option value="{{ $status->id }}" {{ $employee->employment_status_id == $status->id ? 'selected' : '' }}>
+                {{ strtoupper($status->name) }}
               </option>
-              @endforeach
-            </select>
-
-          </div>
+            @endforeach
+          </select>
         </div>
 
-        {{-- Division and Section --}}
-        <div class="row mb-3">
-          <div class="col-md-4">
-            <label>Division</label>
-            <select class="form-select" name="division" id="divisionSelect" required>
-              <option value="" disabled>Choose...</option>
-              @foreach($divisions as $division)
-              <option value="{{ $division->id }}" {{ old('division', $employee->division_id) == $division->id ? 'selected' : '' }}>{{ $division->name }}</option>
-              @endforeach
-            </select>
-          </div>
-
-          <div class="col-md-4">
-            <label>Section</label>
-            <select class="form-select" name="section" id="sectionSelect" required>
-              <option value="">Choose...</option>
-              @foreach($sections as $section)
-              <option value="{{ $section->id }}" {{ old('section', $employee->section_id) == $section->id ? 'selected' : '' }}>{{ $section->name }}</option>
-              @endforeach
-            </select>
-          </div>
-
-          <div class="col-md-4">
-            <label>Password (Leave blank if unchanged)</label>
-            <input type="password" class="form-control" name="password">
-          </div>
+        <!-- Division -->
+        <div class="col-md-4 mb-3">
+          <label for="division_id" class="form-label">Division</label>
+          <select name="division_id" id="division_id" class="form-select text-uppercase">
+            <option value="">-- Select Division --</option>
+            @foreach(App\Models\Division::all() as $division)
+              <option value="{{ $division->id }}" {{ $employee->division_id == $division->id ? 'selected' : '' }}>
+                {{ strtoupper($division->name) }}
+              </option>
+            @endforeach
+          </select>
         </div>
 
-        <div class="d-flex justify-content-end">
-          <button type="submit" class="btn btn-primary">Update Employee</button>
+        <!-- Section -->
+        <div class="col-md-4 mb-3">
+          <label for="section_id" class="form-label">Section</label>
+          <select name="section_id" id="section_id" class="form-select text-uppercase">
+            <option value="">-- Select Section --</option>
+            @foreach(App\Models\Section::where('division_id', $employee->division_id)->get() as $section)
+              <option value="{{ $section->id }}" {{ $employee->section_id == $section->id ? 'selected' : '' }}>
+                {{ strtoupper($section->name) }}
+              </option>
+            @endforeach
+          </select>
         </div>
 
-      </form>
+        <!-- Status -->
+        <div class="col-md-4 mb-3">
+          <label for="status" class="form-label">Status</label>
+          <select name="status" id="status" class="form-select text-uppercase" required>
+            <option value="">-- Select Status --</option>
+            @foreach(['active', 'resigned', 'retired'] as $status)
+              <option value="{{ $status }}" {{ $employee->status === $status ? 'selected' : '' }}>
+                {{ strtoupper($status) }}
+              </option>
+            @endforeach
+          </select>
+        </div>
+      </div>
 
-    </div>
+      <div class="d-flex justify-content-end gap-2">
+        <a href="{{ route('employee.view-blade') }}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-success">Save Changes</button>
+      </div>
+    </form>
   </div>
 </div>
 
-{{-- jQuery for dependent dropdown --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  $(document).ready(function() {
-    $('#divisionSelect').on('change', function() {
-      const divisionId = $(this).val();
-      $('#sectionSelect').empty().append('<option>Loading...</option>');
+  $('#division_id').on('change', function() {
+    const divisionId = $(this).val();
+    $('#section_id').html('<option value="">-- Loading --</option>');
 
+    if (divisionId) {
       $.ajax({
-        url: '{{ route("employee.sections") }}',
+        url: `/division/${divisionId}/sections`,
         type: 'GET',
-        data: {
-          division_id: divisionId
-        },
-        success: function(data) {
-          $('#sectionSelect').empty().append('<option value="">Choose...</option>');
-          $.each(data, function(key, section) {
-            $('#sectionSelect').append('<option value="' + section.id + '">' + section.name + '</option>');
+        success: function(sections) {
+          let options = '<option value="">-- Select Section --</option>';
+          sections.forEach(section => {
+            options += `<option value="${section.id}">${section.name.toUpperCase()}</option>`;
           });
+          $('#section_id').html(options);
+        },
+        error: function() {
+          $('#section_id').html('<option value="">-- Error Loading Section --</option>');
+          alert('Error loading sections.');
         }
       });
-    });
+    } else {
+      $('#section_id').html('<option value="">-- Select Section --</option>');
+    }
   });
 </script>
-
 @endsection

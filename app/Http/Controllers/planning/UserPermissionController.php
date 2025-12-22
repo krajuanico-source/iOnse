@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Module;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 class UserPermissionController extends Controller
 {
@@ -26,20 +27,24 @@ class UserPermissionController extends Controller
     }
 
     public function update(Request $request)
-    {
-        $user = User::findOrFail($request->user_id);
-        $permissionName = $request->permission_name;
+{
+    $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'permission_name' => 'required|string|exists:permissions,name',
+        'granted' => 'required|boolean',
+    ]);
 
-        if (!Permission::where('name', $permissionName)->exists()) {
-            return response()->json(['error' => 'Permission not found'], 404);
-        }
+    $user = User::findOrFail($request->user_id);
 
-        if ($request->granted) {
-            $user->givePermissionTo($permissionName);
-        } else {
-            $user->revokePermissionTo($permissionName);
-        }
+    // Clear permission cache
+    app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        return response()->json(['success' => 'Permission updated']);
+    if ($request->granted) {
+        $user->givePermissionTo($request->permission_name);
+    } else {
+        $user->revokePermissionTo($request->permission_name);
     }
+
+    return response()->json(['success' => 'Permission updated']);
+}
 }

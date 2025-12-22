@@ -20,6 +20,7 @@ class User extends Authenticatable
         'first_name',
         'middle_name',
         'last_name',
+        'deactivation_reason',
         'extension_name',
         'employment_status_id',
         'division_id',

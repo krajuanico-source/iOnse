@@ -11,7 +11,6 @@
     <div class="card-body">
       <a href="{{ route('employee.view-blade') }}" class="btn btn-secondary mb-3">Back to List</a>
 
-
       <div class="row mb-3">
         <div class="col-md-4">
           <label><strong>Employee ID:</strong></label>
@@ -51,8 +50,8 @@
         </div>
       </div>
 
-      <div class="d-flex justify-content-end">
-        <a href="{{ route('employee.edit', $employee->id) }}" class="btn btn-warning me-2">Edit</a>
+      <div class="d-flex justify-content-end gap-2">
+        <a href="{{ route('employee.edit', $employee->id) }}" class="btn btn-warning">Edit</a>
 
         <form action="{{ route('employee.delete', $employee->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this employee?');">
           @csrf
@@ -60,7 +59,6 @@
           <button type="submit" class="btn btn-danger">Delete</button>
         </form>
       </div>
-
     </div>
   </div>
 </div>

@@ -3,14 +3,14 @@
 @section('title', 'Employee List')
 
 @section('content')
-@php
-use Illuminate\Support\Str;
-@endphp
+@php use Illuminate\Support\Str; @endphp
+
 @if(session('success'))
 <div class="alert alert-success">
   {{ session('success') }}
 </div>
 @endif
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -21,15 +21,13 @@ use Illuminate\Support\Str;
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h4 style="color: #1d4bb2;">List of Employees</h4>
     </div>
+
     <div class="table-responsive">
-      
-      <table id="empTable" class="table">
+      <table id="empTable" class="table table-striped">
         <thead class="table-light">
           <tr>
-            <!-- <th>Photo</th> -->
-            <th style="width: 0;">ID No.</th>
+            <th>ID No.</th>
             <th>Employee Name</th>
-            <!-- <th>Email</th> NEW -->
             <th>Employment Status</th>
             <th>Section</th>
             <th>Division</th>
@@ -41,21 +39,13 @@ use Illuminate\Support\Str;
         <tbody>
           @foreach($employees as $employee)
           <tr>
-            <!-- <td>
-            @if ($employee->profile_image)
-              <img src="{{ asset($employee->profile_image) }}" alt="Profile" width="50" height="50" class="rounded-circle">
-            @else
-              <img src="{{ asset('default-user.png') }}" alt="No Photo" width="50" height="50" class="rounded-circle">
-            @endif
-          </td> -->
             <td>{{ $employee->employee_id }}</td>
             <td>
               {{ Str::upper($employee->first_name) }}
-              {{ Str::upper($employee->middle_name) }}
+              {{ $employee->middle_name ? Str::upper($employee->middle_name[0]).'.' : '' }}
               {{ Str::upper($employee->last_name) }}
               {{ Str::upper($employee->extension_name) }}
             </td>
-            <!-- <td>{{ $employee->email }}</td> NEW -->
             <td>{{ Str::upper($employee->employmentStatus->abbreviation ?? '') }}</td>
             <td>{{ Str::upper($employee->section->abbreviation ?? '') }}</td>
             <td>{{ Str::upper($employee->division->abbreviation ?? '') }}</td>
@@ -63,8 +53,7 @@ use Illuminate\Support\Str;
             <td class="text-capitalize">{{ $employee->status }}</td>
             <td>
               <div class="d-flex gap-1">
-                <a href="{{ route('employee.show-view', $employee->id) }}" class="btn btn-sm btn-primary">View</a>
-               
+                <a href="{{ route('employee.show', $employee->id) }}" class="btn btn-sm btn-primary">View</a>
               </div>
             </td>
           </tr>
@@ -74,7 +63,6 @@ use Illuminate\Support\Str;
     </div>
   </div>
 </div>
-
 @endsection
 
 @push('scripts')
@@ -91,5 +79,5 @@ use Illuminate\Support\Str;
       searchable: false
     }]
   });
-</script>Z
+</script>
 @endpush

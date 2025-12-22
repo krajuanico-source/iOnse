@@ -255,26 +255,39 @@
     Route::get('/next-number', [ApplicantController::class, 'nextApplicantNumber']);
   });
 
+Route::prefix('planning/list-of-employee')->name('employee.')->middleware(['auth', 'prevent-back-history'])->group(function () {
+    Route::get('/', [UserController::class, 'bladeIndex'])->name('view-blade'); // Employee list
+    Route::get('/{id}', [UserController::class, 'show'])->name('show'); // View employee
+    Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit'); // Edit employee
+    Route::put('/{id}', [UserController::class, 'update'])->name('update'); // Update employee
+    Route::delete('/{id}', [UserController::class, 'destroy'])->name('delete'); // Delete employee
+});
+
+
   Route::prefix('planning')->group(function () {
     Route::get('/list-of-employee', [UserController::class, 'index'])->name('planning.list-of-employee');
     Route::get('/import-form', [UserController::class, 'showImportForm'])->name('planning.import-form');
     Route::post('/import', [UserController::class, 'importEmployees'])->name('planning.import');
   });
 
-
+Route::get('/planning/user-management/sections/{division}', [UserManagementController::class, 'getSections']);
   Route::prefix('planning/user-management')->group(function () {
     Route::get('/', [UserManagementController::class, 'index'])->name('user-management.index');
     Route::get('/list', [UserManagementController::class, 'list'])->name('user-management.list');
     Route::get('/edit/{id}', [UserManagementController::class, 'edit']);
     Route::post('/store', [UserManagementController::class, 'store'])->name('user-management.store');
     Route::post('/update/{id}', [UserManagementController::class, 'update']);
-    Route::delete('/destroy/{id}', [UserManagementController::class, 'destroy']);
+    Route::patch('/deactivate/{id}', [UserManagementController::class, 'deactivate'])->name('user-management.deactivate');
+    Route::patch('/activate/{id}', [UserManagementController::class, 'activate'])->name('user-management.activate');
+
+    
   });
 
-  Route::get('planning/user-permission', [UserPermissionController::class, 'index'])->name('user-permission.index');
-  Route::get('planning/user-permission/{user_id}', [UserPermissionController::class, 'getUserPermissions']);
-  Route::post('planning/user-permission/update', [UserPermissionController::class, 'update'])->name('user-permission.update');
-
+Route::middleware(['auth'])->group(function() {
+    Route::get('planning/user-permission', [UserPermissionController::class, 'index'])->name('user-permission.index');
+    Route::get('planning/user-permission/{user_id}', [UserPermissionController::class, 'getUserPermissions']);
+    Route::post('planning/user-permission/update', [UserPermissionController::class, 'update'])->name('user-permission.update');
+});
 
   Route::get('/planning/dashboard', [Analytics::class, 'index'])
     ->name('content.planning.dashboard');

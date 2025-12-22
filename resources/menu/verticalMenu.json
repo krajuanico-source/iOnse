@@ -21,14 +21,6 @@
       ],
       "submenu": [
         {
-          "url": "planning/list-of-employee",
-          "name": "List of Employee",
-          "slug": "list-of-employee",
-          "roles": [
-            "HR-PLANNING"
-          ]
-        },
-        {
           "name": "Employment Data",
           "slug": "employment-data",
           "roles": [
