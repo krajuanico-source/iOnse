@@ -20,51 +20,10 @@ class Analytics extends Controller
 
         $overallEmployees = DB::table('users')->count();
         $activeemployees  = DB::table('users')->where('status', 'Active')->count();
-        // $vacancy          = DB::table('users')->where('status', 'Vacant')->count();
-
-        // If you store birthdate instead of age:
-        // $averageAge = DB::table('users')->selectRaw('AVG(TIMESTAMPDIFF(YEAR, birthdate, CURDATE())) as avg_age')->value('avg_age');
-        // Otherwise if you have age column:
-        $averageAge = DB::table('users')->avg('age') ?? 0;
-
-        // attrition example: (leavers in last 12 months / avg headcount) * 100
-        // $leaversLastYear = DB::table('users')
-        //     ->where('status', 'Left')
-        //     ->whereBetween('left_at', [now()->subYear(), now()])
-        //     ->count();
-        // $attritionRate = $overallEmployees > 0 ? round(($leaversLastYear / $overallEmployees) * 100, 2) : 0;
-
-        // === Charts ===
         
         $male   = DB::table('users')->where('gender', 'Male')->count();
         $female = DB::table('users')->where('gender', 'Female')->count();
         
-        // === Charts ===
-        $ageGroups = ['Under 25', '25–34', '35–44', '45–54', 'Over 55'];
-
-        // Initialize arrays with zeros
-        $maleAgeData = array_fill(0, count($ageGroups), 0);
-        $femaleAgeData = array_fill(0, count($ageGroups), 0);
-
-        // Fetch users
-        $users = DB::table('users')->select('age', 'gender')->get();
-
-        foreach ($users as $user) {
-            $age = $user->age;
-            $gender = $user->gender;
-
-            // Determine age group index
-            if ($age < 25) $index = 0;
-            elseif ($age < 35) $index = 1;
-            elseif ($age < 45) $index = 2;
-            elseif ($age < 55) $index = 3;
-            else $index = 4;
-
-            // Increment count based on gender
-            if ($gender === 'Male') $maleAgeData[$index]++;
-            elseif ($gender === 'Female') $femaleAgeData[$index]++;
-        }
-
 
         $divisions = User::with('division')
             ->get()
@@ -130,12 +89,8 @@ class Analytics extends Controller
 
 
         return view('content.planning.dashboard', compact(
-            'maleAgeData',
-            'femaleAgeData',
-            'ageGroups',
             'overallEmployees',
             'activeemployees',
-            'averageAge',
             'divisions',
             'office_locations',
             'employment_status',

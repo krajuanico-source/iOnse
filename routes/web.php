@@ -46,6 +46,7 @@
   use App\Http\Controllers\RequestsController;
   use App\Http\Controllers\AuthenticCopyController;
   use App\Http\Controllers\AuthenticCopyRequestController;
+  use App\Http\Controllers\Profile\EmployeeProfileController;
 
   //Planning
   use App\Http\Controllers\planning\UserPermissionController;
@@ -263,6 +264,10 @@ Route::prefix('planning/list-of-employee')->name('employee.')->middleware(['auth
     Route::delete('/{id}', [UserController::class, 'destroy'])->name('delete'); // Delete employee
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/view', [EmployeeProfileController::class, 'index'])->name('profile.view');
+    Route::get('/profile/user/{id}', [EmployeeProfileController::class, 'fetchEmployee'])->name('profile.fetchEmployee');
+});
 
   Route::prefix('planning')->group(function () {
     Route::get('/list-of-employee', [UserController::class, 'index'])->name('planning.list-of-employee');

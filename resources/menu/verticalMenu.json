@@ -54,6 +54,14 @@
           ]
         },
         {
+          "url": "profile/view",
+          "name": "Employee",
+          "slug": "employee",
+          "roles": [
+            "HR-PLANNING"
+          ]
+        },
+        {
           "url": "planning/unfilled-positions",
           "name": "Unfilled Positions",
           "slug": "unfilled-positions",

@@ -66,7 +66,6 @@
   <div class="col-xl col-md-4 col-sm-6">
     <div class="card text-center h-100">
       <div class="card-header"><h6>Average Age</h6></div>
-      <div class="card-body"><h3>{{ number_format($averageAge, 1) }}</h3></div>
     </div>
   </div>
 
@@ -135,26 +134,6 @@ document.addEventListener("DOMContentLoaded", function () {
         labels: ['Male', 'Female'],
         colors: ['#1d4bb2', '#ac1109']
     }).render();
-
-    // AGE GROUP
-          new ApexCharts(document.querySelector("#ageChart"), {
-              chart: {
-                  type: 'bar',
-                  height: 280,
-                  stacked: true // stacked bars by gender
-              },
-              series: [
-                  { name: 'Male',   data: @json($maleAgeData) },
-                  { name: 'Female', data: @json($femaleAgeData) }
-              ],
-              xaxis: {
-                  categories: @json($ageGroups)
-              },
-              colors: ['#1d4bb2', '#ac1109'], // blue for male, pink/red for female
-              legend: { position: 'top' },
-              dataLabels: { enabled: true }
-          }).render();
-      
 
 
     // DIVISION
