@@ -71,21 +71,80 @@ $(document).ready(function() {
         $.get(`/profile/user/${empId}`, function(data) {
             $('#profileTabs').show();
 
-            // Basic Info
-            $('#basicContent').html(`
-                <p><b>Full Name:</b> ${data.first_name} ${data.middle_name ?? ''} ${data.last_name}</p>
-                <p><b>Employee ID:</b> ${data.employee_id}</p>
-                <p><b>Email:</b> ${data.email}</p>
-                <p><b>Gender:</b> ${data.gender ?? ''}</p>
-                <p><b>Birthday:</b> ${data.birthday ?? ''}</p>
-                <p><b>Civil Status:</b> ${data.civil_status ?? ''}</p>
-            `);
+            const resAddr = [
+                data.res_house_no,
+                data.res_street,
+                data.res_barangay?.name,
+                data.res_city?.name,
+                data.res_province?.name,
+                data.res_region?.name,
+                data.res_zipcode
+            ].filter(Boolean).join(', ').toUpperCase();
 
-            // Family Background
-            let familyHtml = data.familyBackgrounds?.length
-                ? '<ul>' + data.familyBackgrounds.map(f => `<li>${f.relation}: ${f.name}</li>`).join('') + '</ul>'
-                : 'No records.';
-            $('#family-backgroundContent').html(familyHtml);
+            const permAddr = [
+                data.perm_house_no,
+                data.perm_street,
+                data.perm_barangay?.name,
+                data.perm_city?.name,
+                data.perm_province?.name,
+                data.perm_region?.name,
+                data.perm_zipcode
+            ].filter(Boolean).join(', ').toUpperCase();
+                
+            $('#basicContent').html(`
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><b>Full Name:</b> ${data.first_name} ${data.middle_name ?? ''} ${data.last_name}</p>
+                        <p><b>Gender:</b> ${data.gender?.toUpperCase() ?? ''}</p>
+                        <p><b>Birthday:</b> ${data.birthday ?? ''}</p>
+                        <p><b>Civil Status:</b> ${data.civil_status?.toUpperCase() ?? ''}</p>
+                        <p><b>Blood Type:</b> ${data.blood_type ?? ''}</p>
+                        <p><b>Height:</b> ${data.height ?? ''}</p>
+                        <p><b>Weight:</b> ${data.weight ?? ''}</p>
+                        <p><b>Citizenship:</b> ${data.citizenship?.toUpperCase() ?? ''}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><b>Email:</b> ${data.email ?? ''}</p>
+                        <p><b>Username:</b> ${data.username ?? ''}</p>
+                        <p><b>Employee ID:</b> ${data.employee_id ?? ''}</p>
+                        <p><b>Mobile Number:</b> ${data.mobile_no ?? ''}</p>
+                        <p><b>Telephone Number:</b> ${data.tel_no ?? ''}</p>
+                        <p><b>Place of Birth:</b> ${data.place_of_birth ?? ''}</p>
+                        <p><b>Residential Address:</b> ${resAddr}</p>
+                        <p><b>Permanent Address:</b> ${permAddr}</p>
+                        <p><b>Country:</b> ${data.perm_country?.toUpperCase() ?? ''}</p>
+                    </div>
+                </div>
+
+            `);
+           let family = data.familyBackgrounds?.[0]; // first (and only) family record
+
+let familyHtml = '<div class="mb-3 p-2 border rounded">';
+
+if(family){
+    const fatherFullName = [
+        family.father_first_name,
+        family.father_middle_name,
+        family.father_surname,
+        family.father_extension_name
+    ].filter(Boolean).join(' ');
+
+    familyHtml += `<p><b>Father's Name:</b> ${fatherFullName || 'N/A'}</p>`;
+
+    const motherFullName = [
+        family.mother_first_name,
+        family.mother_middle_name,
+        family.mother_surname,
+        family.mother_extension_name
+    ].filter(Boolean).join(' ');
+
+    familyHtml += `<p><b>Mother's Name:</b> ${motherFullName || 'N/A'}</p>`;
+}
+
+familyHtml += '</div>';
+
+$('#family-backgroundContent').html(familyHtml);
+
 
             // Education
             let educationHtml = data.educations?.length
@@ -157,7 +216,7 @@ $(document).ready(function() {
 
             // Other Information
             $('#other-informationContent').html(
-                data.otherInformations?.length
+                data.otherInformations?.length  
                     ? data.otherInformations.map(o => `<p>${o.info}</p>`).join('')
                     : 'No records.'
             );

@@ -41,7 +41,7 @@
             <td>{{ $edu->highest_level_earned }}</td>
             <td>{{ $edu->year_graduated }}</td>
             <td>
-              <button
+            <button
                 class="btn btn-sm btn-primary edit-education-btn"
                 data-id="{{ $edu->id }}"
                 data-level="{{ $edu->level_of_education }}"
@@ -50,9 +50,10 @@
                 data-from="{{ $edu->from }}"
                 data-to="{{ $edu->to }}"
                 data-level-earned="{{ $edu->highest_level_earned }}"
-                data-year="{{ $edu->year_graduated }}">
+                data-year="{{ $edu->year_graduated }}"
+                data-honors="{{ $edu->scholarship_honors }}">
                 Update
-              </button>
+            </button>
               <button class="btn btn-sm btn-danger delete-education-btn" data-id="{{ $edu->id }}">Delete</button>
             </td>
           </tr>
@@ -249,8 +250,8 @@
     });
   });
 
-  // Edit Modal Fill
-    $(document).on('click', '.edit-education-btn', function() {
+  // Open Edit Modal
+$(document).on('click', '.edit-education-btn', function() {
     $('#editEducationId').val($(this).data('id'));
     $('#editLevel').val($(this).data('level'));
     $('#editSchool').val($(this).data('school'));
@@ -260,30 +261,31 @@
     $('#editLevelEarned').val($(this).data('levelEarned'));
     $('#editYear').val($(this).data('year'));
     $('#editHonors').val($(this).data('honors'));
-    new bootstrap.Modal(document.getElementById('editEducationModal')).show();
-    });
 
-    $('#editEducationForm').submit(function(e) {
+    new bootstrap.Modal(document.getElementById('editEducationModal')).show();
+});
+
+// Save/Update Education
+$('#editEducationForm').submit(function(e) {
     e.preventDefault();
-    const id = $('#editEducationId').val();
 
     $.ajax({
-        url: `/profile/education/${id}/update`,
+        url: '{{ route("profile.education.save") }}', // same endpoint as Add
         method: 'POST',
-        data: $(this).serialize() + '&_method=PUT', // 👈 add _method override
+        data: $(this).serialize(),
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
         success: function(response) {
-        toastr.success('Education updated successfully!');
-        bootstrap.Modal.getInstance(document.getElementById('editEducationModal')).hide();
-        setTimeout(() => location.reload(), 500);
+            toastr.success('Education updated successfully!');
+            bootstrap.Modal.getInstance(document.getElementById('editEducationModal')).hide();
+            setTimeout(() => location.reload(), 500);
         },
         error: function(xhr) {
-        console.log(xhr.status);
-        console.log(xhr.responseText);
-        toastr.error('Failed to update education.');
+            console.log(xhr.responseText);
+            toastr.error('Failed to update education.');
         }
     });
-    });
+});
+
 
 
         // Delete Modal

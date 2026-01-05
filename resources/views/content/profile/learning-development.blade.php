@@ -207,10 +207,11 @@ $('#ldForm').submit(function(e) {
 $('#editLdForm').submit(function(e) {
     e.preventDefault();
     const id = $('#editLdId').val();
+
     $.ajax({
         url: '{{ route("profile.ld.update", ":id") }}'.replace(':id', id),
-        method: 'POST',
-        data: $(this).serialize() + '&_method=PUT',
+        method: 'PUT',
+        data: $(this).serialize(),
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
         success: () => {
             toastr.success('Training updated successfully!');
@@ -223,6 +224,7 @@ $('#editLdForm').submit(function(e) {
 
 // Delete
 let ldDeleteId = null;
+
 $(document).on('click', '.delete-ld-btn', function() {
     ldDeleteId = $(this).data('id');
     new bootstrap.Modal(document.getElementById('confirmDeleteLdModal')).show();
@@ -230,10 +232,10 @@ $(document).on('click', '.delete-ld-btn', function() {
 
 $('#confirmDeleteLdBtn').click(function() {
     if (!ldDeleteId) return;
+
     $.ajax({
-        url: `/profile/learning-and-development/${ldDeleteId}`,
-        method: 'POST',
-        data: { _method: 'DELETE' },
+        url: '{{ route("profile.ld.destroy", ":id") }}'.replace(':id', ldDeleteId),
+        method: 'DELETE',
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
         success: () => {
             toastr.success('Training deleted successfully!');

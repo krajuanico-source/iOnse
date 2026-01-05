@@ -20,6 +20,7 @@
       <table id="organizationTable" class="table">
         <thead class="table-light text-center">
           <tr>
+            <th>ID</th>
             <th>Organization Name</th>
             <th>Action</th>
           </tr>
@@ -27,6 +28,7 @@
         <tbody>
           @foreach ($organizations as $o)
           <tr data-id="{{ $o->id }}">
+            <td class="text-center">{{ $o->id }}</td> <!-- Display the actual ID -->
             <td>{{ $o->organization_name }}</td>
             <td class="text-center">
               <button 

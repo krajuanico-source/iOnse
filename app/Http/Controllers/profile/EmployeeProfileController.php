@@ -25,12 +25,24 @@ class EmployeeProfileController extends Controller
         'workExperiences',
         'voluntaryWorks',
         'learningAndDevelopments',
-        'Skills',
+        'skills',
         'nonAcademics',
         'organizations',
         'references',
         'governmentIds',
-        'otherInformations'
+        'otherInformations',
+
+        // Address Relationships
+        'resRegion',
+        'resProvince',
+        'resCity',
+        'resBarangay',
+        'permRegion',
+        'permProvince',
+        'permCity',
+        'permBarangay',
+
+
     ])->find($id);
 
     if (!$employee) {
@@ -39,5 +51,6 @@ class EmployeeProfileController extends Controller
 
     return response()->json($employee);
 }
+
 
 }

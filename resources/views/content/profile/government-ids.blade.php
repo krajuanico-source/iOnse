@@ -1,9 +1,8 @@
 @extends('layouts/contentNavbarLayout')
 @section('title', 'Government IDs')
-@section('content')
 
+@section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
- 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
 <div class="card">
@@ -44,9 +43,9 @@
         <input type="text" name="philsys" class="form-control" value="{{ $governmentIds->first()?->philsys ?? '' }}">
       </div>
 
-      <div class="col-12 card p-6">
-        <div class="row g-3">
+      <div class="col-12 card p-3 mt-3">
         <h5 style="color: #353434ff;">For PDS Purposes</h5>
+        <div class="row g-3">
           <div class="col-md-6">
             <label class="form-label">GOVERNMENT ISSUED ID</label>
             <input type="text" name="gov_issued_id" class="form-control" value="{{ $governmentIds->first()?->gov_issued_id ?? '' }}">
@@ -66,18 +65,15 @@
             <label class="form-label">PLACE ISSUANCE</label>
             <input type="text" name="place_issuance" class="form-control" value="{{ $governmentIds->first()?->place_issuance ?? '' }}">
           </div>
-
         </div>
       </div>
 
       <div class="col-12 mt-3 text-end">
         <button type="submit" class="btn btn-primary">Save Changes</button>
       </div>
-      
     </form>
   </div>
 </div>
-
 @endsection
 
 @push('scripts')
@@ -85,24 +81,36 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <script>
-$(function(){
+$(function() {
+    $('#govIdForm').submit(function(e) {
+        e.preventDefault();
 
-  $('#govIdForm').submit(function(e){
-    e.preventDefault();
+        const id = $('input[name="id"]').val();
+        const formData = $(this).serializeArray();
+        const data = {};
+        formData.forEach(f => { if(f.name !== '_method') data[f.name] = f.value; });
 
-    const id = $('input[name="id"]').val();
-    const data = $(this).serialize() + '&_method=PUT';
+        // Determine URL and method RESTfully
+        const url = id ? `/profile/government-ids/${id}` : `/profile/government-ids`;
+        const method = id ? 'PUT' : 'POST';
 
-    $.ajax({
-      url: `/profile/government-ids/${id}`,
-      method: 'POST',
-      data: data,
-      headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-      success: () => toastr.success('Government ID updated successfully!'),
-      error: () => toastr.error('Failed to update Government ID.')
+        $.ajax({
+            url: url,
+            type: method,
+            data: data,
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            success: function(res) {
+                toastr.success(res.message);
+                if (!id && res.id) {
+                    $('input[name="id"]').val(res.id); // update hidden field
+                }
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+                toastr.error('Operation failed. Check console for details.');
+            }
+        });
     });
-  });
-
 });
 </script>
 @endpush

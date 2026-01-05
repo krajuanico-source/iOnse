@@ -39,25 +39,34 @@ class EducationController extends Controller
     /**
      * Store or update education
      */
-    public function save(Request $request)
-    {
-        $validated = $request->validate($this->rules());
+public function save(Request $request)
+{
+    $validated = $request->validate([
+        'level_of_education'   => 'required|string|max:255',
+        'school_name'          => 'required|string|max:255',
+        'degree_course'        => 'nullable|string|max:255',
+        'from'                 => 'required|digits:4|integer|min:1900|max:' . date('Y'),
+        'to'                   => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
+        'highest_level_earned' => 'nullable|string|max:255',
+        'year_graduated'       => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
+        'scholarship_honors'   => 'nullable|string|max:255',
+    ]);
 
-        $validated['user_id'] = Auth::id();
+    $validated['user_id'] = Auth::id();
 
-        Education::updateOrCreate(
-            [
-                'id' => $request->education_id,
-                'user_id' => Auth::id(),
-            ],
-            $validated
-        );
+    Education::updateOrCreate(
+        [
+            'id' => $request->education_id, // 👈 use hidden field
+            'user_id' => Auth::id(),
+        ],
+        $validated
+    );
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Education saved successfully.'
-        ]);
-    }
+    return response()->json([
+        'success' => true,
+        'message' => 'Education saved successfully.'
+    ]);
+}
 
     /**
      * Show education record for editing

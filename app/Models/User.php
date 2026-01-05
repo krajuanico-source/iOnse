@@ -159,7 +159,7 @@ class User extends Authenticatable
 
     public function familyBackgrounds()
     {
-        return $this->hasMany(FamilyBackground::class, 'employee_id', 'id');
+        return $this->hasMany(FamilyBackground::class, 'user_id', 'id');
     }
 
     public function children()
@@ -190,7 +190,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(LearningandDevelopment::class, 'user_id', 'id');
     }
-    public function Skills()
+    public function skills()
     {
         return $this->hasMany(Skill::class, 'user_id', 'id');
     }
@@ -208,7 +208,7 @@ class User extends Authenticatable
     }
     public function otherInformations()
     {
-        return $this->belongsTo(OtherInformation::class, 'user_id', 'id');
+        return $this->hasMany(OtherInformation::class, 'user_id', 'id');
     }    
     protected static function booted()
     {

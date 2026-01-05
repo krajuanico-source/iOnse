@@ -189,12 +189,13 @@
     Route::delete('profile/voluntary-work/{id}', [VoluntaryWorkController::class, 'destroy'])->name('profile.voluntary-work.destroy');
   });
 
-  Route::middleware(['auth'])->group(function () {
-    Route::get('profile/learning-development', [LearningAndDevelopmentController::class, 'index'])->name('profile.ld.index');
-    Route::post('profile/learning-development/store', [LearningAndDevelopmentController::class, 'store'])->name('profile.ld.store');
-    Route::put('profile/learning-development/{id}', [LearningAndDevelopmentController::class, 'update'])->name('profile.ld.update');
-    Route::delete('profile/learning-development/{id}', [LearningAndDevelopmentController::class, 'destroy'])->name('profile.ld.destroy');
-  });
+Route::middleware(['auth'])->prefix('profile')->name('profile.ld.')->group(function () {
+    Route::get('learning-development', [LearningAndDevelopmentController::class, 'index'])->name('index');
+    Route::post('learning-development', [LearningAndDevelopmentController::class, 'store'])->name('store');
+    Route::put('learning-development/{id}', [LearningAndDevelopmentController::class, 'update'])->name('update');
+    Route::delete('learning-development/{id}', [LearningAndDevelopmentController::class, 'destroy'])->name('destroy');
+});
+
 
   Route::middleware(['auth'])->group(function () {
     Route::get('profile/references', [ReferenceController::class, 'index'])->name('profile.references.index');
@@ -203,13 +204,13 @@
     Route::delete('profile/references/{id}', [ReferenceController::class, 'destroy'])->name('profile.references.destroy');
   });
 
-  Route::middleware(['auth'])->group(function () {
-    Route::post('profile/government-ids/update-all', [GovernmentIdController::class, 'updateAll'])->name('profile.government-ids.update-all');
+Route::middleware(['auth'])->group(function () {
     Route::get('profile/government-ids', [GovernmentIdController::class, 'index'])->name('profile.government-ids.index');
-    Route::post('profile/government-ids/store', [GovernmentIdController::class, 'store'])->name('profile.government-ids.store');
+    Route::post('profile/government-ids', [GovernmentIdController::class, 'store'])->name('profile.government-ids.store');
     Route::put('profile/government-ids/{id}', [GovernmentIdController::class, 'update'])->name('profile.government-ids.update');
     Route::delete('profile/government-ids/{id}', [GovernmentIdController::class, 'destroy'])->name('profile.government-ids.destroy');
-  });
+    Route::post('profile/government-ids/update-all', [GovernmentIdController::class, 'updateAll'])->name('profile.government-ids.update-all');
+});
 
 
   Route::middleware(['auth'])->group(function () {
