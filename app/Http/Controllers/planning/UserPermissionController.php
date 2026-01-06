@@ -5,28 +5,46 @@ namespace App\Http\Controllers\Planning;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Module;
 use Spatie\Permission\Models\Permission;
 
 class UserPermissionController extends Controller
 {
+    // Show the User Permissions page
     public function index()
     {
         $users = User::all();
-        $modules = Module::all();
-        $actions = ['view', 'create', 'edit'];
+
+        // Get all permissions and group them by module
+        $allPermissions = Permission::all()->pluck('name')->toArray();
+
+        $modules = [];
+        foreach ($allPermissions as $perm) {
+            // permission format: module.action
+            [$moduleSlug, $action] = explode('.', $perm);
+            $modules[$moduleSlug]['slug'] = $moduleSlug;
+            $modules[$moduleSlug]['actions'][$action] = $perm;
+        }
+
+        $actions = ['view', 'create', 'edit']; // fixed actions
 
         return view('content.planning.user-permission', compact('users', 'modules', 'actions'));
     }
 
-    // Get permissions of a specific user
+    // Get current permissions for a user
     public function getUserPermissions($user_id)
     {
         $user = User::findOrFail($user_id);
         return response()->json($user->getPermissionNames()->toArray());
     }
 
-    // Update permissions
+    // Get roles for a user
+    public function getUserRoles($user_id)
+    {
+        $user = User::findOrFail($user_id);
+        return response()->json($user->getRoleNames()->toArray());
+    }
+
+    // Update user permissions
     public function update(Request $request)
     {
         $request->validate([
@@ -35,27 +53,18 @@ class UserPermissionController extends Controller
             'permissions.*' => 'string',
         ]);
 
-        $loggedInUser = auth()->user();
-
-        // Only allow users with 'edit user-permissions' to update
-        if (!$loggedInUser->can('edit user-permissions')) {
-            return response()->json([
-                'error' => 'You are not allowed to update permissions.'
-            ], 403);
-        }
-
         $user = User::findOrFail($request->user_id);
         $permissions = $request->permissions ?? [];
 
-        // Auto-create missing permissions
+        // Create missing permissions if they don't exist
         foreach ($permissions as $perm) {
             Permission::firstOrCreate([
                 'name' => $perm,
-                'guard_name' => 'web'
+                'guard_name' => 'web',
             ]);
         }
 
-        // Assign permissions
+        // Sync permissions
         $user->syncPermissions($permissions);
 
         return response()->json([

@@ -30,6 +30,12 @@ class DatabaseSeeder extends Seeder
       Barangayb4Seeder::class,
       Barangayb5Seeder::class,
       BarangaysSeeder::class,
+      PermissionSeeder::class,
+      DivisionSeeder::class,
+      SectionSeeder::class,
+      OfficeLocationSeeder::class,
+      UserSeeder::class,
+
 
       /*
             |--------------------------------------------------------------------------

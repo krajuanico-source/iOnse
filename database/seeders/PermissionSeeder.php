@@ -7,7 +7,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
 
-class RolesAndPermissionsSeeder extends Seeder
+class PermissionSeeder extends Seeder
 {
     public function run(): void
     {
@@ -19,6 +19,7 @@ class RolesAndPermissionsSeeder extends Seeder
         // --------------------------
         $modules = [
             'user_management',
+            'user_permission',
             'position_management',
             'hiring_onboarding',
             'cpr_period_management',
@@ -49,6 +50,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $roles = [
             'HR-PLANNING',
             'EMPLOYEE',
+            
         ];
 
         $createdRoles = [];

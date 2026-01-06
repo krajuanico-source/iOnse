@@ -49,7 +49,8 @@
   use App\Http\Controllers\Profile\EmployeeProfileController;
 
   //Planning
-  use App\Http\Controllers\planning\UserPermissionController;
+  use App\Http\Controllers\Planning\UserPermissionController;
+  use App\Http\Controllers\Planning\ModuleController;
   use App\Http\Controllers\planning\UserManagementController;
   use App\Http\Controllers\planning\DashboardController;
   use App\Http\Controllers\planning\ListofEmployee;
@@ -289,11 +290,12 @@ Route::get('/planning/user-management/sections/{division}', [UserManagementContr
     
   });
 
-  Route::middleware(['auth'])->group(function () {
-      Route::get('planning/user-permission', [UserPermissionController::class, 'index'])->name('user-permission.index');
-      Route::get('planning/user-permission/{user_id}', [UserPermissionController::class, 'getUserPermissions'])->name('user-permission.show');
-      Route::post('planning/user-permission/update', [UserPermissionController::class, 'update'])->name('user-permission.update');
-  });
+Route::prefix('planning')->group(function () {
+    Route::get('user-permission', [UserPermissionController::class, 'index']);
+    Route::get('user-permission/{id}', [UserPermissionController::class, 'getUserPermissions']);
+    Route::get('user-role/{id}', [UserPermissionController::class, 'getUserRoles']);
+    Route::post('user-permission/update', [UserPermissionController::class, 'update'])->name('user-permission.update');
+});
 
   Route::get('/planning/dashboard', [Analytics::class, 'index'])->name('content.planning.dashboard');
   Route::get('planning/dashboard/filter', [DashboardController::class, 'filter'])->name('planning.dashboard.filter');

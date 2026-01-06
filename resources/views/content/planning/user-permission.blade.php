@@ -30,12 +30,13 @@
             <tbody>
                 @foreach($modules as $module)
                     <tr>
-                        <td>{{ $module->name }}</td>
+                        <td>{{ ucfirst(str_replace('_', ' ', $module['slug'])) }}</td>
                         @foreach($actions as $action)
-                            @php $permissionName = $module->slug . '.' . $action; @endphp
+                            @php $permissionName = $module['actions'][$action] ?? null; @endphp
                             <td class="text-center">
-                                <input type="checkbox" class="permission-checkbox"
-                                       data-permission-name="{{ $permissionName }}">
+                                @if($permissionName)
+                                    <input type="checkbox" class="permission-checkbox" data-permission-name="{{ $permissionName }}">
+                                @endif
                             </td>
                         @endforeach
                     </tr>
@@ -69,30 +70,32 @@
 
 <script>
 $(function() {
-
     let userId = null;
-    const modalEl = document.getElementById('permissionConfirmModal');
-    const permissionModal = new bootstrap.Modal(modalEl);
+    const permissionModal = new bootstrap.Modal(document.getElementById('permissionConfirmModal'));
 
-    // CSRF setup
-    $.ajaxSetup({
-        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-    });
+    $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
-    // Load user permissions when a user is selected
+    // Load user permissions
     $('#selectUser').on('change', function() {
         userId = $(this).val();
         $('#permissionsContainer').toggle(!!userId);
-
         $('.permission-checkbox').prop('checked', false);
 
         if(!userId) return;
 
+        // Load user permissions
         $.get(`/planning/user-permission/${userId}`, function(userPermissions) {
             $('.permission-checkbox').each(function() {
                 const perm = $(this).data('permission-name');
                 $(this).prop('checked', userPermissions.includes(perm));
             });
+        });
+
+        // Auto-check all permissions if user has HR-PLANNING role
+        $.get(`/planning/user-role/${userId}`, function(roles) {
+            if (roles.includes('HR-PLANNING')) {
+                $('.permission-checkbox').prop('checked', true);
+            }
         });
     });
 
@@ -111,8 +114,6 @@ $(function() {
             return $(this).data('permission-name');
         }).get();
 
-        console.log('Sending permissions:', permissions); // Debug
-
         $(this).prop('disabled', true);
 
         $.post("{{ route('user-permission.update') }}", { user_id: userId, permissions })
@@ -122,13 +123,11 @@ $(function() {
             })
             .fail(function(err) {
                 toastr.error(err.responseJSON?.error || 'Failed to update permissions');
-                console.error(err);
             })
             .always(function() {
                 $('#confirmPermissionBtn').prop('disabled', false);
             });
     });
-
 });
 </script>
 @endsection
