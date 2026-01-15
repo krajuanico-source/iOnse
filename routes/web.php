@@ -540,9 +540,12 @@ Route::prefix('planning')->group(function () {
 
 Route::prefix('planning/position')->group(function () {
     Route::get('/', [PositionController::class, 'index'])->name('position.index');
+    Route::get('{id}', [PositionController::class, 'show']);
     Route::post('/store', [PositionController::class, 'store'])->name('position.store');
-    Route::post('/update', [PositionController::class, 'update'])->name('position.update');
+    Route::put('{id}', [PositionController::class, 'update'])->name('position.update');
     Route::delete('/{id}/delete', [PositionController::class, 'destroy'])->name('position.destroy');
+    Route::get('/count/{massGroupId}', [PositionController::class, 'getMassGroupCount']);
+
 });
 
 

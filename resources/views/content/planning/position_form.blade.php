@@ -1,9 +1,29 @@
 @csrf
+<!-- Massive Hiring -->
+<div class="mb-3">
+    <div class="form-check">
+        <input type="hidden" name="is_mass_hiring" value="0">
+        <input class="form-check-input" type="checkbox" name="is_mass_hiring" value="1" id="is_mass_hiring">
+        <label class="form-check-label" for="is_mass_hiring">
+            Massive Hiring
+        </label>
+    </div>
+</div>
+
+<div class="mb-3 d-none" id="positionsCountWrapper">
+    <label for="positions_count" class="form-label">Number of Positions</label>
+    <input type="number"
+           name="positions_count"
+           id="positions_count"
+           class="form-control"
+           min="1"
+           value="1">
+</div>
 
 <!-- Item Number -->
 <div class="mb-3">
     <label for="item_no" class="form-label">Item Number</label>
-    <input type="text" name="item_no" id="item_no" class="form-control" required>
+    <input type="text" name="item_no" id="item_no" class="form-control">
 </div>
 
 <!-- Official Station -->
@@ -153,4 +173,11 @@
         <option value="Direct Release">Direct Release</option>
         <option value="CMF">CMF</option>
     </select>
+</div>
+<div class="mb-3">
+    <label for="date_of_publication" class="form-label">Date of Publication</label>
+    <input type="date"
+           name="date_of_publication"
+           id="date_of_publication"
+           class="form-control">
 </div>

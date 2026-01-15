@@ -33,17 +33,17 @@
               ]
             },
             {
-              "url": "planning/position",
-              "name": "Position",
-              "slug": "position",
+              "url": "planning/unfilled-positions",
+              "name": "Unfilled Positions",
+              "slug": "unfilled-positions",
               "roles": [
                 "HR-PLANNING"
               ]
             },
             {
-              "url": "planning/item-numbers",
-              "name": "Item Number",
-              "slug": "item-numbers",
+              "url": "planning/position",
+              "name": "Position",
+              "slug": "position",
               "roles": [
                 "HR-PLANNING"
               ]
@@ -54,14 +54,6 @@
           "url": "planning/list-of-employee",
           "name": "List of Employee",
           "slug": "list-of-employee",
-          "roles": [
-            "HR-PLANNING"
-          ]
-        },
-        {
-          "url": "planning/unfilled-positions",
-          "name": "Unfilled Positions",
-          "slug": "unfilled-positions",
           "roles": [
             "HR-PLANNING"
           ]
@@ -416,88 +408,6 @@
           "url": "profile/education",
           "name": "Leave",
           "slug": "education"
-        },
-        {
-          "name": "Employment Data",
-          "slug": "employment-data",
-          "roles": [
-            "HR-PLANNING"
-          ],
-          "submenu": [
-            {
-              "url": "planning/employment-status",
-              "name": "Employment Status",
-              "slug": "employment-status",
-              "roles": [
-                "HR-PLANNING"
-              ]
-            },
-            {
-              "url": "planning/position",
-              "name": "Position",
-              "slug": "position",
-              "roles": [
-                "HR-PLANNING"
-              ]
-            },
-            {
-              "url": "planning/item-numbers",
-              "name": "Item Number",
-              "slug": "item-numbers",
-              "roles": [
-                "HR-PLANNING"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "OBSU",
-          "slug": "OBSU",
-          "roles": [
-            "HR-PLANNING"
-          ],
-          "submenu": [
-            {
-              "url": "planning/office-location",
-              "name": "Office Locations",
-              "slug": "office-location",
-              "roles": [
-                "HR-PLANNING"
-              ]
-            },
-            {
-              "url": "planning/division",
-              "name": "Divisions",
-              "slug": "division",
-              "roles": [
-                "HR-PLANNING"
-              ]
-            },
-            {
-              "url": "planning/section",
-              "name": "Sections",
-              "slug": "section",
-              "roles": [
-                "HR-PLANNING"
-              ]
-            },
-            {
-              "url": "planning/unit",
-              "name": "Units",
-              "slug": "unit",
-              "roles": [
-                "HR-PLANNING"
-              ]
-            }
-          ]
-        },
-        {
-          "url": "planning/unfilled-positions",
-          "name": "Unfilled Positions",
-          "slug": "unfilled-positions",
-          "roles": [
-            "HR-PLANNING"
-          ]
         }
       ]
     },

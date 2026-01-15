@@ -30,6 +30,9 @@ class Position extends Model
         'fund_source',
         'employment_status_id',
         'type_of_request',
+        'is_mass_hiring',
+        'mass_group_id',
+        'date_of_publication',
     ];
 
     public function division() {
@@ -51,4 +54,7 @@ class Position extends Model
     public function levelRelation() {
         return $this->belongsTo(\App\Models\PositionLevel::class, 'position_level_id');
     }
+    protected $casts = [
+    'date_of_publication' => 'date',
+];
 }

@@ -1,4 +1,5 @@
 @csrf
+<input type="hidden" name="id" id="editPositionId">
 
 <!-- Item Number -->
 <div class="mb-3">
@@ -66,6 +67,7 @@
     <input type="text" name="parenthetical_title" id="edit_parenthetical_title" class="form-control">
 </div>
 
+
 <!-- Position Level -->
 <div class="mb-3">
     <label for="edit_position_level_id" class="form-label">Position Level</label>
@@ -80,7 +82,7 @@
 <!-- Salary Tranche -->
 <div class="mb-3">
     <label for="edit_salary_tranche" class="form-label">Tranche</label>
-   <select name="salary_tranche_id" id="edit_salary_tranche" class="form-select">
+    <select name="salary_tranche_id" id="edit_salary_tranche" class="form-select">
         <option value="">Select Salary Tranche</option>
         @foreach($salaryTranches as $tranche)
             <option value="{{ $tranche->id }}">{{ $tranche->tranche_name }}</option>
@@ -153,4 +155,10 @@
         <option value="Direct Release">Direct Release</option>
         <option value="CMF">CMF</option>
     </select>
+</div>
+
+<!-- Date of Publication -->
+<div class="mb-3">
+    <label for="edit_date_of_publication" class="form-label">Date of Publication</label>
+    <input type="date" name="date_of_publication" id="edit_date_of_publication" class="form-control">
 </div>
