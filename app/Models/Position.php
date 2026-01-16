@@ -27,7 +27,7 @@ class Position extends Model
         'designation',
         'special_order',
         'obsu',
-        'fund_source',
+        'fund_source_id',
         'employment_status_id',
         'type_of_request',
         'is_mass_hiring',
