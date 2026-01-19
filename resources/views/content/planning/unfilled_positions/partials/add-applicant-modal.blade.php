@@ -9,10 +9,15 @@
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
 
-      <form action="{{ route('unfilled_positions.applicants.store', $item->id) }}" method="POST">
+      <form action="{{ route('unfilled_positions.applicants.store', $position->id) }}" method="POST">
         @csrf
         <div class="modal-body">
           <div class="row g-3">
+            <!-- Applicant Number -->
+            <div class="col-md-6">
+              <label class="form-label">Applicant No.</label>
+              <input type="text" name="applicant_no" class="form-control" value="{{ $nextApplicantNo }}" readonly>
+            </div>
             <!-- First Name -->
             <div class="col-md-6">
               <label class="form-label">First Name <span class="text-danger">*</span></label>
