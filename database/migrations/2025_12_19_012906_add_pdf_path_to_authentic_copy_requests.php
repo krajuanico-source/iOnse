@@ -12,7 +12,7 @@ return new class extends Migration
   public function up(): void
   {
     Schema::table('authentic_copy_requests', function (Blueprint $table) {
-      $table->string('pdf_path')->nullable();
+      $table->string('pdf_path')->nullable()->after('status');
     });
   }
 

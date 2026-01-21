@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AuthenticCopyRequest;
+use App\Models\Cpr;
 use Illuminate\Http\Request;
 use App\Notifications\AuthenticCopyStatusUpdated;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -17,52 +18,52 @@ class AuthenticCopyRequestController extends Controller
     return view('forms.cprrequest.index', compact('requests'));
   }
 
-  public function updateStatus(Request $request, AuthenticCopyRequest $authenticCopyRequest)
-  {
-    // 1. Validate input
+public function updateStatus(Request $request, AuthenticCopyRequest $authenticCopyRequest)
+{
+    // 1. Validate input (FIXED)
     $validated = $request->validate([
-      'status' => 'required|in:Pending,Approved,Rejected',
+        'status' => 'required|in:Pending,Approved,Rejected',
     ]);
 
-    // 2. Update request status
+    // 2. Update request status (NOW WORKS)
     $authenticCopyRequest->update([
-      'status' => $validated['status'],
+        'status' => $validated['status'],
     ]);
 
     // 3. Generate PDF only when approved
     if ($validated['status'] === 'Approved') {
 
-      // Selections are stored as JSON (array)
-      $ratings = collect($authenticCopyRequest->selections ?? []);
+        $ratings = collect($authenticCopyRequest->selections ?? []);
 
-      // Safety check
-      if ($ratings->isEmpty()) {
-        return back()->with('error', 'No ratings found for this request.');
-      }
+        if ($ratings->isEmpty()) {
+            return back()->with('error', 'No ratings found for this request.');
+        }
 
-      $pdf = Pdf::loadView('pdf.authentic-copy', [
-        'request' => $authenticCopyRequest,
-        'ratings' => $ratings,
-      ]);
+        $ratings = Cpr::whereIn('id', $ratings)->get();
 
-      $path = 'authentic-copies/authentic_copy_' . $authenticCopyRequest->id . '.pdf';
+        $pdf = Pdf::loadView('pdf.authentic-copy', [
+            'request' => $authenticCopyRequest,
+            'ratings' => $ratings,
+        ]);
 
-      Storage::disk('public')->put($path, $pdf->output());
+        $path = 'authentic-copies/authentic_copy_' . $authenticCopyRequest->id . '.pdf';
 
-      // Save PDF path
-      $authenticCopyRequest->update([
-        'pdf_path' => $path,
-      ]);
+        Storage::disk('public')->put($path, $pdf->output());
+
+        $authenticCopyRequest->update([
+            'pdf_path' => $path,
+        ]);
     }
 
     // 4. Notify user
     if ($authenticCopyRequest->user) {
-      $authenticCopyRequest->user
-        ->notify(new AuthenticCopyStatusUpdated($authenticCopyRequest));
+        $authenticCopyRequest->user
+            ->notify(new AuthenticCopyStatusUpdated($authenticCopyRequest));
     }
 
     return back()->with('success', 'Request status updated successfully.');
-  }
+}
+
   public function digitalSign(Request $request, $id)
   {
     $request->validate([

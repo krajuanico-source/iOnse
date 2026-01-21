@@ -31,7 +31,7 @@ $userId = $user->id;
   </div>
 
   {{-- TABLE --}}
-  <table id="outslipTable" class="table table-bordered align-middle">
+  <table id="cpremployeesTable" class="table table-bordered align-middle">
     <thead class="table-light">
       <tr>
         <th>#</th>
@@ -215,7 +215,7 @@ $userId = $user->id;
 <script>
   $(function() {
 
-    $('#outslipTable').DataTable();
+    $('#cpremployeesTable').DataTable();
 
     // Enable request button
     $(document).on('change', '.employeeCheckbox', function() {

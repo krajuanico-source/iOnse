@@ -37,10 +37,6 @@
   "overrides": {
     "prop-types": "15.8.1"
   },
-  "resolutions": {
-    "prop-types": "15.8.1",
-    "sass": "1.76.0"
-  },
   "browserslist": [
     ">= 1%",
     "last 2 versions",

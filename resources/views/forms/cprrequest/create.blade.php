@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container py-4">
-  <h3>Create Travel Order </h3>
+  <h3>Create CPR Request </h3>
   <hr>
   @include('forms.cpr.form',['route' => route('forms.cpr.store'),'method'=>'POST'])
 </div>

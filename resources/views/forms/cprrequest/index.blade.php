@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Storage;
         <th>Selections</th>
         <th>Status</th>
         <th>Requested At</th>
-        <th width="200">Action</th>
+        <th width="400">Action</th>
       </tr>
     </thead>
 
@@ -33,21 +33,30 @@ use Illuminate\Support\Facades\Storage;
         <td>{{ $req->user->first_name }} {{ $req->user->last_name }}</td>
 
         <!-- Selections -->
-        <td>
-          @foreach($req->selections as $sel)
-          CPR ID: {{ $sel['cpr_id'] ?? 'N/A' }} | Rating: {{ $sel['rating'] ?? 'N/A' }}<br>
-          @endforeach
-        </td>
+      <td>
+        @foreach($req as $selection)
+          CPR ID: {{ $selection->cpr_id ?? 'N/A' }} |
+          Rating: {{ $selection->rating ?? 'N/A' }}<br>
+        @endforeach
+      </td>
+
 
         <!-- Status -->
         <td>
-          <span class="badge
-            {{ $req->status === 'Approved' ? 'bg-success' : ($req->status === 'Pending' ? 'bg-warning text-dark' : 'bg-danger') }}">
+          <span @class([
+            'badge',
+            'bg-success' => $req->status === 'Approved',
+            'bg-warning text-dark' => $req->status === 'Pending',
+            'bg-danger' => $req->status === 'Rejected',
+          ])>
             {{ $req->status }}
           </span>
         </td>
 
+
+
         <td>{{ $req->created_at->format('Y-m-d H:i') }}</td>
+
 
         <!-- Action: Update Status -->
         <td class="d-flex gap-1">
@@ -56,7 +65,8 @@ use Illuminate\Support\Facades\Storage;
             @csrf
             <select name="status" class="form-select form-select-sm">
               <option value="Pending" @selected($req->status === 'Pending')>Pending</option>
-              <option value="Approved" @selected($req->status === 'Approved')>Approved</option>
+              <<option value="Approved" @selected($req->status === 'Approved')>Approved</option>
+
               <option value="Rejected" @selected($req->status === 'Rejected')>Rejected</option>
             </select>
             <button class="btn btn-sm btn-primary">Update</button>

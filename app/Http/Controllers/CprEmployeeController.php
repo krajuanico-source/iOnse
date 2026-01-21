@@ -27,7 +27,7 @@ class CprEmployeeController extends Controller
   public function getMyRequests()
   {
     $requests = AuthenticCopyRequest::with('items.cpr')
-      ->where('user_id', auth()->id())
+      ->where('user_id', Auth::id())
       ->orderBy('created_at', 'desc')
       ->get();
 

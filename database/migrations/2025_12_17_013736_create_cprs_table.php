@@ -27,6 +27,9 @@ return new class extends Migration
       $table->string('status')->default('Active');
 
       $table->timestamps();
+
+      // Unique constraint
+      $table->unique([ 'rating_period_start', 'semester'], 'cprs_unique_period_semester');
     });
   }
 

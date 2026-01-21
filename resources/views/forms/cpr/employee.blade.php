@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'CPR List')
+@section('title', 'CPR Employees')
 
 @section('content')
 @php
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
   <div class="d-flex justify-content-between mb-3">
     <h4 class="fw-bold">CPR – Employee Ratings</h4>
   </div>
-  <table id="outslipTable" class="table table-bordered">
+  <table id="cprempTable" class="table table-bordered">
     <thead class="table-light">
       <tr>
         <th>#</th>
@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Storage;
     </thead>
 
     <tbody>
-      @foreach($cprs as $cpr)
+      @foreach($cpruser as $cpr)
       @php
       $firstEmployee = $cpr->employees->first();
       $filePath = $firstEmployee?->cpr_file;
@@ -37,7 +37,18 @@ use Illuminate\Support\Facades\Storage;
 
       <tr>
         <td>{{ $cpr->id }}</td>
-
+        <td>
+          @php
+          $debugData = [
+            'cpr_id' => $cpr->id,
+            'employees_count' => $cpr->employees->count(),
+            'first_employee' => $firstEmployee?->employee_id ?? 'N/A'
+          ];
+          @endphp
+          <small class="text-muted d-block">
+            Debug: {{ json_encode($debugData) }}
+          </small>
+        </td>
         <!-- Employee IDs -->
         <td>
           @foreach($cpr->employees as $emp)
@@ -166,7 +177,7 @@ use Illuminate\Support\Facades\Storage;
 <script>
   // DataTable Init
   jQuery(function($) {
-    $('#outslipTable').DataTable({
+    $('#cprempTable').DataTable({
       paging: true,
       searching: true,
       info: true

@@ -263,10 +263,10 @@ Route::prefix('planning/list-of-employee')
     ->middleware(['auth', 'prevent-back-history'])
     ->group(function () {
         Route::get('/', [UserController::class, 'bladeIndex'])->name('view-blade');
-        Route::get('/{id}', [UserController::class, 'show'])->name('show'); 
-        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit'); 
-        Route::put('/{id}', [UserController::class, 'update'])->name('update'); 
-        Route::delete('/{id}', [UserController::class, 'destroy'])->name('delete'); 
+        Route::get('/{id}', [UserController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [UserController::class, 'update'])->name('update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('delete');
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile/view', [EmployeeProfileController::class, 'index'])->name('profile.view');
@@ -642,6 +642,7 @@ Route::prefix('planning/position')->group(function () {
 
   Route::get('/item-numbers/{id}/print', [ItemNumberController::class, 'print'])->name('itemNumbers.print');
 
+  //CPR Planning
   Route::prefix('forms')->name('forms.')->group(function () {
 
     Route::get('cpr/employee', [CprController::class, 'employeeList'])
@@ -654,6 +655,8 @@ Route::prefix('planning/position')->group(function () {
       [CprController::class, 'validateAndGenerate']
     )->name('cpr.employee.validate');
   });
+  //Cpr Planning Employee Table
+
 
   // CPR Employee list/dashboard
   Route::get('/forms/cpremployee', [CprEmployeeController::class, 'index'])->name('employee.index');

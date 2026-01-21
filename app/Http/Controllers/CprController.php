@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf; // 👈 Use this instead of PDF
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class CprController extends Controller
 {
@@ -42,12 +44,40 @@ class CprController extends Controller
    */
   public function store(Request $request)
   {
-    $validated = $request->validate([
-      'rating_period_start' => 'required',
-      'semester' => 'required',
+    $requestBy = Auth::user()->employee_id ?? null;
+    $ratingPeriod = substr($request->rating_period_start, 0, 7); // YYYY-MM
+
+    // Step 1: Standard validation
+    $validator = Validator::make($request->all(), [
+        'requestor_id.*' => 'required',
+        'rating_period_start.*' => 'required',
+        'semester.*' => 'required',
     ]);
 
+    // Step 2: Custom validation to check duplicates
+    $validator->after(function ($validator) use ($requestBy, $ratingPeriod, $request) {
+        $exists = Cpr::where('requestor_id', $requestBy)
+            ->where('rating_period_start', $ratingPeriod)
+            ->where('semester', $request->semester)
+            ->exists();
+
+        if ($exists) {
+            $validator->errors()->add('semester',"You already submitted a CPR for {$ratingPeriod} - {$request->semester}.");
+        }
+    });
+
+    // Step 3: Handle validation failure
+    if ($validator->fails()) {
+        // Redirect back with a "warning" style message
+        return redirect()->back()
+            ->withErrors($validator)
+            ->withInput()
+            ->with('warning', 'Duplicate CPR detected.');
+    }
+
+
     Cpr::create([
+      'requestor_id' => $requestBy,
       'rating_period_start' => substr($request->rating_period_start, 0, 7), // keeps only YYYY-MM
       'semester' => $request->semester,
       'status' => 'Pending',
@@ -133,22 +163,22 @@ class CprController extends Controller
 
   public function employeeList()
   {
-    $cprs = Cpr::with(['employees.user'])
+    $cpruser = Cpr::with(['employees.user'])
       ->latest()
       ->get()
-      ->map(function ($cpr) {
+      ->map(function ($cpruser) {
         // Filter only employees with rating or file
-        $cpr->employees = $cpr->employees->filter(function ($emp) {
+        $cpruser->employees = $cpruser->employees->filter(function ($emp) {
           return $emp->rating !== null || $emp->cpr_file !== null;
         });
-        return $cpr;
+        return $cpruser;
       })
-      ->filter(function ($cpr) {
+      ->filter(function ($cpruser) {
         // Remove CPRs that now have no employees
-        return $cpr->employees->isNotEmpty();
+        return $cpruser->employees->isNotEmpty();
       });
 
-    return view('forms.cpr.employee', compact('cprs'));
+    return view('forms.cpr.employee', compact('cpruser'));
   }
   public function validateAndGenerate(Request $request, Cpr $cpr)
   {

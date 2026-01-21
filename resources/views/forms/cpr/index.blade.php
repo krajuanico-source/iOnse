@@ -4,7 +4,19 @@
 
 @section('content')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
 <div class="card p-4">
+  <!-- DUPLICATE MESSAGE NOTIFICATION -->
+  @if ($errors->any())
+    <div class="alert alert-danger" role="alert">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <p class="fw-medium">{{ $error }}</p>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
   <div class="d-flex justify-content-between mb-3">
     <h4>CPR List</h4>
     <!-- Button to trigger modal -->
