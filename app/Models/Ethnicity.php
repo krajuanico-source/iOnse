@@ -13,7 +13,7 @@ class Ethnicity extends Model
   public $timestamps = false;
 
   protected $fillable = [
-    'empid',
+    'user_id',
     'ethnicity',
     'ethnicity_other',
     'household_count',

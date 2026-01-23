@@ -14,7 +14,7 @@ class Leave extends Model
   public $incrementing = false; // if leave_no is not auto-increment
 
   protected $fillable = [
-    'empid',
+    'user_id',
     'leave_type',
     'leave_type_specify',
     'leave_spent',
@@ -45,7 +45,7 @@ class Leave extends Model
   // Employee relationship
   public function employee()
   {
-    return $this->belongsTo(\App\Models\User::class, 'empid', 'employee_id');
+    return $this->belongsTo(\App\Models\User::class, 'user_id', 'employee_id');
   }
 
   // Approver relationship

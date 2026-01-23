@@ -26,11 +26,11 @@
         @foreach($specials as $index => $t)
         <tr>
           <td>
-            <select name="empid[]" class="form-select" required>
+            <select name="user_id[]" class="form-select" required>
               <option value="" disabled>Select employee</option>
               @foreach($employees as $employee)
               <option value="{{ $employee->employee_id }}"
-                {{ $t->empid == $employee->employee_id ? 'selected' : '' }}>
+                {{ $t->user_id == $employee->employee_id ? 'selected' : '' }}>
                 {{ $employee->first_name }} ({{ $employee->employee_id }})
               </option>
               @endforeach
@@ -66,7 +66,7 @@
       let employeeOptions = `@foreach($employees as $employee)<option value="{{ $employee->employee_id }}">{{ $employee->first_name }} ({{ $employee->employee_id }})</option>@endforeach`;
       let newRow = `
         <tr>
-          <td><select name="empid[]" class="form-select" required><option value="" disabled selected>Select employee</option>${employeeOptions}</select></td>
+          <td><select name="user_id[]" class="form-select" required><option value="" disabled selected>Select employee</option>${employeeOptions}</select></td>
           <td><input type="date" name="special_date[]" class="form-control" required></td>
           <td><input type="text" name="special_purpose[]" class="form-control" required></td>
           <td><input type="text" name="special_destination[]" class="form-control" required></td>

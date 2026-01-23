@@ -47,7 +47,7 @@ class RequestFormController extends Controller
     ]);
 
     // Inject employee ID
-    $validated['empid'] = $employeeId;
+    $validated['user_id'] = $employeeId;
 
     // File upload
     if ($request->hasFile('scan_file')) {
@@ -75,7 +75,7 @@ class RequestFormController extends Controller
     $requestForm = RequestForm::findOrFail($id);
 
     $validated = $request->validate([
-      'empid' => 'nullable|string',
+      'user_id' => 'nullable|string',
       'req_date' => 'nullable|date',
       'req_doc' => 'nullable|string',
       'req_period' => 'nullable|string',

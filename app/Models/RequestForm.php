@@ -15,7 +15,7 @@ class RequestForm extends Model
   protected $keyType = 'int';
 
   protected $fillable = [
-    'empid',
+    'user_id',
     'req_date',
     'req_doc',
     'req_period',
@@ -37,6 +37,6 @@ class RequestForm extends Model
   // Employee linked to slip
   public function employee()
   {
-    return $this->belongsTo(\App\Models\User::class, 'empid', 'employee_id');
+    return $this->belongsTo(\App\Models\User::class, 'user_id', 'employee_id');
   }
 }

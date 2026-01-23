@@ -11,7 +11,7 @@ class Travel extends Model
   public $timestamps = true;
 
   protected $fillable = [
-    'empid',
+    'user_id',
     'date_requested',
     'travel_date',
     'travel_purpose',
@@ -36,6 +36,6 @@ class Travel extends Model
   // Employee relationship
   public function employee()
   {
-    return $this->belongsTo(\App\Models\User::class, 'empid', 'employee_id');
+    return $this->belongsTo(\App\Models\User::class, 'user_id', 'employee_id');
   }
 }

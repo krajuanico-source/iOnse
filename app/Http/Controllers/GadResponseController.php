@@ -60,10 +60,10 @@ class GadResponseController extends Controller
       return redirect()->back()->with('error', 'Your employee ID is missing.');
     }
 
-    $data['empid'] = $employeeId;
+    $data['user_id'] = $employeeId;
 
     // Check if a record already exists for this employee
-    $existing = GadResponse::where('empid', $employeeId)->first();
+    $existing = GadResponse::where('user_id', $employeeId)->first();
 
     if ($existing) {
       // Update the existing record
@@ -152,7 +152,7 @@ class GadResponseController extends Controller
     $data = $request->all();
 
     // Assign empid from the logged-in user's employee_id
-    $data['empid'] = Auth::user()->employee_id ?? null;
+    $data['user_id'] = Auth::user()->employee_id ?? null;
 
     // Honorific / Other
     $data['honorifics'] = ($request->honorific ?? '') === 'Other'

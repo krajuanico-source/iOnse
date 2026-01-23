@@ -11,7 +11,7 @@
   <div class="card mb-3">
     <div class="card-header">Employee Information</div>
     <div class="card-body">
-      <p><strong>Employee ID:</strong> {{ $profile->empid }}</p>
+      <p><strong>Employee ID:</strong> {{ $profile->user_id }}</p>
       <p><strong>Gender:</strong> {{ $profile->gender }}</p>
       <p><strong>Honorifics:</strong> {{ $profile->honorifics }}</p>
     </div>

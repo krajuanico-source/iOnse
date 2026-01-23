@@ -14,26 +14,26 @@
      <table id="unfilledpos" class="table table-bordered">
           <thead>
               <tr>
-                  <th>Item Number</th>
-                  <th>Position</th>
-                  <th>Salary Grade</th>
-                  <th>Status</th>
-                  <th>Action</th>
+                  <th style="width: 30%;">Item Number</th>
+                  <th style="width: 30%;">Position</th>
+                  <th style="width: 10%;">Salary Grade</th>
+                  <th style="width: 15%;">Status</th>
+                  <th style="width: 20%;">Action</th>
               </tr>
           </thead>
           <tbody>
               @foreach($positions as $position)
-              <tr>
-                  <td>{{ $position->item_no ?? '-' }}</td>
-                  <td>{{ $position->position_name }}</td>
-                  <td>{{ $position->salary_grade ?? '-' }}</td>
-                  <td>{{ ucfirst($position->status) }}</td>
-                  <td>
-                      <a href="{{ route('unfilled_positions.show', $position->group_id) }}" class="btn btn-sm btn-primary">
-                          View Details
-                      </a>
-                  </td>
-              </tr>
+                <tr>
+                    <td>{{ $position->item_no ?? '-' }}</td>
+                    <td>{{ $position->position_name }}</td>
+                    <td>{{ $position->salaryGrade->salary_grade ?? '-' }}</td>
+                    <td>{{ ucfirst($position->status) }} / {{ $position->group_count }}</td>
+                    <td>
+                        <a href="{{ route('unfilled_positions.show', $position->group_id) }}" class="btn btn-sm btn-primary">
+                            View Details
+                        </a>
+                    </td>
+                </tr>
               @endforeach
           </tbody>
       </table>

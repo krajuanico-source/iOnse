@@ -13,7 +13,7 @@ class OutSlip extends Model
 
   protected $fillable = [
     'date',
-    'empid',
+    'user_id',
     'destination',
     'type_of_slip',
     'purpose',
@@ -32,6 +32,6 @@ class OutSlip extends Model
   // Employee linked to slip
   public function employee()
   {
-    return $this->belongsTo(\App\Models\User::class, 'empid', 'employee_id');
+    return $this->belongsTo(\App\Models\User::class, 'user_id', 'employee_id');
   }
 }

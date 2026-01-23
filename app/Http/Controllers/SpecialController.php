@@ -42,7 +42,7 @@ class SpecialController extends Controller
       'sp_section' => 'required',
       'special_subject' => 'required',
       'activity_title' => 'required',
-      'empid.*' => 'required',
+      'user_id.*' => 'required',
       'special_purpose.*' => 'required',
     ]);
 
@@ -63,10 +63,10 @@ class SpecialController extends Controller
     ]);
 
     // Insert related employees
-    foreach ($request->empid as $index => $empid) {
+    foreach ($request->user_id as $index => $user_id) {
       DB::table('tbl_special_staff')->insert([
         'id_special' => $specialId,
-        'empid' => $empid,
+        'user_id' => $user_id,
         'special_purpose' => $request->special_purpose[$index],
         'created_at' => now(),
         'updated_at' => now(),
@@ -93,7 +93,7 @@ class SpecialController extends Controller
     $special = Special::findOrFail($id);
 
     $data = $request->validate([
-      'empid' => 'required|string',
+      'user_id' => 'required|string',
       'special_subject' => 'required|string',
       'special_from_date' => 'nullable|date',
       'special_to_date' => 'nullable|date',

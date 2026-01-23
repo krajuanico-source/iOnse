@@ -13,7 +13,7 @@ class Special extends Model
   protected $primaryKey = 'id_special';
 
   protected $fillable = [
-    'empid',
+    'user_id',
     'special_ref',
     'special_subject',
     'special_from_date',

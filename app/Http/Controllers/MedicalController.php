@@ -11,7 +11,7 @@ class MedicalController extends Controller
   public function create()
   {
     $employeeId = Auth::user()->employee_id ?? null;
-    $row = Medical::where('empid', $employeeId)->first();
+    $row = Medical::where('user_id', $employeeId)->first();
 
     // Options
     $bloodTypes = ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-", "Prefer not to say"];
@@ -57,7 +57,7 @@ class MedicalController extends Controller
       return redirect()->back()->with('error', 'Your employee ID is missing.');
     }
 
-    $row = Medical::where('empid', $employeeId)->first();
+    $row = Medical::where('user_id', $employeeId)->first();
 
     $toNull = fn($value) => ($value === '' ? null : $value);
 
@@ -65,7 +65,7 @@ class MedicalController extends Controller
     $requiresSpecific = ['autoimmune', 'cancer', 'mental_health', 'health_condition'];
 
     $data = [
-      'empid' => $employeeId,
+      'user_id' => $employeeId,
       'blood_type' => $toNull($request->blood_type),
       'qualified_blood_donation' => $toNull($request->qualified_blood_donation),
       'blood_donation' => $toNull($request->blood_donation),

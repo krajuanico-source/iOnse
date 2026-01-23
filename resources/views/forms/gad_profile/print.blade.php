@@ -37,7 +37,7 @@
   <table>
     <tr>
       <th>Employee ID</th>
-      <td>{{ $profile->empid }}</td>
+      <td>{{ $profile->user_id }}</td>
     </tr>
     <tr>
       <th>Gender</th>

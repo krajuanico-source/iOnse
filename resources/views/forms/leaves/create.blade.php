@@ -16,7 +16,7 @@
 
     <div class="form-group">
       <label>Employee ID</label>
-      <input type="text" name="empid" value="{{ auth()->user()->employee_id }}" class="form-control" readonly required>
+      <input type="text" name="user_id" value="{{ auth()->user()->employee_id }}" class="form-control" readonly required>
 
     </div>
     <div class="form-group">

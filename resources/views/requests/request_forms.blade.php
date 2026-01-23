@@ -37,7 +37,7 @@
           @if($req->employee)
           {{ $req->employee->full_name }}
           @else
-          {{ $req->empid }}
+          {{ $req->user_id }}
           @endif
         </td>
 

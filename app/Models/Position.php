@@ -54,7 +54,12 @@ class Position extends Model
     public function levelRelation() {
         return $this->belongsTo(\App\Models\PositionLevel::class, 'position_level_id');
     }
+    public function fundSource()
+    {
+        return $this->belongsTo(\App\Models\FundSource::class, 'fund_source_id');
+    }
     protected $casts = [
     'date_of_publication' => 'date',
+    
 ];
 }

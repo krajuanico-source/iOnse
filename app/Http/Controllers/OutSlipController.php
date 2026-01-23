@@ -26,10 +26,10 @@ class OutSlipController extends Controller
     $user = Auth::user();
 
     // Get the employee ID
-    $empid = $user->employee_id; // assuming the column in users table is 'empid'
+    $user_id = $user->employee_id; // assuming the column in users table is 'empid'
 
     // Pass it to the Blade view
-    return view('forms.outslip.form', compact('empid'));
+    return view('forms.outslip.form', compact('user_id'));
   }
 
   // Store new out slip
@@ -37,7 +37,7 @@ class OutSlipController extends Controller
   {
     $validated = $request->validate([
       'date' => 'required|date',
-      'empid' => 'required|string|max:20',
+      'user_id' => 'required|string|max:20',
       'destination' => 'required|string|max:255',
       'type_of_slip' => 'required|string|max:100',
       'purpose' => 'nullable|string|max:500',

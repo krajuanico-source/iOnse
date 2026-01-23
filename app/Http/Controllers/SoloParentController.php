@@ -10,7 +10,7 @@ class SoloParentController extends Controller
 {
   public function create()
   {
-    $row = SoloParent::where('empid', Auth::user()->employee_id ?? null)->first();
+    $row = SoloParent::where('user_id', Auth::user()->employee_id ?? null)->first();
 
     $circumstances = [
       "Death of the husband/wife",
@@ -31,10 +31,10 @@ class SoloParentController extends Controller
       return redirect()->back()->with('error', 'Your employee ID is missing.');
     }
 
-    $row = SoloParent::where('empid', $employeeId)->first();
+    $row = SoloParent::where('user_id', $employeeId)->first();
 
     $data = [
-      'empid' => $employeeId,
+      'user_id' => $employeeId,
       'circumstance' => $request->circumstance === 'Others' ? null : $request->circumstance,
       'circumstance_other' => $request->circumstance === 'Others' ? $request->circumstance_other : null,
       'updated_on' => now(),

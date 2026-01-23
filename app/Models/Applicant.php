@@ -11,6 +11,7 @@ class Applicant extends Model
 
   protected $fillable = [
     'item_number_id',
+    'position_id',
     'applicant_no',
     'first_name',
     'middle_name',

@@ -10,7 +10,7 @@ class SoloParent extends Model
   public $timestamps = false;
 
   protected $fillable = [
-    'empid',
+    'user_id',
     'circumstance',
     'circumstance_other',
     'created_on',

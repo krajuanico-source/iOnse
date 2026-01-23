@@ -37,19 +37,19 @@ class TravelController extends Controller
   public function store(Request $request)
   {
     $request->validate([
-      'empid.*' => 'required',
+      'user_id.*' => 'required',
       'travel_date.*' => 'required|date',
       'travel_purpose.*' => 'required|string',
       'travel_destination.*' => 'required|string',
     ]);
 
-    $count = count($request->empid);
+    $count = count($request->user_id);
     $travelReferenceNumber = 'TR-' . date('YmdHis') . '-' . Str::upper(Str::random(4));
     $requestBy = Auth::user()->employee_id ?? null;
 
     for ($i = 0; $i < $count; $i++) {
       Travel::create([
-        'empid' => $request->empid[$i],
+        'user_id' => $request->user_id[$i],
         'travel_date' => $request->travel_date[$i],
         'travel_purpose' => $request->travel_purpose[$i],
         'travel_destination' => $request->travel_destination[$i],

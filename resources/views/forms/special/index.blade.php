@@ -41,7 +41,7 @@
         <td>
           @php
           $employees = $batch->pluck('employee.full_name')->filter()->values()->all();
-          $firstEmployee = $employees[0] ?? ($batch->first()->empid ?? 'N/A');
+          $firstEmployee = $employees[0] ?? ($batch->first()->user_id ?? 'N/A');
           @endphp
 
           {{ $firstEmployee }}

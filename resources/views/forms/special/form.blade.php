@@ -61,7 +61,7 @@
         <div class="employee-row row mb-3">
           <div class="col-md-5">
             <label class="form-label">Employee</label>
-            <select name="empid[]" class="form-select" required>
+            <select name="user_id[]" class="form-select" required>
               <option value="" disabled selected>Select Employee</option>
               @foreach($employees as $employee)
               <option value="{{ $employee->employee_id }}">

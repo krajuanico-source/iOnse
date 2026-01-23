@@ -10,7 +10,7 @@ class Medical extends Model
   public $timestamps = false; // Using created_on/updated_on
 
   protected $fillable = [
-    'empid',
+    'user_id',
     'blood_type',
     'qualified_blood_donation',
     'blood_donation',

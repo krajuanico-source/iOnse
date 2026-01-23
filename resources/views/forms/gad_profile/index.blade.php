@@ -31,7 +31,7 @@
       @foreach($profiles as $p)
       <tr>
         <td>{{ $p->id }}</td>
-        <td>{{ $p->empid }}</td>
+        <td>{{ $p->user_id }}</td>
         <td>{{ $p->gender }}</td>
         <td>{{ $p->submitted_at }}</td>
         <td>

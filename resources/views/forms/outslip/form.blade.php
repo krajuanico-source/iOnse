@@ -18,7 +18,7 @@
 
     <div class="mb-3">
       <label>Employee ID</label>
-      <input type="text" name="empid" class="form-control" value="{{ $empid }}" readonly>
+      <input type="text" name="user_id" class="form-control" value="{{ $user_id }}" readonly>
     </div>
 
     <div class="mb-3">

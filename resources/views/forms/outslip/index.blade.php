@@ -28,7 +28,7 @@
       @foreach($outSlips as $slip)
       <tr>
         <td>{{ $slip->date }}</td>
-        <td>{{ $slip->empid }}</td>
+        <td>{{ $slip->user_id }}</td>
         <td>{{ $slip->destination }}</td>
         <td>{{ $slip->type_of_slip }}</td>
         <td>{{ $slip->purpose }}</td>

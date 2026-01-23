@@ -28,7 +28,7 @@ class LeaveController extends Controller
   public function store(Request $request)
   {
     $validated = $request->validate([
-      'empid' => 'required',
+      'user_id' => 'required',
       'leave_type' => 'required|string',
       'leave_type_specify' => 'nullable|string',
 
@@ -110,7 +110,7 @@ class LeaveController extends Controller
 
     // Validate input
     $validated = $request->validate([
-      'empid' => 'required',
+      'user_id' => 'required',
       'leave_type' => 'required|string',
       'leave_type_specify' => 'nullable|string',
       'leave_no_wdays' => 'required|numeric',
@@ -126,7 +126,7 @@ class LeaveController extends Controller
     ]);
 
     // Map extra fields to the database fields
-    $leave->empid = $validated['empid'];
+    $leave->user_id = $validated['user_id'];
     $leave->leave_type = $validated['leave_type'];
     $leave->leave_type_specify = $validated['leave_type_specify'] ?? null;
     $leave->from_date = $validated['from_date'];

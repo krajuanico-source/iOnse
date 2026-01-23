@@ -14,8 +14,8 @@
       <!-- Employee ID -->
       <div class="mb-3">
         <label>Employee ID</label>
-        <input type="text" name="empid" class="form-control" readonly required
-          value="{{ old('empid', $leave->empid ?? auth()->user()->employee_id) }}">
+        <input type="text" name="user_id" class="form-control" readonly required
+          value="{{ old('user_id', $leave->user_id ?? auth()->user()->employee_id) }}">
       </div>
 
       <!-- Type of Leave -->

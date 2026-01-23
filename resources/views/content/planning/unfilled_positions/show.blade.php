@@ -167,6 +167,6 @@ $(document).ready(function() {
         pageLength: 10,
         responsive: true
     });
-});
+}); 
 </script>
 @endpush

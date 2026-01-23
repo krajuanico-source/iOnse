@@ -62,13 +62,13 @@
 <script>
 $(document).ready(function() {
     $('#employeeSelect').change(function() {
-        let empId = $(this).val();
-        if(!empId) {
+        let user_id = $(this).val();
+        if(!user_id) {
             $('#profileTabs').hide();
             return;
         }
 
-        $.get(`/profile/user/${empId}`, function(data) {
+        $.get(`/profile/user/${user_id}`, function(data) {
             $('#profileTabs').show();
 
             const resAddr = [

@@ -9,7 +9,7 @@ class GadResponse extends Model
   protected $table = 'gad_responses';
 
   protected $fillable = [
-    'empid',
+    'user_id',
     'gender',
     'honorifics',
     'other_honorifics',

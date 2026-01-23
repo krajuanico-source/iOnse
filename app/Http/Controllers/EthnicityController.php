@@ -11,7 +11,7 @@ class EthnicityController extends Controller
   // Show form
   public function create()
   {
-    $row = Ethnicity::where('empid', Auth::user()->employee_id ?? null)->first();
+    $row = Ethnicity::where('user_id', Auth::user()->employee_id ?? null)->first();
 
     // Household options (0–20)
     $householdOptions = range(0, 20);
@@ -37,7 +37,7 @@ class EthnicityController extends Controller
     }
 
     // Existing record
-    $row = Ethnicity::where('empid', $employeeId)->first();
+    $row = Ethnicity::where('user_id', $employeeId)->first();
 
     // Helper functions
     $toNull = fn($value) => ($value === 'Other' || $value === '' ? null : $value);
@@ -51,7 +51,7 @@ class EthnicityController extends Controller
     $ethnicityValue = $request->ethnicity === 'Other' ? $request->ethnicity_other : $request->ethnicity;
 
     $data = [
-      'empid' => $employeeId,
+      'user_id' => $employeeId,
       'ethnicity' => $toNull($ethnicityValue),
       'ethnicity_other' => $request->ethnicity === 'Other' ? $request->ethnicity_other : null,
       'household_count' => $toZero($request->household_count),

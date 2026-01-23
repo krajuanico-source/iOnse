@@ -15,7 +15,7 @@
         <div class="cpr-row row mb-3">
           <div class="col-md-3">
             <label class="form-label">Employee ID</label>
-            <input type="text" name="empid" class="form-control"
+            <input type="text" name="user_id" class="form-control"
               value="{{ $employee->employee_id }}" readonly>
           </div>
 

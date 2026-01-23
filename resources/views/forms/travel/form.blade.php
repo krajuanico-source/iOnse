@@ -16,7 +16,7 @@
           {{-- Employee --}}
           <div class="col-md-3">
             <label class="form-label">Employee</label>
-            <select name="empid[]" class="form-select" required>
+            <select name="user_id[]" class="form-select" required>
               <option value="" disabled selected>Select employee</option>
               @foreach($employees as $employee)
               <option value="{{ $employee->employee_id }}">
