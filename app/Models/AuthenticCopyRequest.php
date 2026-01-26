@@ -30,4 +30,9 @@ class AuthenticCopyRequest extends Model
   {
     return $this->hasMany(AuthenticCopyRequestItem::class);
   }
+  public function cprs()
+  {
+    return $this->belongsToMany(Cpr::class, 'authentic_copy_request_items', 'authentic_copy_request_id', 'cpr_id')
+                ->withPivot('rating');
+  }
 }
