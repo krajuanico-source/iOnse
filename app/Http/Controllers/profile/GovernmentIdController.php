@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GovernmentIdRequest;
 use App\Models\GovernmentId;
 use Illuminate\Http\Request;
 
@@ -14,29 +15,19 @@ class GovernmentIdController extends Controller
         return view('content.profile.government-ids', compact('governmentIds'));
     }
 
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'sss_id' => 'nullable|string|max:50',
-            'gsis_id' => 'nullable|string|max:50',
-            'pagibig_id' => 'nullable|string|max:50',
-            'philhealth_id' => 'nullable|string|max:50',
-            'tin' => 'nullable|string|max:50',
-            'philsys' => 'nullable|string|max:50',
-            'gov_issued_id' => 'nullable|string|max:100',
-            'id_number' => 'nullable|string|max:100',
-            'date_issuance' => 'nullable|date',
-            'place_issuance' => 'nullable|string|max:150',
-        ]);
+    public function store(GovernmentIdRequest $request)
+        {
+            // Merge the authenticated user ID
+            $data = $request->validated();
+            $data['user_id'] = auth()->id();
 
-        $data['user_id'] = auth()->id();
-        $gov = GovernmentId::create($data);
+            $gov = GovernmentId::create($data);
 
-        return response()->json([
-            'message' => 'Government ID created successfully',
-            'id' => $gov->id
-        ]);
-    }
+            return response()->json([
+                'message' => 'Government ID created successfully',
+                'id' => $gov->id,
+            ]);
+        }
 
     public function update(Request $request, $id)
     {

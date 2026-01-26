@@ -88,9 +88,7 @@
       <hr class="my-4">
       <h5 class="mb-4 fw-bold">Mother Information</h5>
       <div class="col-md-12">
-          <label class="form-label fw-bold">Mother's Maiden Name</label>
-          <input type="text" name="mother_maiden_name" class="form-control" value="{{ $family->mother_maiden_name ?? '' }}">
-        </div>
+      <label class="form-label fw-bold">Mother's Maiden Name</label>
       <div class="row g-3">
         <div class="col-md-3">
           <label class="form-label fw-bold">Surname</label>
