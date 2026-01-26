@@ -133,7 +133,12 @@
 <!-- Fund Source -->
 <div class="mb-3">
     <label for="edit_fund_source" class="form-label">Fund Source</label>
-    <input type="text" name="fund_source" id="edit_fund_source" class="form-control">
+    <select name="fund_source_id" id="edit_fund_source" class="form-select select2" required>
+        <option value="">Select Fund Source</option>
+        @foreach($fundSources as $fsource)
+            <option value="{{ $fsource->id }}">{{ $fsource->fund_source }}</option>
+        @endforeach
+    </select>
 </div>
 
 <!-- Employment Status -->

@@ -11,6 +11,7 @@ class Applicant extends Model
 
   protected $fillable = [
     'item_number_id',
+    'applicant_no',
     'first_name',
     'middle_name',
     'last_name',
@@ -23,8 +24,8 @@ class Applicant extends Model
     'date_hired',
     'examination_date',
     'date_interviewed',
-    'mobile_no', // added
-    'email',     // added
+    'mobile_no', 
+    'email',     
   ];
 
 

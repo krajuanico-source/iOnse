@@ -14,6 +14,7 @@ use App\Models\OfficeLocation;
 use App\Models\EmploymentStatus;
 use App\Models\Section;
 use App\Models\PositionLevel;
+use App\Models\FundSource;
 
 class PositionController extends Controller
 {
@@ -46,56 +47,59 @@ class PositionController extends Controller
             'divisions'          => Division::all(),
             'officeLocations'    => OfficeLocation::all(),
             'positionLevels'     => PositionLevel::orderBy('level_name')->get(),
+            'fundSources'         => FundSource::all(),
         ]);
     }
 
     // Store new position(s)
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'item_no'              => 'nullable|string|max:255',
-            'office_location_id'   => 'nullable|exists:office_locations,id',
-            'division_id'          => 'nullable|exists:divisions,id',
-            'section_id'           => 'nullable|exists:sections,id',
-            'program'              => 'nullable|string|max:255',
-            'created_at'           => 'required|date',
-            'position_name'        => 'required|string|max:255',
-            'abbreviation'         => 'required|string|max:50',
-            'parenthetical_title'  => 'nullable|string|max:255',
-            'position_level_id'    => 'nullable|exists:position_levels,id',
-            'salary_tranche_id'    => 'nullable|exists:salary_tranche,id',
-            'salary_grade_id'      => 'nullable|exists:salary_grades,id',
-            'salary_step_id'       => 'nullable|exists:salary_step,id',
-            'monthly_rate'         => 'nullable|numeric',
-            'designation'          => 'nullable|string|max:255',
-            'special_order'        => 'nullable|string|max:255',
-            'obsu'                 => 'nullable|string|max:255',
-            'fund_source'          => 'nullable|string|max:255',
-            'employment_status_id' => 'nullable|exists:employment_statuses,id',
-            'type_of_request'      => 'nullable|string|max:50',
-            'is_mass_hiring'       => 'required|boolean',
-            'positions_count'      => 'nullable|integer|min:1',
-            'date_of_publication'  => 'required|date',
-        ]);
+            public function store(Request $request)
+        {
+            $validated = $request->validate([
+                'item_no'              => 'nullable|string|max:255',
+                'office_location_id'   => 'nullable|exists:office_locations,id',
+                'division_id'          => 'nullable|exists:divisions,id',
+                'section_id'           => 'nullable|exists:sections,id',
+                'program'              => 'nullable|string|max:255',
+                'created_at'           => 'required|date',
+                'position_name'        => 'required|string|max:255',
+                'abbreviation'         => 'required|string|max:50',
+                'parenthetical_title'  => 'nullable|string|max:255',
+                'position_level_id'    => 'nullable|exists:position_levels,id',
+                'salary_tranche_id'    => 'nullable|exists:salary_tranche,id',
+                'salary_grade_id'      => 'nullable|exists:salary_grades,id',
+                'salary_step_id'       => 'nullable|exists:salary_step,id',
+                'monthly_rate'         => 'nullable|numeric',
+                'designation'          => 'nullable|string|max:255',
+                'special_order'        => 'nullable|string|max:255',
+                'obsu'                 => 'nullable|string|max:255',
+                'fund_source_id'       => 'nullable|exists:fund_sources,id',
+                'employment_status_id' => 'nullable|exists:employment_statuses,id',
+                'type_of_request'      => 'nullable|string|max:50',
+                'is_mass_hiring'       => 'required|boolean',
+                'positions_count'      => 'nullable|integer|min:1',
+                'date_of_publication'  => 'required|date',
+            ]);
 
-        $validated['is_mass_hiring'] = (bool) $request->is_mass_hiring;
-        $count = $validated['is_mass_hiring'] ? ($validated['positions_count'] ?? 1) : 1;
+            $validated['is_mass_hiring'] = (bool) $request->is_mass_hiring;
+            $count = $validated['is_mass_hiring'] ? ($validated['positions_count'] ?? 1) : 1;
 
-        $validated['position_name'] = strtoupper($validated['position_name']);
-        $validated['abbreviation']  = strtoupper($validated['abbreviation']);
+            $validated['position_name'] = strtoupper($validated['position_name']);
+            $validated['abbreviation']  = strtoupper($validated['abbreviation']);
 
-        $massGroupId = $count > 1 ? Str::uuid() : null;
+            $massGroupId = $count > 1 ? Str::uuid() : null;
 
-        for ($i = 0; $i < $count; $i++) {
-            $validated['mass_group_id'] = $massGroupId;
-            Position::create($validated);
-        }
+            for ($i = 0; $i < $count; $i++) {
+                $validated['mass_group_id'] = $massGroupId;
+                Position::create($validated);
+            }
 
-        return response()->json([
-            'success' => true,
-            'created' => $count,
-        ]);
-    }
+            return response()->json([
+                'success' => true,
+                'created' => $count,
+            ]);
+        }   
+
+
 
         public function show($id)
     {
@@ -123,16 +127,16 @@ class PositionController extends Controller
             'salary_grade_id' => $position->salary_grade_id,
             'salary_step_id' => $position->salary_step_id,
             'monthly_rate' => $position->monthly_rate,
-            'date_of_publication' => $position->date_of_publication?->format('Y-m-d'), // <-- important
+            'date_of_publication' => $position->date_of_publication?->format('Y-m-d'),
             'is_mass_hiring' => $position->is_mass_hiring,
             'mass_group_id' => $position->mass_group_id,
             'positions_count' => $position->positions_count ?? 1,
             'status' => $position->status,
         ]);
     }
-    // Update position (single or massive)
-    public function update(Request $request, $id)
-    {
+        // Update position (single or massive)
+            public function update(Request $request, $id)
+        {
         $validated = $request->validate([
             'item_no'              => 'nullable|string|max:255',
             'office_location_id'   => 'nullable|exists:office_locations,id',
@@ -151,7 +155,7 @@ class PositionController extends Controller
             'designation'          => 'nullable|string|max:255',
             'special_order'        => 'nullable|string|max:255',
             'obsu'                 => 'nullable|string|max:255',
-            'fund_source'          => 'nullable|string|max:255',
+            'fund_source_id'       => 'nullable|exists:fund_sources,id',
             'employment_status_id' => 'nullable|exists:employment_statuses,id',
             'type_of_request'      => 'nullable|string|max:50',
             'positions_count'      => 'nullable|integer|min:1',
@@ -172,6 +176,7 @@ class PositionController extends Controller
 
         return response()->json(['success' => true]);
     }
+
 
     // Delete position
     public function destroy($id)
