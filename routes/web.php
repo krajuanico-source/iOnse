@@ -674,21 +674,37 @@ Route::prefix('planning/position')->group(function () {
   Route::post('/forms/request-activation', [CprEmployeeController::class, 'requestActivation'])
     ->name('cpr.requestActivation');
 
+// Index
+Route::get('/forms/cprrequest', [AuthenticCopyRequestController::class, 'index'])
+    ->name('forms.cprrequest.index');
+
+// Update status
+Route::post('/forms/cprrequest/{authenticCopyRequest}/update-status', [AuthenticCopyRequestController::class, 'updateStatus'])
+    ->name('forms.cprrequest.updateStatus');
+
+// Mark claimed
+Route::post('/forms/cprrequest/{id}/mark-claimed', [AuthenticCopyRequestController::class, 'markClaimed'])
+    ->name('forms.cprrequest.markClaimed');
+
+// Download PDF
+Route::get('/forms/cprrequest/{id}/download', [AuthenticCopyRequestController::class, 'downloadSignedPdf'])
+    ->name('forms.cprrequest.download');
+
   Route::post('/authentic-copy/request', [AuthenticCopyController::class, 'store'])
     ->name('authentic-copy.request')
     ->middleware('auth');
-
   Route::middleware(['auth'])->group(function () {
-    // Show all CPR requests
-    Route::get('/forms/cprrequest', [AuthenticCopyRequestController::class, 'index'])
-      ->name('forms.cprrequest');
+    // // Show all CPR requests
+    // Route::get('/forms/cprrequest', [AuthenticCopyRequestController::class, 'index'])
+    //   ->name('forms.cprrequest');
     Route::get('/cpr/my-requests', [CprEmployeeController::class, 'getMyRequests'])
       ->name('cpr.getMyRequests');
-
     // Update the status of a specific request
     Route::post('/forms/cprrequest/{authenticCopyRequest}/update-status', [AuthenticCopyRequestController::class, 'updateStatus'])
       ->name('forms.cprrequest.updateStatus');
   });
+
+
 
   Route::prefix('authentic-copy')->group(function () {
 

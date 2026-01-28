@@ -57,13 +57,14 @@ use Illuminate\Support\Facades\Storage;
       @endforelse
         </td>
 
-        {{-- STATUS --}}
+       {{-- STATUS --}}
         <td>
           <span @class([
             'badge',
             'bg-warning text-dark' => $req->status === 'Pending',
             'bg-info text-dark'    => $req->status === 'For Signature',
             'bg-success'           => $req->status === 'Approved',
+            'bg-secondary'         => $req->status === 'Claimed',
             'bg-danger'            => $req->status === 'Rejected',
           ])>
             {{ $req->status }}
@@ -72,54 +73,56 @@ use Illuminate\Support\Facades\Storage;
 
         <td>{{ $req->created_at->format('Y-m-d H:i') }}</td>
 
-        {{-- ACTIONS --}}
-        <td class="d-flex flex-wrap gap-1">
+       <td class="d-flex flex-wrap gap-1">
 
-          {{-- UPDATE STATUS --}}
-          <form action="{{ route('forms.cprrequest.updateStatus', $req) }}"
-                method="POST"
-                class="d-flex gap-1">
+    {{-- 1. STATUS UPDATE --}}
+    @if(!in_array($req->status, ['Approved', 'Claimed']))
+        <form action="{{ route('forms.cprrequest.updateStatus', $req) }}"
+              method="POST"
+              class="d-flex gap-1">
             @csrf
-
             <select name="status" class="form-select form-select-sm" required>
-              <option value="Pending" @selected($req->status === 'Pending')>
-                Pending
-              </option>
-
-              <option value="For Signature" @selected($req->status === 'For Signature')>
-                For Signature
-              </option>
-
-              <option value="Rejected" @selected($req->status === 'Rejected')>
-                Rejected
-              </option>
+                <option value="Pending" @selected($req->status === 'Pending')>Pending</option>
+                <option value="For Signature" @selected($req->status === 'For Signature')>For Signature</option>
+                <option value="Rejected" @selected($req->status === 'Rejected')>Rejected</option>
             </select>
+            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+        </form>
+    @endif
 
-            <button class="btn btn-sm btn-primary">
-              Update
+    {{-- 2. ADD SIGNATURE --}}
+    @if($req->status === 'For Signature')
+        <button type="button"
+                class="btn btn-sm btn-outline-secondary"
+                data-bs-toggle="modal"
+                data-bs-target="#signatureTypeModal_{{ $req->id }}">
+            Add Signature
+        </button>
+    @endif
+
+    {{-- 3. DOWNLOAD PDF --}}
+    @if(in_array($req->status, ['Approved', 'Claimed']) && $req->pdf_path)
+        <a href="{{ route('forms.cprrequest.download', $req->id) }}"
+           class="btn btn-sm btn-success">
+            Download PDF
+        </a>
+    @endif
+
+    {{-- 4. MARK AS CLAIMED --}}
+    @if($req->status === 'Approved')
+        <form action="{{ route('forms.cprrequest.markClaimed', $req->id) }}"
+              method="POST"
+              class="d-inline">
+            @csrf
+            <button type="submit" class="btn btn-sm btn-secondary">
+                Mark Claimed
             </button>
-          </form>
+        </form>
+    @endif
 
-          {{-- SIGNATURE BUTTON (ONLY WHEN READY) --}}
-          @if($req->status === 'For Signature')
-            <button
-              type="button"
-              class="btn btn-sm btn-outline-secondary"
-              data-bs-toggle="modal"
-              data-bs-target="#signatureTypeModal_{{ $req->id }}">
-              Add Signature
-            </button>
-          @endif
+</td>
 
-          {{-- DOWNLOAD SIGNED PDF --}}
-          @if($req->status === 'Approved' && $req->signed_pdf_path)
-            <a href="{{ route('forms.cprrequest.download', $req->id) }}"
-               class="btn btn-sm btn-success">
-              Download Signed PDF
-            </a>
-          @endif
 
-        </td>
 
         {{-- MODALS --}}
         <x-modals.signature-type-cpr :ref="$req->id" />

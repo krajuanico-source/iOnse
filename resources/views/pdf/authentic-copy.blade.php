@@ -46,14 +46,20 @@
       </tr>
     </thead>
     <tbody>
-      @foreach($ratings as $item)
-      <tr>
-        <td>{{ $item['cpr_id'] }}</td>
-        <td>{{ $item['rating'] }}</td>
-        <td>Validated</td>
-      </tr>
-      @endforeach
-    </tbody>
+  @forelse($ratings ?? [] as $item)
+    <tr>
+      <td>{{ $item['cpr_id'] }}</td>
+      <td>{{ $item['rating'] }}</td>
+      <td>Validated</td>
+    </tr>
+  @empty
+    <tr>
+      <td colspan="3" style="text-align:center;">
+        No CPR records found
+      </td>
+    </tr>
+  @endforelse
+</tbody>
   </table>
 
 </body>
