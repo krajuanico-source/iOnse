@@ -34,7 +34,6 @@ class DatabaseSeeder extends Seeder
       DivisionSeeder::class,
       SectionSeeder::class,
       OfficeLocationSeeder::class,
-      UserSeeder::class,
 
 
       /*

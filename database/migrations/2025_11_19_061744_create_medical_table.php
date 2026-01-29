@@ -10,7 +10,7 @@ return new class extends Migration
   {
     Schema::create('medical', function (Blueprint $table) {
       $table->id();
-      $table->string('empid')->unique(); // Employee ID
+      $table->foreignId('user_id')->constrained()->cascadeOnDelete(); // FK to users
       $table->string('blood_type')->nullable();
       $table->string('qualified_blood_donation')->nullable();
       $table->string('blood_donation')->nullable();
@@ -29,8 +29,12 @@ return new class extends Migration
       $table->string('maintenance_med')->nullable();
       $table->string('disability_type')->nullable();
       $table->string('disability_cause')->nullable();
-      $table->timestamp('created_on')->nullable();
-      $table->timestamp('updated_on')->nullable();
+      $table->string('autoimmune_other')->nullable();
+      $table->string('cancer_other')->nullable();
+      $table->string('mental_health_other')->nullable();
+      $table->string('health_condition_other')->nullable();
+      $table->softdeletes();
+      $table->timestamps();
     });
   }
 

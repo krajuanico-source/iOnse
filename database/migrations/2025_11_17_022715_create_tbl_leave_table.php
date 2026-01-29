@@ -10,7 +10,7 @@ return new class extends Migration
   {
     Schema::create('tbl_leave', function (Blueprint $table) {
       $table->id('leave_no'); // primary key
-      $table->string('empid');
+      $table->foreignId('user_id')->constrained()->cascadeOnDelete(); // FK to users
       $table->string('leave_type');
       $table->string('leave_type_specify')->nullable();
       $table->string('leave_spent')->nullable();
@@ -36,6 +36,7 @@ return new class extends Migration
       $table->string('pas_head')->nullable();
       $table->date('datefiled')->nullable();
       $table->string('other_purpose')->nullable();
+      $table->softdeletes();
       $table->timestamps();
     });
   }

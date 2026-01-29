@@ -20,8 +20,8 @@ return new class extends Migration
         ->cascadeOnDelete();
 
       // Foreign key to cprs
-      $table->foreignId('cpr_id')
-        ->constrained('cprs')
+      $table->foreignId('performance_rating_id')
+        ->constrained('performance_rating')
         ->cascadeOnDelete();
 
       $table->decimal('rating', 5, 2);

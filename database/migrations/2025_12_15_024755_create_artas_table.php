@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('artas', function (Blueprint $table) {
       $table->id();
 
-      $table->string('employee_id')->nullable();
+      $table->foreignId('user_id')->constrained()->cascadeOnDelete(); // FK to users
 
       // Foreign keys
       $table->unsignedBigInteger('position_id')->nullable();

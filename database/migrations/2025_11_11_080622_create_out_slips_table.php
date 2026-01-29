@@ -11,17 +11,17 @@ return new class extends Migration
     Schema::create('out_slips', function (Blueprint $table) {
       $table->id();
       $table->date('date');
-      $table->string('empid', 20);
+      $table->foreignId('user_id')->constrained()->cascadeOnDelete(); // FK to users
       $table->string('destination');
       $table->string('type_of_slip', 100);
       $table->text('purpose')->nullable();
       $table->string('status', 50)->default('Pending');
 
-      // Store the user ID of the approver
       $table->foreignId('approved_by')->nullable()
-        ->constrained('users') // references id in users table
+        ->constrained('users')
         ->nullOnDelete();
 
+      $table->softdeletes();
       $table->timestamps();
     });
   }

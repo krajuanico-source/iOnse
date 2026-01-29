@@ -10,7 +10,7 @@ return new class extends Migration
   {
     Schema::create('tbl_travel', function (Blueprint $table) {
       $table->id('id_travel');
-      $table->string('empid'); // Can be JSON or text for multiple employees
+      $table->foreignId('user_id')->constrained()->cascadeOnDelete(); // FK to users
       $table->date('date_requested');
       $table->date('travel_date');
       $table->string('travel_purpose');
@@ -30,6 +30,7 @@ return new class extends Migration
       $table->string('file_image')->nullable();
       $table->string('pdf_file')->nullable();
       $table->string('status')->default('Active');
+      $table->softdeletes();
       $table->timestamps();
     });
   }

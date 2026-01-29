@@ -4,156 +4,99 @@
       "url": "planning/dashboard",
       "name": "Dashboard",
       "slug": "dashboard",
-      "icon": "menu-icon tf-icons ri-dashboard-line",
-      "roles": [
-        "HR-PLANNING"
-      ]
+      "icon": "menu-icon tf-icons ri-dashboard-line"
     },
     {
       "name": "Planning",
       "icon": "menu-icon tf-icons ri-layout-2-line",
       "slug": "planning",
-      "roles": [
-        "HR-PLANNING"
-      ],
       "submenu": [
         {
           "name": "Employment Data",
           "slug": "employment-data",
-          "roles": [
-            "HR-PLANNING"
-          ],
           "submenu": [
             {
               "url": "planning/employment-status",
               "name": "Employment Status",
-              "slug": "employment-status",
-              "roles": [
-                "HR-PLANNING"
-              ]
+              "slug": "employment-status"
             },
             {
               "url": "planning/unfilled-positions",
               "name": "Unfilled Positions",
-              "slug": "unfilled-positions",
-              "roles": [
-                "HR-PLANNING"
-              ]
+              "slug": "unfilled-positions"
             },
             {
               "url": "planning/position",
               "name": "Position",
-              "slug": "position",
-              "roles": [
-                "HR-PLANNING"
-              ]
+              "slug": "position"
             }
           ]
         },
         {
           "url": "planning/list-of-employee",
           "name": "List of Employee",
-          "slug": "list-of-employee",
-          "roles": [
-            "HR-PLANNING"
-          ]
+          "slug": "list-of-employee"
         },
         {
           "name": "OBSU",
           "slug": "OBSU",
-          "roles": [
-            "HR-PLANNING"
-          ],
           "submenu": [
             {
               "url": "planning/office-location",
               "name": "Office Locations",
-              "slug": "office-location",
-              "roles": [
-                "HR-PLANNING"
-              ]
+              "slug": "office-location"
             },
             {
               "url": "planning/division",
               "name": "Divisions",
-              "slug": "division",
-              "roles": [
-                "HR-PLANNING"
-              ]
+              "slug": "division"
             },
             {
               "url": "planning/section",
               "name": "Sections",
-              "slug": "section",
-              "roles": [
-                "HR-PLANNING"
-              ]
+              "slug": "section"
             },
             {
               "url": "planning/unit",
               "name": "Units",
-              "slug": "unit",
-              "roles": [
-                "HR-PLANNING"
-              ]
+              "slug": "unit"
             }
           ]
         },
         {
           "name": "CPR ",
           "slug": "CPR Employee",
-          "roles": [
-            "HR-PLANNING"
-          ],
           "submenu": [
             {
               "url": "forms/cpr",
               "name": "List",
-              "slug": "cpr",
-              "roles": [
-                "HR-PLANNING"
-              ]
+              "slug": "cpr"
             },
             {
               "url": "/forms/cpr/employee",
               "name": " Employee",
-              "slug": "forms.cpr.employee",
-              "roles": [
-                "HR-PLANNING"
-              ]
+              "slug": "forms.cpr.employee"
             },
             {
               "url": "/forms/cprrequest",
               "name": " Request",
-              "slug": "forms.cprrequest",
-              "roles": [
-                "HR-PLANNING"
-              ]
+              "slug": "forms.cprrequest"
             }
           ]
         },
         {
           "name": "User Management",
           "slug": "user-management",
-          "roles": [
-            "HR-PLANNING"
-          ],
           "submenu": [
             {
               "url": "planning/user-management",
               "name": "User Enrollment",
-              "slug": "user-management",
-              "roles": [
-                "HR-PLANNING"
-              ]
+              "slug": "user-management"
             },
             {
               "url": "planning/user-permission",
               "name": "User Permission",
-              "slug": "user-permission",
-              "roles": [
-                "HR-PLANNING"
-              ]
+              "slug": "user-permission"
             }
           ]
         }
@@ -163,13 +106,6 @@
       "name": "User Profile",
       "icon": "menu-icon tf-icons ri-user-line",
       "slug": "profile",
-      "roles": [
-        "HR-PLANNING",
-        "HR-WELFARE",
-        "HR-PAS",
-        "HR-L&D",
-        "EMPLOYEE"
-      ],
       "submenu": [
         {
           "url": "profile/basic-information",
@@ -242,13 +178,6 @@
       "name": "Forms",
       "icon": "menu-icon tf-icons ri-file-list-3-line",
       "slug": "profile",
-      "roles": [
-        "HR-PLANNING",
-        "HR-WELFARE",
-        "HR-PAS",
-        "HR-L&D",
-        "EMPLOYEE"
-      ],
       "submenu": [
         {
           "url": "forms/arta",
@@ -347,13 +276,6 @@
       "name": "SALN",
       "icon": "menu-icon tf-icons ri-file-shield-line",
       "slug": "profile",
-      "roles": [
-        "HR-PLANNING",
-        "HR-WELFARE",
-        "HR-PAS",
-        "HR-L&D",
-        "EMPLOYEE"
-      ],
       "submenu": [
         {
           "url": "profile/basic-information",
@@ -391,13 +313,6 @@
       "name": "History",
       "icon": "menu-icon tf-icons ri-history-line",
       "slug": "profile",
-      "roles": [
-        "HR-PLANNING",
-        "HR-WELFARE",
-        "HR-PAS",
-        "HR-L&D",
-        "EMPLOYEE"
-      ],
       "submenu": [
         {
           "url": "outslip/form",
@@ -415,97 +330,61 @@
       "name": "PAS",
       "icon": "menu-icon tf-icons ri-layout-2-line",
       "slug": "tables",
-      "roles": [
-        "HR-PAS"
-      ],
       "submenu": [
         {
           "url": "pas/employeeslist",
           "name": "List of Employees",
-          "slug": "employeeslist",
-          "roles": [
-            "HR-PAS"
-          ]
+          "slug": "employeeslist"
         },
         {
           "url": "layouts/without-menu",
           "name": "Payroll",
           "slug": "without-menu",
-          "roles": [
-            "HR-PAS"
-          ],
           "submenu": [
             {
               "url": "pas/dtr",
               "name": "Upload DTR",
-              "slug": "DTR",
-              "roles": [
-                "HR-PAS"
-              ]
+              "slug": "DTR"
             },
             {
               "url": "pas/importpayroll",
               "name": "Import Payroll",
-              "slug": "importpayroll",
-              "roles": [
-                "HR-PAS"
-              ]
+              "slug": "importpayroll"
             },
             {
               "url": "pas/summary_of_lates",
               "name": "Summary of Lates",
-              "slug": "summary_of_lates",
-              "roles": [
-                "HR-PAS"
-              ]
+              "slug": "summary_of_lates"
             },
             {
               "url": "pas/payroll",
               "name": "Payroll",
-              "slug": "payroll",
-              "roles": [
-                "HR-PAS"
-              ]
+              "slug": "payroll"
             },
             {
               "url": "pas/tax",
               "name": "Tax",
-              "slug": "tax",
-              "roles": [
-                "HR-PAS"
-              ]
+              "slug": "tax"
             },
             {
               "url": "pas/deductions",
               "name": "Deductions",
-              "slug": "deductions",
-              "roles": [
-                "HR-PAS"
-              ]
+              "slug": "deductions"
             },
             {
               "url": "pas/leavecredits",
               "name": "Leave Credits",
-              "slug": "leavecredits",
-              "roles": [
-                "HR-PAS"
-              ]
+              "slug": "leavecredits"
             },
             {
               "url": "pas/fundsource",
               "name": "Fund Source",
-              "slug": "fundsource",
-              "roles": [
-                "HR-PAS"
-              ]
+              "slug": "fundsource"
             },
             {
               "url": "pas/reports",
               "name": "Reports",
-              "slug": "reports",
-              "roles": [
-                "HR-PAS"
-              ]
+              "slug": "reports"
             }
           ]
         },
@@ -513,33 +392,21 @@
           "url": "#",
           "name": "Requests",
           "slug": "requests",
-          "roles": [
-            "HR-PAS"
-          ],
           "submenu": [
             {
               "url": "/requests/leave",
               "name": "Leave",
-              "slug": "leave",
-              "roles": [
-                "HR-PAS"
-              ]
+              "slug": "leave"
             },
             {
               "url": "/requests/outslip",
               "name": "Outslip",
-              "slug": "outslip",
-              "roles": [
-                "HR-PAS"
-              ]
+              "slug": "outslip"
             },
             {
               "url": "/requests/request_forms",
               "name": "Request Forms",
-              "slug": "request_forms",
-              "roles": [
-                "HR-PAS"
-              ]
+              "slug": "request_forms"
             }
           ]
         }
@@ -549,57 +416,36 @@
       "name": "Welfare",
       "icon": "menu-icon tf-icons ri-layout-2-line",
       "slug": "ui",
-      "roles": [
-        "HR-WELFARE"
-      ],
       "submenu": [
         {
           "url": "welfare/dashboardwelfare",
           "name": "Dashboard",
-          "slug": "dashboardwelfare",
-          "roles": [
-            "HR-WELFARE"
-          ]
+          "slug": "dashboardwelfare"
         },
         {
           "url": "welfare/memorandum",
           "name": "Archive of Memorandum",
-          "slug": "memorandum",
-          "roles": [
-            "HR-WELFARE"
-          ]
+          "slug": "memorandum"
         },
         {
           "url": "welfare/awardees",
           "name": "Hall of Awardees",
-          "slug": "awardees",
-          "roles": [
-            "HR-WELFARE"
-          ]
+          "slug": "awardees"
         },
         {
           "url": "welfare/overview",
           "name": "DSWD Rewards Program Overview and Committee",
-          "slug": "welfare/overview",
-          "roles": [
-            "HR-WELFARE"
-          ]
+          "slug": "welfare/overview"
         },
         {
           "url": "welfare/character",
           "name": "Character Building Program",
-          "slug": "character",
-          "roles": [
-            "HR-WELFARE"
-          ]
+          "slug": "character"
         },
         {
           "url": "welfare/monitoring",
           "name": "Monitoring and Evaluation of the Awardee",
-          "slug": "monitoring",
-          "roles": [
-            "HR-WELFARE"
-          ]
+          "slug": "monitoring"
         }
       ]
     },
@@ -607,66 +453,42 @@
       "name": "Learning & Development",
       "icon": "menu-icon tf-icons ri-layout-2-line",
       "slug": "listofTrainings",
-      "roles": [
-        "HR-L&D"
-      ],
       "submenu": [
         {
           "url": "learning/listofTrainings",
           "name": "List of Employee",
-          "slug": "listofTrainings",
-          "roles": [
-            "HR-L&D"
-          ]
+          "slug": "listofTrainings"
         },
         {
           "url": "learning/trainings",
           "name": "Courses",
-          "slug": "courses",
-          "roles": [
-            "HR-L&D"
-          ]
+          "slug": "courses"
         },
         {
           "url": "learning/events",
           "name": "Events",
-          "slug": "events",
-          "roles": [
-            "HR-L&D"
-          ]
+          "slug": "events"
         },
         {
           "url": "learning/calendar",
           "name": "Calendar",
-          "slug": "calendar",
-          "roles": [
-            "HR-L&D"
-          ]
+          "slug": "calendar"
         },
         {
           "url": "learning/scholarship",
           "name": "Scholarships",
-          "slug": "scholarship",
-          "roles": [
-            "HR-L&D"
-          ]
+          "slug": "scholarship"
         },
         {
           "url": "layouts/blank",
           "name": "Reports",
           "slug": "blank",
-          "roles": [
-            "HR-L&D"
-          ],
           "target": "_blank"
         },
         {
           "url": "layouts/blank",
           "name": "Users",
           "slug": "blank",
-          "roles": [
-            "HR-L&D"
-          ],
           "target": "_blank"
         }
       ]

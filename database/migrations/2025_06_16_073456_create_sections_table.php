@@ -9,14 +9,14 @@ return new class extends Migration
   /**
    * Run the migrations.
    */
-  public function up(): void
+  public function up()
   {
-    Schema::create('units', function (Blueprint $table) {
+    Schema::create('sections', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('section_id')->constrained()->onDelete('cascade');
+      $table->foreignId('division_id')->constrained('divisions')->onDelete('cascade');
       $table->string('name');
       $table->string('abbreviation');
-      $table->softdeletes();
+      $table->softDeletes();
       $table->timestamps();
     });
   }
@@ -26,6 +26,6 @@ return new class extends Migration
    */
   public function down(): void
   {
-    Schema::dropIfExists('units');
+    Schema::dropIfExists('sections');
   }
 };

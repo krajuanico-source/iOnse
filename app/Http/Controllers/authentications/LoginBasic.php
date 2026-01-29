@@ -114,15 +114,6 @@ class LoginBasic extends Controller
         }
 
         $pendingLogin = Session::get('pending_login');
-        $loginType = array_key_exists('email', $pendingLogin) ? 'email' : 'username';
-        $user = User::where($loginType, $pendingLogin[$loginType])->first();
-
-        // Prevent login if inactive
-        if (!$user->is_active) {
-            Session::forget(['otp', 'otp_expires_at', 'pending_login', 'otp_user_id']);
-            return redirect()->route('auth-login-basic')
-                ->withErrors(['login' => 'Your account is inactive. Please contact admin.']);
-        }
 
         // Login user
         Auth::attempt($pendingLogin);
@@ -131,28 +122,8 @@ class LoginBasic extends Controller
         // Clear OTP session data
         Session::forget(['otp', 'otp_expires_at', 'pending_login', 'otp_user_id']);
 
-        // Role-based redirect
-        $userRole = strtoupper($user->role);
-
-        return match ($userRole) {
-            'HR-PLANNING' => redirect()->route('content.planning.dashboard'),
-            'HR-WELFARE',
-            'HR-PAS',
-            'HR-L&D'      => redirect()->route('dashboard-analytics'),
-            'EMPLOYEE'    => redirect()->route('profile.basic-info.index'),
-            default       => $this->logoutUnauthorized(),
-        };
-    }
-
-    /**
-     * Logout unauthorized users
-     */
-    private function logoutUnauthorized()
-    {
-        Auth::logout();
-
-        return redirect()->route('auth-login-basic')
-            ->withErrors(['login' => 'Unauthorized role.']);
+        // Redirect to a single dashboard after login
+        return redirect()->route('content.planning.dashboard');
     }
 
     /**

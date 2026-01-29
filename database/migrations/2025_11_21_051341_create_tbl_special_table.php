@@ -10,7 +10,7 @@ return new class extends Migration
   {
     Schema::create('tbl_special', function (Blueprint $table) {
       $table->id('id_special');
-      $table->string('empid');
+      $table->foreignId('user_id')->constrained()->cascadeOnDelete(); // FK to users
       $table->string('special_subject');
       $table->date('special_from_date')->nullable();
       $table->date('special_to_date')->nullable();

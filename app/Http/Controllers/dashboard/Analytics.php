@@ -18,30 +18,30 @@ class Analytics extends Controller
         $quarter    = $request->input('quarter');
 
         // ================= BASE USER QUERY =================
-        $usersQuery = User::query();
+        $usersQuery = User::join('user_profiles', 'users.id', '=', 'user_profiles.user_id');
 
         // Apply filter
         if ($filterType === 'month' && $month) {
             $usersQuery->whereYear('users.created_at', substr($month, 0, 4))
-                    ->whereMonth('users.created_at', substr($month, 5, 2));
+                       ->whereMonth('users.created_at', substr($month, 5, 2));
         } elseif ($filterType === 'quarter' && $quarter) {
             $startMonth = ($quarter - 1) * 3 + 1;
             $endMonth   = $startMonth + 2;
             $usersQuery->whereYear('users.created_at', $year)
-                    ->whereBetween(DB::raw('MONTH(users.created_at)'), [$startMonth, $endMonth]);
+                       ->whereBetween(DB::raw('MONTH(users.created_at)'), [$startMonth, $endMonth]);
         } else {
             $usersQuery->whereYear('users.created_at', $year);
         }
 
         // ================= BASIC COUNTS =================
         $overallEmployees = $usersQuery->count();
-        $activeEmployees  = (clone $usersQuery)->where('status', 'Active')->count();
-        $male   = (clone $usersQuery)->where('gender', 'Male')->count();
-        $female = (clone $usersQuery)->where('gender', 'Female')->count();
+        $activeEmployees  = (clone $usersQuery)->where('users.status', 'Active')->count();
+        $male   = (clone $usersQuery)->where('user_profiles.gender', 'Male')->count();
+        $female = (clone $usersQuery)->where('user_profiles.gender', 'Female')->count();
 
         // ================= DIVISIONS =================
         $divisions = (clone $usersQuery)
-            ->join('divisions', 'users.division_id', '=', 'divisions.id')
+            ->join('divisions', 'user_profiles.division_id', '=', 'divisions.id')
             ->select('divisions.abbreviation', DB::raw('COUNT(*) as total'))
             ->groupBy('divisions.abbreviation')
             ->orderByDesc('total')
@@ -50,7 +50,7 @@ class Analytics extends Controller
 
         // ================= OFFICE LOCATIONS =================
         $office_locations = (clone $usersQuery)
-            ->join('office_locations', 'users.office_location', '=', 'office_locations.id')
+            ->join('office_locations', 'user_profiles.office_location_id', '=', 'office_locations.id')
             ->select('office_locations.abbreviation', DB::raw('COUNT(*) as total'))
             ->groupBy('office_locations.abbreviation')
             ->orderByDesc('total')
@@ -60,8 +60,8 @@ class Analytics extends Controller
         // ================= AVERAGE AGE =================
         $averageAge = round(
             (clone $usersQuery)
-                ->selectRaw('AVG(TIMESTAMPDIFF(YEAR, birthday, CURDATE()))')
-                ->value(DB::raw('AVG(TIMESTAMPDIFF(YEAR, birthday, CURDATE()))')),
+                ->selectRaw('AVG(TIMESTAMPDIFF(YEAR, user_profiles.birthday, CURDATE())) as avg_age')
+                ->value('avg_age'),
             1
         );
 
@@ -78,23 +78,23 @@ class Analytics extends Controller
 
         foreach ($ageGroups as [$min, $max]) {
             $maleAgeCounts[] = (clone $usersQuery)
-                ->where('gender', 'Male')
-                ->whereRaw("TIMESTAMPDIFF(YEAR, birthday, CURDATE()) BETWEEN ? AND ?", [$min, $max])
+                ->where('user_profiles.gender', 'Male')
+                ->whereRaw("TIMESTAMPDIFF(YEAR, user_profiles.birthday, CURDATE()) BETWEEN ? AND ?", [$min, $max])
                 ->count();
 
             $femaleAgeCounts[] = (clone $usersQuery)
-                ->where('gender', 'Female')
-                ->whereRaw("TIMESTAMPDIFF(YEAR, birthday, CURDATE()) BETWEEN ? AND ?", [$min, $max])
+                ->where('user_profiles.gender', 'Female')
+                ->whereRaw("TIMESTAMPDIFF(YEAR, user_profiles.birthday, CURDATE()) BETWEEN ? AND ?", [$min, $max])
                 ->count();
         }
 
         // ================= EMPLOYMENT STATUS =================
         $employmentStats = (clone $usersQuery)
-            ->leftJoin('employment_statuses', 'users.employment_status_id', '=', 'employment_statuses.id')
+            ->leftJoin('employment_statuses', 'user_profiles.employment_status_id', '=', 'employment_statuses.id')
             ->select(
                 DB::raw("COALESCE(employment_statuses.name, 'Unspecified') as status"),
-                DB::raw("SUM(CASE WHEN users.gender = 'Male' THEN 1 ELSE 0 END) as male"),
-                DB::raw("SUM(CASE WHEN users.gender = 'Female' THEN 1 ELSE 0 END) as female"),
+                DB::raw("SUM(CASE WHEN user_profiles.gender = 'Male' THEN 1 ELSE 0 END) as male"),
+                DB::raw("SUM(CASE WHEN user_profiles.gender = 'Female' THEN 1 ELSE 0 END) as female"),
                 DB::raw("COUNT(users.id) as total")
             )
             ->groupBy(DB::raw("COALESCE(employment_statuses.name, 'Unspecified')"))

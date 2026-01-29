@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('leave_credits', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('first_name_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('middle_name_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('last_name_id')->constrained('users')->onDelete('cascade');

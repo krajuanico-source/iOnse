@@ -79,6 +79,8 @@
   use App\Http\Controllers\RequestFormController;
   use App\Http\Controllers\CprController;
   use App\Http\Controllers\CprEmployeeController;
+  use App\Http\Controllers\UserRoleController;
+
 
 
 
@@ -140,6 +142,11 @@
     Route::get('/planning/dashboard', fn() => view('content.planning.dashboard'))->name('content.planning.dashboard');
   });
 
+  Route::middleware(['auth', 'role:admin'])->group(function() {
+    Route::get('/users', [UserRoleController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}/edit-role', [UserRoleController::class, 'edit'])->name('users.editRole');
+    Route::post('/users/{user}/assign-role', [UserRoleController::class, 'update'])->name('users.assignRole');
+});
 
   //-------------------------------------------------------START OF PROFILE-----------------------------------------------------------
 

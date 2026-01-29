@@ -12,7 +12,8 @@ return new class extends Migration
       $table->id();
       $table->string('title');
       $table->string('successor_name')->nullable();
-      $table->string('readiness_level')->nullable(); // e.g. Ready Now, 1 Year, 2+ Years
+      $table->string('readiness_level')->nullable(); 
+      $table->softdeletes();
       $table->timestamps();
     });
   }
